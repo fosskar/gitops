@@ -4747,7 +4747,7 @@ prometheus-adapter:
   # Url to access prometheus
   prometheus:
     # Value is templated
-    url: http://prometheus.default.svc
+    url: http://monitoring-stack-kube-prometheus-prom-prometheus.monitoring.svc
     port: 9090
     path: ""
 
