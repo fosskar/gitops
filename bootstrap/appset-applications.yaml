@@ -11,6 +11,9 @@ spec:
       - application: vaultwarden
         namespace: vaultwarden
         path: apps/vaultwarden
+      - application: dashy
+        namespace: dashy
+        path: apps/dashy
   template:
     metadata:
       name: "{{.application}}"
