@@ -8,3 +8,7 @@ version: 0.1.0
 
 appVersion: "0.1.0"
 
+dependencies:
+  - name: dashy
+    repository: https://krzwiatrzyk.github.io/charts/
+    version: 1.0.0
