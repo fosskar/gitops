@@ -2978,7 +2978,7 @@ kube-prometheus-stack:
     # ServiceMonitor to scrape Sidecar metrics
     # Needs thanosService to be enabled as well
     thanosServiceMonitor:
-      enabled: true
+      enabled: false
       interval: ""
 
       ## Additional labels
@@ -3903,7 +3903,6 @@ kube-prometheus-stack:
       ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#thanosspec
       ##
       thanos:
-        image: quay.io/thanos/thanos:v0.35.0
         # secretProviderClass:
         #   provider: gcp
         #   parameters:
@@ -4236,7 +4235,7 @@ kube-prometheus-stack:
 
     ## Deploy thanosRuler
     ##
-    enabled: true
+    enabled: false
 
     ## Annotations for ThanosRuler
     ##
@@ -4259,7 +4258,7 @@ kube-prometheus-stack:
       maxUnavailable: ""
 
     ingress:
-      enabled: true
+      enabled: false
 
       # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
       # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
@@ -4548,11 +4547,7 @@ kube-prometheus-stack:
 
       ## QueryEndpoints defines Thanos querier endpoints from which to query metrics.
       ## Maps to the --query flag of thanos ruler.
-      queryEndpoints:
-        - kube-prometheus-stack-thanos-discovery.monitoring.svc:10902
-        - kube-prometheus-stack-thanos-discovery.monitoring.svc:10901
-        - 10.42.2.50:10902
-        - 10.42.2.50:10901
+      queryEndpoints: []
 
       ## Define configuration for connecting to thanos query instances. If this is defined, the queryEndpoints field will be ignored.
       ## Maps to the query.config CLI argument. Only available with thanos v0.11.0 and higher.
