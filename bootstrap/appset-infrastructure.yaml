@@ -27,7 +27,7 @@ spec:
         targetRevision: HEAD
         path: '{{.path}}'
         helm:
-          releaseName: "{{.appName}}"
+          releaseName: "{{.application}}"
           valueFiles:
           - "values.yaml"
       destination:
