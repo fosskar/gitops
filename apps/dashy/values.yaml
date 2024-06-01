@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: ghcr.io/lissy93/dashy
   pullPolicy: IfNotPresent
   tag: "latest"
 
