@@ -3170,7 +3170,7 @@ kube-prometheus-stack:
       ## Hosts must be provided if Ingress is enabled.
       ##
       hosts:
-        thanos-gateway.space
+        - thanos-gateway.space
 
       ## Paths to use for ingress rules
       ##
