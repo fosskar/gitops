@@ -8,13 +8,9 @@ spec:
   generators:
   - list:
       elements:
-      - application: efk
-        namespace: logging
-        path: infra/efk
-        serverSideApply: false
-      - application: kube-prometheus-stack
+      - application: monitoring-stack
         namespace: monitoring
-        path: infra/kube-prometheus-stack
+        path: infra/monitoring-stack
         serverSideApply: true
       #- application: security
       #  namespace: security
