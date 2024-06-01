@@ -10,5 +10,5 @@ appVersion: "0.1.0"
 
 dependencies:
   - name: vaultwarden
-    repository: oci://tccr.io/truecharts
-    version: 27.1.2
+    repository: https://gissilabs.github.io/charts
+    version: 1.2.1
