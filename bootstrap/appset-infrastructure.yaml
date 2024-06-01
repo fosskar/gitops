@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - list:
+      elements:
+      - application: efk
+        namespace: logging
+        path: infra/efk
+      - application: prometheus-stack
+        namespace: monitoring
+        path: infra/prometheus-stack
+      #- application: security
+      #  namespace: security
+      #  path: infra/security
+  template:
+    metadata:
+      name: '{{.application}}'
+    spec:
+      project: infrastructure
+      source:
+        repoURL: https://gitlab.com/simonoscr/gitops-bootstrap.git
+        targetRevision: HEAD
+        path: '{{.path}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: '{{.namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
