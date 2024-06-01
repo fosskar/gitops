@@ -1,23 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: infrastructure
+  name: applications
   namespace: argocd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: Infrastructure Project
+  description: Applications Project
   sourceRepos:
   - "*"
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
-  - namespace: kube-system
-    server: https://kubernetes.default.svc
-  - namespace: logging
-    server: https://kubernetes.default.svc
-  - namespace: monitoring
+  - namespace: vaultwarden
     server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: '*'
