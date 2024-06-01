@@ -4549,7 +4549,10 @@ kube-prometheus-stack:
       ## QueryEndpoints defines Thanos querier endpoints from which to query metrics.
       ## Maps to the --query flag of thanos ruler.
       queryEndpoints:
+        - kube-prometheus-stack-thanos-discovery.monitoring.svc:10902
         - kube-prometheus-stack-thanos-discovery.monitoring.svc:10901
+        - 10.42.2.50:10902
+        - 10.42.2.50:10901
 
       ## Define configuration for connecting to thanos query instances. If this is defined, the queryEndpoints field will be ignored.
       ## Maps to the query.config CLI argument. Only available with thanos v0.11.0 and higher.
