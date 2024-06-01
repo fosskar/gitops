@@ -1,1 +1,6 @@
+# nix-direnv
 .direnv
+
+# helm
+Chart.lock
+charts/

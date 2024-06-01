@@ -20,12 +20,12 @@
       }: {
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
-            helm
+            kubernetes-helm
           ];
           name = "helm";
 
           shellHook = ''
-            echo -e "\n\033[1;36m❄️ Welcome to the '${name}' devshell ❄️\033[0m\n"
+            echo -e "\n\033[1;36m❄️ Welcome to the helm devshell ❄️\033[0m\n"
             echo
           '';
         };
