@@ -4812,13 +4812,13 @@ prometheus-adapter:
     #     value: "2"
     #   - name: edns0
 
-  resources: {}
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
 
   # Configure liveness probe
   # https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#Probe
@@ -5037,7 +5037,7 @@ loki-stack:
       logLevel: info
       serverPort: 3101
       clients:
-        - url: http://{{ .Release.Name }}:3100/loki/api/v1/push
+        - url: http://{{ .Release.Name }}-loki:3100/loki/api/v1/push
 
   fluent-bit:
     enabled: false
