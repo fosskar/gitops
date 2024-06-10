@@ -12,6 +12,10 @@ spec:
         namespace: monitoring
         path: infra/monitoring-stack
         serverSideApply: true
+      - application: gitlab-runner
+        namespace: gitlab-runner
+        path: infra/gitlab-runner
+        serverSideApply: false
       #- application: security
       #  namespace: security
       #  path: infra/security

@@ -1,0 +1,329 @@
+gitlab-runner:
+  image:
+    registry: registry.gitlab.com
+    image: gitlab-org/gitlab-runner
+  useTini: false
+  imagePullPolicy: IfNotPresent
+
+  sessionServer:
+
+    enabled: false
+    # annotations: {}
+    # timeout: 1800
+    # internalPort: 8093
+    # externalPort: 9000
+    # publicIP: ""
+    # loadBalancerSourceRanges:
+    #   - 1.2.3.4/32
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+  runners:
+    config: |
+      [[runners]]
+        [runners.kubernetes]
+          namespace = "{{.Release.Namespace}}"
+          image = "alpine"
+
+    ## Absolute path for an existing runner configuration file
+    ## Can be used alongside "volumes" and "volumeMounts" to use an external config file
+    ## Active if runners.config is empty or null
+    configPath: ""
+    ## Which executor should be used
+    ##
+    # executor: kubernetes
+    ## DEPRECATED: Specify whether the runner should be locked to a specific project: true, false.
+    ##
+    ## ref: https://docs.gitlab.com/ee/ci/runners/new_creation_workflow.html
+    ##
+    # locked: true
+    ## DEPRECATED: Specify the tags associated with the runner. Comma-separated list of tags.
+    ##
+    ## ref: https://docs.gitlab.com/ee/ci/runners/new_creation_workflow.html
+    ##
+    # tags: ""
+    ## Specify the name for the runner.
+    ##
+    # name: ""
+    ## DEPRECATED: Specify the maximum timeout (in seconds) that will be set for job when using this Runner
+    ##
+    ## ref: https://docs.gitlab.com/ee/ci/runners/new_creation_workflow.html
+    ##
+    # maximumTimeout: ""
+    ## DEPRECATED: Specify if jobs without tags should be run.
+    ##
+    ## ref: https://docs.gitlab.com/ee/ci/runners/new_creation_workflow.html
+    ##
+    # runUntagged: true
+    ## DEPRECATED: Specify whether the runner should only run protected branches.
+    ##
+    ## ref: https://docs.gitlab.com/ee/ci/runners/new_creation_workflow.html
+    ##
+    # protected: true
+    ## The name of the secret containing runner-token and runner-registration-token
+    # secret: gitlab-runner
+    ## Distributed runners caching
+    ## ref: https://docs.gitlab.com/runner/configuration/autoscale.html#distributed-runners-caching
+    ##
+    ## If you want to use s3 based distributing caching:
+    ## First of all you need to uncomment General settings and S3 settings sections.
+    ##
+    ## Create a secret 's3access' containing 'accesskey' & 'secretkey'
+    ## ref: https://aws.amazon.com/blogs/security/wheres-my-secret-access-key/
+    ##
+    ## $ kubectl create secret generic s3access \
+    ##   --from-literal=accesskey="YourAccessKey" \
+    ##   --from-literal=secretkey="YourSecretKey"
+    ## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+    ##
+    ## If you want to use gcs based distributing caching:
+    ## First of all you need to uncomment General settings and GCS settings sections.
+    ##
+    ## Access using credentials file:
+    ## Create a secret 'google-application-credentials' containing your application credentials file.
+    ## ref: https://docs.gitlab.com/runner/configuration/advanced-configuration.html#the-runnerscachegcs-section
+    ## You could configure
+    ## $ kubectl create secret generic google-application-credentials \
+    ##   --from-file=gcs-application-credentials-file=./path-to-your-google-application-credentials-file.json
+
+    ## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+    ##
+    ## Access using access-id and private-key:
+    ## Create a secret 'gcsaccess' containing 'gcs-access-id' & 'gcs-private-key'.
+    ## ref: https://docs.gitlab.com/runner/configuration/advanced-configuration.html#the-runnerscachegcs-section
+    ## You could configure
+    ## $ kubectl create secret generic gcsaccess \
+    ##   --from-literal=gcs-access-id="YourAccessID" \
+    ##   --from-literal=gcs-private-key="YourPrivateKey"
+    ## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+    ##
+    ## If you want to use Azure-based distributed caching:
+    ## First, uncomment General settings.
+    ##
+    ## Create a secret 'azureaccess' containing 'azure-account-name' & 'azure-account-key'
+    ## ref: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
+    ##
+    ## $ kubectl create secret generic azureaccess \
+    ##   --from-literal=azure-account-name="YourAccountName" \
+    ##   --from-literal=azure-account-key="YourAccountKey"
+    ## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+    cache: {}
+      ## S3 the name of the secret.
+      # secretName: s3access
+      ## Use this line for access using gcs-access-id and gcs-private-key
+      # secretName: gcsaccess
+      ## Use this line for access using google-application-credentials file
+      # secretName: google-application-credentials
+      ## Use this line for access using Azure with azure-account-name and azure-account-key
+      # secretName: azureaccess
+  ## Specify the name of the scheduler which is used to schedule runner pods.
+  ## Kubernetes supports multiple scheduler configurations.
+  ## ref: https://kubernetes.io/docs/reference/scheduling
+  # schedulerName: "my-custom-scheduler"
+  ## Configure securitycontext for the main container
+  ## ref: https://kubernetes.io/docs/concepts/security/pod-security-standards/
+  ##
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    privileged: false
+    capabilities:
+      drop: ["ALL"]
+  ## Configure update strategy for multi-replica deployments
+  ## Kubernetes supports types Recreate, and RollingUpdate
+  ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+  ##
+  strategy: {}
+    # rollingUpdate:
+    #   maxSurge: 1
+    #   maxUnavailable: 0
+    # type: RollingUpdate
+  ## Configure securitycontext valid for the whole pod
+  ## ref: https://kubernetes.io/docs/concepts/security/pod-security-standards/
+  ##
+  podSecurityContext:
+    runAsUser: 100
+    # runAsGroup: 65533
+    fsGroup: 65533
+    # supplementalGroups: [65533]
+    ## Note: values for the ubuntu image:
+    # runAsUser: 999
+    # fsGroup: 999
+
+  ## Configure resource requests and limits
+  ## ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+  ##
+  resources: {}
+    # limits:
+    #   memory: 256Mi
+    #   cpu: 200m
+    #   ephemeral-storage: 512Mi
+    # requests:
+    #   memory: 128Mi
+    #   cpu: 100m
+    #   ephemeral-storage: 256Mi
+  ## Affinity for pod assignment
+  ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+  ##
+  affinity: {}
+  ## TopologySpreadConstraints for pod assignment
+  ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+  ##
+  topologySpreadConstraints: {}
+    # Example: The gitlab runner should be evenly spread across zones
+    # - maxSkew: 1
+    #   topologyKey: zone
+    #   whenUnsatisfiable: DoNotSchedule
+    #   labelSelector:
+    #     matchLabels:
+    #       foo: bar
+  ## Node labels for pod assignment
+  ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+  ##
+  nodeSelector: {}
+    # Example: The gitlab runner manager should not run on spot instances so you can assign
+    # them to the regular worker nodes only.
+    # node-role.kubernetes.io/worker: "true"
+  ## List of node taints to tolerate (requires Kubernetes >= 1.6)
+  ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  ##
+  tolerations: []
+    # Example: Regular worker nodes may have a taint, thus you need to tolerate the taint
+    # when you assign the gitlab runner manager with nodeSelector or affinity to the nodes.
+    # - key: "node-role.kubernetes.io/worker"
+    #   operator: "Exists"
+  ## Configure environment variables that will be present when the registration command runs
+  ## This provides further control over the registration process and the config.toml file
+  ## ref: `gitlab-runner register --help`
+  ## ref: https://docs.gitlab.com/runner/configuration/advanced-configuration.html
+  ##
+  # envVars:
+  #   - name: RUNNER_EXECUTOR
+  #     value: kubernetes
+  ## Additional environment variables from key-value pairs.
+  extraEnv: {}
+    # CACHE_S3_SERVER_ADDRESS: s3.amazonaws.com
+    # CACHE_S3_BUCKET_NAME: runners-cache
+    # CACHE_S3_BUCKET_LOCATION: us-east-1
+    # CACHE_SHARED: true
+  ## Additional environment variables from other data sources
+  extraEnvFrom: {}
+    # CACHE_S3_ACCESS_KEY:
+    #   secretKeyRef:
+    #     name: s3access
+    #     key: accesskey
+
+    # CACHE_S3_SECRET_KEY:
+    #   secretKeyRef:
+    #     name: s3access
+    #     key: secretkey
+  ## list of hosts and IPs that will be injected into the pod's hosts file
+  hostAliases: []
+    # Example:
+    # - ip: "127.0.0.1"
+    #   hostnames:
+    #   - "foo.local"
+    #   - "bar.local"
+    # - ip: "10.1.2.3"
+    #   hostnames:
+    #   - "foo.remote"
+    #   - "bar.remote"
+  ## Annotations to be added to deployment
+  ##
+  deploymentAnnotations: {}
+    # Example:
+    # downscaler/uptime: <my_uptime_period>
+  ## Labels to be added to deployment
+  ##
+  deploymentLabels: {}
+    # Example:
+    # owner.team: <my_cool_team>
+
+  ## Set hostname for runner pods
+  #hostname: my-gitlab-runner
+  ## Annotations to be added to manager pod
+  ##
+  podAnnotations: {}
+    # Example:
+    # iam.amazonaws.com/role: <my_role_arn>
+  ## Labels to be added to manager pod
+  ##
+  podLabels: {}
+    # Example:
+    # owner.team: <my_cool_team>
+  ## HPA support for custom metrics:
+  ## This section enables runners to autoscale based on defined custom metrics.
+  ## In order to use this functionality, you need to enable a custom metrics API server by
+  ## implementing "custom.metrics.k8s.io" using supported third party adapter
+  ## Example: https://github.com/directxman12/k8s-prometheus-adapter
+  ##
+  #hpa: {}
+    # minReplicas: 1
+    # maxReplicas: 10
+    # metrics:
+    # - type: Pods
+    #   pods:
+    #     metricName: gitlab_runner_jobs
+    #     targetAverageValue: 400m
+  ## Configure priorityClassName for manager pod. See k8s docs for more info on how pod priority works:
+  ##  https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
+  priorityClassName: ""
+  ## Secrets to be additionally mounted to the containers.
+  ## All secrets are mounted through init-runner-secrets volume
+  ## and placed as readonly at /init-secrets in the init container
+  ## and finally copied to an in-memory volume runner-secrets that is
+  ## mounted at /secrets.
+  secrets: []
+    # Example:
+
+    # - name: my-secret
+    # - name: myOtherSecret
+    #   items:
+    #     - key: key_one
+    #       path: path_one
+  ## Boolean to turn off the automountServiceAccountToken in the deployment
+  ## ref: https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#bound-service-account-token-volume
+  ##
+  # automountServiceAccountToken: false
+  ## Additional config files to mount in the containers in `/configmaps`.
+  ##
+  ## Please note that a number of keys are reserved by the runner.
+  ## See https://gitlab.com/gitlab-org/charts/gitlab-runner/-/blob/main/templates/configmap.yaml
+  ## for a current list.
+  configMaps: {}
+  ## Additional volumeMounts to add to the runner container
+  ##
+  volumeMounts: []
+    # Example:
+    # - name: my-volume
+    #   mountPath: /mount/path
+  ## Additional volumes to add to the runner deployment
+  ##
+  volumes: []
+    # Example:
+    # - name: my-volume
+    #   persistentVolumeClaim:
+    #     claimName: my-pvc
+  ## Array of extra K8s manifests to deploy
+  ##
+  extraObjects: []
+  # - apiVersion: external-secrets.io/v1beta1
+  #   kind: ExternalSecret
+  #   metadata:
+  #     name: '{{ include "gitlab-runner.secret" . }}'
+  #   spec:
+  #     refreshInterval: 1h
+  #     secretStoreRef:
+  #       kind: SecretStore
+  #       name: my-secret-store
+  #     target:
+  #       template:
+  #         data:
+  #           runner-registration-token: "" # need to leave as an empty string for compatibility reasons
+  #           runner-token: "{{`{{ .runnerToken }}`}}"
+  #     dataFrom:
+  #     - extract:
+  #         key: my-secret-store-secret
