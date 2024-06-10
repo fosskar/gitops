@@ -63,9 +63,9 @@ kube-prometheus-stack:
       kubeApiserverBurnrate: true
       kubeApiserverHistogram: true
       kubeApiserverSlos: true
-      kubeControllerManager: true
-      kubelet: true
-      kubeProxy: true
+      kubeControllerManager: false
+      kubelet: false
+      kubeProxy: false
       kubePrometheusGeneral: true
       kubePrometheusNodeRecording: true
       kubernetesApps: true
@@ -1434,7 +1434,7 @@ kube-prometheus-stack:
   ## Component scraping the kube controller manager
   ##
   kubeControllerManager:
-    enabled: true
+    enabled: false
 
     ## If your kube controller manager is not deployed as a pod, specify IPs it can be found on
     ##
@@ -1916,7 +1916,7 @@ kube-prometheus-stack:
   ## Component scraping kube proxy
   ##
   kubeProxy:
-    enabled: true
+    enabled: false
 
     ## If your kube proxy is not deployed as a pod, specify IPs it can be found on
     ##
@@ -2628,7 +2628,7 @@ kube-prometheus-stack:
       ## If true, the operator will create and maintain a service for scraping kubelets
       ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/helm/prometheus-operator/README.md
       ##
-      enabled: true
+      enabled: false
       namespace: kube-system
       selector: ""
       ## Use '{{ template "kube-prometheus-stack.fullname" . }}-kubelet' by default
