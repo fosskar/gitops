@@ -1105,7 +1105,7 @@ kube-prometheus-stack:
         access: proxy
         orgId: 1
         type: loki
-        url: http://{{ printf "%s-loki.svc" .Release.Name }}:3100
+        url: http://loki-stack.logging.svc:3100
         version: 1
 
     ## Passed to grafana subchart and used by servicemonitor below
