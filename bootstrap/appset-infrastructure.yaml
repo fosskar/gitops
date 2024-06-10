@@ -11,7 +11,7 @@ spec:
       - application: prometheus-stack
         namespace: monitoring
         path: infra/prometheus-stack
-        serverSideApply: true
+        serverSideApply: false
       - application: gitlab-runner
         namespace: gitlab-runner
         path: infra/gitlab-runner
