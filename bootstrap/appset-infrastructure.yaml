@@ -11,15 +11,12 @@ spec:
       - application: prometheus-stack
         namespace: monitoring
         path: infra/prometheus-stack
-        serverSideApply: false
       - application: gitlab-runner
         namespace: gitlab-runner
         path: infra/gitlab-runner
-        serverSideApply: false
       - application: loki-stack
         namespace: logging
         path: infra/loki-stack
-        serverSideApply: false
       #- application: security
       #  namespace: security
       #  path: infra/security
@@ -45,4 +42,3 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-          - ServerSideApply={{.serverSideApply}}
