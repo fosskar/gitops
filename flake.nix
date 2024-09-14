@@ -15,7 +15,6 @@
 
       perSystem = {
         pkgs,
-        lib,
         ...
       }: {
         devShells.default = pkgs.mkShell {
