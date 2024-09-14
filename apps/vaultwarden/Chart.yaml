@@ -11,4 +11,4 @@ appVersion: "0.1.0"
 dependencies:
   - name: vaultwarden
     repository: https://gissilabs.github.io/charts
-    version: 1.2.1
+    version: 1.2.2
