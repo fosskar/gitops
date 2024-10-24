@@ -11,4 +11,4 @@ appVersion: "0.1.0"
 dependencies:
   - name: gitlab-runner
     repository: https://charts.gitlab.io
-    version: 0.69.0
+    version: 0.70.2
