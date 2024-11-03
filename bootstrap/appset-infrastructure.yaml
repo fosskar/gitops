@@ -8,15 +8,6 @@ spec:
   generators:
   - list:
       elements:
-      - application: prometheus-stack
-        namespace: monitoring
-        path: infra/prometheus-stack
-      - application: gitlab-runner
-        namespace: gitlab-runner
-        path: infra/gitlab-runner
-      - application: loki-stack
-        namespace: logging
-        path: infra/loki-stack
       #- application: security
       #  namespace: security
       #  path: infra/security
