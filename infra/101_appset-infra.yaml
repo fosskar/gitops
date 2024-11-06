@@ -7,53 +7,11 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-  - list:
-      elements:
-      - application: victoriametrics
-        namespace: monitoring
-        path: infra/monitoring/victoriametrics
-        chart: victoria-metrics-k8s-stack
-        chartURL: https://victoriametrics.github.io/helm-charts/
-        chartVersion: 0.28.2
-  template:
-    metadata:
-      name: "{{.application}}"
-    spec:
-      project: infra
-      source:
-        chart: "{{.chart}}"
-        repoURL: "{{.chartURL}}"
-        targetRevision: "{{.chartVersion}}"
-        helm:
-          releaseName: "{{.application}}"
-          valueFiles:
-            - "{{.namespace}}/{{.application}}/values.yaml"
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: "{{.namespace}}"
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-
-
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: infra-appset
-  namespace: argocd
-spec:
-  goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
-  generators:
   - git:
       repoURL: https://gitlab.com/simonoscr/gitops.git
       revision: HEAD
       directories:
       - path: infra/*
-      values:
-        application: "{{ .path.basename }}"
-        applyRespectIgnoreDifferences: "{{ eq .path.basename \"victoriametrics\" }}"
   template:
     metadata:
       name: '{{.path.basename}}'
@@ -72,22 +30,3 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-  templatePatch: |
-    {{- if .applyRespectIgnoreDifferences }}
-    spec:
-      syncPolicy:
-        syncOptions:
-          - RespectIgnoreDifferences=true
-      ignoreDifferences:
-        - group: ""
-          kind: Secret
-          name: "{{ .application }}-validation"
-          namespace: kube-system
-          jsonPointers:
-            - /data
-        - group: admissionregistration.k8s.io
-          kind: ValidatingWebhookConfiguration
-          name: "{{ .application }}-admission"
-          jqPathExpressions:
-            - '.webhooks[]?.clientConfig.caBundle'
-    {{- end }}
