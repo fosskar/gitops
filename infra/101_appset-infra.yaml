@@ -11,7 +11,7 @@ spec:
       repoURL: https://gitlab.com/simonoscr/gitops.git
       revision: HEAD
       directories:
-      - path: infra/*
+      - path: infra/monitoring/*
   template:
     metadata:
       name: '{{.path.basename}}'
