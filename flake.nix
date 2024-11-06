@@ -1,5 +1,5 @@
 {
-  description = "gitops-bootstrap";
+  description = "gitops";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -9,26 +9,24 @@
     };
   };
 
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux"];
+  outputs =
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
 
-      perSystem = {
-        pkgs,
-        ...
-      }: {
-        devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [
-            kubernetes-helm
-            argocd
-          ];
-          name = "helm";
-
-          shellHook = ''
-            echo -e "\n\033[1;36m❄️ Welcome to the helm devshell ❄️\033[0m\n"
-            echo
-          '';
+      perSystem =
+        {
+          pkgs,
+          ...
+        }:
+        {
+          devShells.default = pkgs.mkShell {
+            nativeBuildInputs = with pkgs; [
+              kubernetes-helm
+              argocd
+            ];
+            name = "gitops";
+          };
         };
-      };
     };
 }
