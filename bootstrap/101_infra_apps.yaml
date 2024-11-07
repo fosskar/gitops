@@ -22,6 +22,8 @@ spec:
         repoURL: https://gitlab.com/simonoscr/gitops.git
         targetRevision: HEAD
         path: '{{.path.path}}'
+        helm:
+          releaseName: victoriametrics
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ index .path.segments 1 }}'
