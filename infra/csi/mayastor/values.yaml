@@ -647,7 +647,7 @@ loki-stack:
       create: true
       pspEnabled: false
     # -- Enables promtail for scraping logs from nodes
-    enabled: true
+    enabled: false
     # -- Disallow promtail from running on the master node
     tolerations: []
     priorityClassName: ""
