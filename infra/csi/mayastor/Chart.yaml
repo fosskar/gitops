@@ -1,0 +1,10 @@
+apiVersion: v2
+name: mayastor
+description: A Helm chart for deploying Mayastor in Kubernetes
+version: 0.1.0
+appVersion: "0.1.0"
+
+dependencies:
+  - name: mayastor
+    repository: https://openebs.github.io/mayastor-extensions/
+    version: 2.7.1
