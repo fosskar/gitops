@@ -11,7 +11,7 @@ global:
 # -- Resource full name suffix override
 nameOverride: ""
 # -- Resource full name prefix override
-fullnameOverride: ""
+fullnameOverride: "victoriametrics"
 # -- Tenant to use for Grafana datasources and remote write
 tenant: "0"
 # -- If this chart is used in "Argocd" with "releaseName" field then
