@@ -12,7 +12,7 @@ spec:
       revision: HEAD
       directories:
       - path: infra/monitoring/*
-      #- path: infra/logging/*
+      - path: infra/csi/*
   template:
     metadata:
       name: '{{.path.basename}}'
