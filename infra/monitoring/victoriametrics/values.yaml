@@ -921,6 +921,8 @@ vm:
   prometheus-node-exporter:
     enabled: true
 
+    daemonsetAnnotations:
+      argocd.argoproj.io/sync-options: ServerSideApply=true
     # all values for prometheus-node-exporter helm chart can be specified here
     service:
       # Add the 'node-exporter' label to be used by serviceMonitor to match standard common usage in rules and grafana dashboards
