@@ -54,7 +54,10 @@ earlyEvictionTolerations:
 # -- Tolerations to be applied to all components except external Chart dependencies.
 # If any component has tolerations set, then it would override this value.
 # For external components like etcd, jaeger and loki-stack, tolerations can only be set at component level.
-tolerations: []
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+    operator: Exists
 
 base:
   # -- Request timeout for rest & core agents
