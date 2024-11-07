@@ -846,6 +846,10 @@ vm:
   grafana:
     enabled: true
     # all values for grafana helm chart can be specified here
+    service:
+      enable: true
+      type: NodePort
+
     sidecar:
       datasources:
         enabled: true
