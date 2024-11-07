@@ -1,0 +1,10 @@
+apiVersion: v2
+name: victoriametrics
+description: A Helm chart for deploying VictoriaMetrics in Kubernetes
+version: 0.1.0
+appVersion: "0.1.0"
+
+dependencies:
+  - name: victoria-metrics-k8s-stack
+    repository: https://victoriametrics.github.io/helm-charts/
+    version: 0.28.2
