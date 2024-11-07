@@ -9,9 +9,9 @@ global:
       # key: license
 
 # -- Resource full name suffix override
-nameOverride: "vm"
+nameOverride: ""
 # -- Resource full name prefix override
-fullnameOverride: "victoriametrics"
+fullnameOverride: ""
 # -- Tenant to use for Grafana datasources and remote write
 tenant: "0"
 # -- If this chart is used in "Argocd" with "releaseName" field then
