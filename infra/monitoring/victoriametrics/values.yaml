@@ -9,7 +9,7 @@ global:
       # key: license
 
 # -- Resource full name suffix override
-nameOverride: ""
+nameOverride: "vm"
 # -- Resource full name prefix override
 fullnameOverride: "victoriametrics"
 # -- Tenant to use for Grafana datasources and remote write
