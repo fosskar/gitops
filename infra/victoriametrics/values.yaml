@@ -858,6 +858,8 @@ vm:
         defaultFolderName: default
         enabled: true
         multicluster: false
+        additionalDashboardAnnotations:
+          argocd.argoproj.io/sync-options: ServerSideApply=true
 
     # -- Create datasource configmap even if grafana deployment has been disabled
     forceDeployDatasource: false
@@ -1246,7 +1248,7 @@ vm:
 
   # -- Install prometheus operator CRDs
   prometheus-operator-crds:
-    enabled: true
+    enabled: false
 
   # -- Add extra objects dynamically to this chart
   extraObjects: []
