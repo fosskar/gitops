@@ -23,7 +23,7 @@ spec:
         targetRevision: HEAD
         path: '{{.path.path}}'
         helm:
-          releaseName: victoriametrics
+          releaseName: '{{.path.basename}}'
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ index .path.segments 1 }}'
