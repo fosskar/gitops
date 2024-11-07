@@ -1,20 +1,33 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: infra-apps
+  name: infra-appset
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: infra
-  source:
-    repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
-    path: infra
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: argocd
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - git:
+      repoURL: https://gitlab.com/simonoscr/gitops.git
+      revision: HEAD
+      directories:
+      - path: infra/monitoring/*
+      #- path: infra/logging/*
+  template:
+    metadata:
+      name: '{{.path.basename}}'
+    spec:
+      project: infra
+      source:
+        repoURL: https://gitlab.com/simonoscr/gitops.git
+        targetRevision: HEAD
+        path: '{{.path.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ index .path.segments 1 }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
