@@ -12,6 +12,7 @@ spec:
       revision: HEAD
       directories:
       - path: infra/monitoring/*
+      - path: infra/oidc/*
   template:
     metadata:
       name: '{{.path.basename}}'
