@@ -56,7 +56,10 @@ oidc:
   # See the [official documentation](https://dexidp.io/docs/).
   config:
     issuer: http://localhost:8080/dex
-    storage:  # .. storage configuration
+    storage:
+      type: kubernetes
+      config:
+        inCluster: true
     # Setup clients
     staticClients:
       - id: oidc
