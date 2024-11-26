@@ -1261,7 +1261,7 @@ vm:
 
   # -- Install prometheus operator CRDs
   prometheus-operator-crds:
-    enabled: false
+    enabled: true
 
   # -- Add extra objects dynamically to this chart
   extraObjects: []
