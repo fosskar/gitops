@@ -855,7 +855,7 @@ vm:
     # all values for grafana helm chart can be specified here
     service:
       enable: true
-      type: NodePort
+      type: ClusterIP
 
     sidecar:
       datasources:
@@ -910,10 +910,10 @@ vm:
       #       name: ssl-redirect
       #       port:
       #         name: service
-      tls: []
-      #  - secretName: grafana-ingress-tls
-      #    hosts:
-      #      - grafana.domain.com
+      tls:
+        - secretName: grafana-ingress-tls
+          hosts:
+            - grafana.simonoscar.space
 
     # -- Grafana VM scrape config
     vmScrape:
