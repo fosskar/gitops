@@ -66,7 +66,7 @@ dex:
         public: true
         name: OIDC
         redirectURIs:
-          - 'https://localhost:8080/oidc/callback'
+          - "https://localhost:8080/oidc/callback"
     # Set up an test user
     staticPasswords:
       - email: "admin@example.com"
@@ -160,7 +160,8 @@ dex:
 
   # -- Pod [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod).
   # See the [API reference](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#security-context) for details.
-  podSecurityContext: {}
+  podSecurityContext:
+    {}
     # fsGroup: 2000
 
   # -- Define the [count of deployment revisions](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#clean-up-policy) to be kept.
@@ -169,7 +170,8 @@ dex:
 
   # -- Container [security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container).
   # See the [API reference](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#security-context-1) for details.
-  securityContext: {}
+  securityContext:
+    {}
     # capabilities:
     #   drop:
     #   - ALL
@@ -217,7 +219,8 @@ dex:
     className: ""
 
     # -- Annotations to be added to the ingress.
-    annotations: {}
+    annotations:
+      {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
 
@@ -299,7 +302,8 @@ dex:
   # -- Container resource [requests and limits](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
   # See the [API reference](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#resources) for details.
   # @default -- No requests or limits.
-  resources: {}
+  resources:
+    {}
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -336,7 +340,8 @@ dex:
   topologySpreadConstraints: []
 
   # -- Deployment [strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) configuration.
-  strategy: {}
+  strategy:
+    {}
     # rollingUpdate:
     #   maxUnavailable: 1
     # type: RollingUpdate
