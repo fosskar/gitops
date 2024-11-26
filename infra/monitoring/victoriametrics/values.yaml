@@ -5,7 +5,8 @@ vm:
     # -- Global license configuration
     license:
       key: ""
-      keyRef: {}
+      keyRef:
+        {}
         # name: secret-license
         # key: license
 
@@ -99,7 +100,8 @@ vm:
         annotations: {}
 
     # -- Per rule properties
-    rules: {}
+    rules:
+      {}
       # CPUThrottlingHigh:
       #   create: true
       #   spec:
@@ -284,7 +286,7 @@ vm:
             storage: 20Gi
     ingress:
       # -- Enable deployment of ingress for server component
-      enabled: false
+      enabled: true
       # -- Ingress annotations
       annotations:
         {}
@@ -297,11 +299,11 @@ vm:
       # -- Ingress path type
       pathType: Prefix
       # -- Ingress controller class name
-      ingressClassName: ""
+      ingressClassName: traefik
 
       # -- Array of host objects
-      hosts: []
-      #  - vmsingle.domain.com
+      hosts:
+        - vmsingle.simonoscar.space
       # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
       extraPaths: []
       # - path: /*
@@ -393,7 +395,8 @@ vm:
         enabled: false
 
         # -- Ingress annotations
-        annotations: {}
+        annotations:
+          {}
           # kubernetes.io/ingress.class: nginx
           # kubernetes.io/tls-acme: "true"
 
@@ -433,7 +436,8 @@ vm:
         enabled: false
 
         # -- Ingress annotations
-        annotations: {}
+        annotations:
+          {}
           # kubernetes.io/ingress.class: nginx
           # kubernetes.io/tls-acme: "true"
 
@@ -536,21 +540,21 @@ vm:
         # repeat_interval: 12h
         receiver: "blackhole"
         ## routes:
-          ###################################################
-          ## Duplicate code_owner routes to teams
-          ## These will send alerts to team channels but continue
-          ## processing through the rest of the tree to handled by on-call
-          # - matchers:
-          #     - code_owner_channel!=""
-          #     - severity=~"info|warning|critical"
-          #   group_by: ["code_owner_channel", "alertgroup", "job"]
-          #   receiver: slack-code-owners
-          # ###################################################
-          # ## Standard on-call routes
-          # - matchers:
-          #     - severity=~"info|warning|critical"
-          #   receiver: slack-monitoring
-          #   continue: true
+        ###################################################
+        ## Duplicate code_owner routes to teams
+        ## These will send alerts to team channels but continue
+        ## processing through the rest of the tree to handled by on-call
+        # - matchers:
+        #     - code_owner_channel!=""
+        #     - severity=~"info|warning|critical"
+        #   group_by: ["code_owner_channel", "alertgroup", "job"]
+        #   receiver: slack-code-owners
+        # ###################################################
+        # ## Standard on-call routes
+        # - matchers:
+        #     - severity=~"info|warning|critical"
+        #   receiver: slack-monitoring
+        #   continue: true
 
       # inhibit_rules:
       #   - target_matchers:
@@ -643,10 +647,10 @@ vm:
 
     # -- (object) Alertmanager ingress configuration
     ingress:
-      enabled: false
+      enabled: true
       # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
       # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-      # ingressClassName: nginx
+      ingressClassName: traefik
       # Values can be templated
       annotations:
         {}
@@ -657,7 +661,7 @@ vm:
       pathType: Prefix
 
       hosts:
-        - alertmanager.domain.com
+        - alertmanager.simonoscar.space
       # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
       extraPaths: []
       # - path: /*
@@ -703,7 +707,8 @@ vm:
     # -- Allows to configure static notifiers, discover notifiers via Consul and DNS,
     # see specification [here](https://docs.victoriametrics.com/vmalert/#notifier-configuration-file).
     # This configuration will be created as separate secret and mounted to VMAlert pod.
-    additionalNotifierConfigs: {}
+    additionalNotifierConfigs:
+      {}
       # dns_sd_configs:
       #   - names:
       #       - my.domain.com
@@ -711,10 +716,10 @@ vm:
       #     port: 9093
     # -- (object) VMAlert ingress config
     ingress:
-      enabled: false
+      enabled: true
       # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
       # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-      # ingressClassName: nginx
+      ingressClassName: traefik
       # Values can be templated
       annotations:
         {}
@@ -725,7 +730,7 @@ vm:
       pathType: Prefix
 
       hosts:
-        - vmalert.domain.com
+        - vmalert.simonoscar.space
       # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
       extraPaths: []
       # - path: /*
@@ -764,7 +769,8 @@ vm:
       port: "8429"
       selectAllByDefault: true
       scrapeInterval: 20s
-      externalLabels: {}
+      externalLabels:
+        {}
         # For multi-cluster setups it is useful to use "cluster" label to identify the metrics source.
         # For example:
         # cluster: cluster-name
@@ -775,10 +781,10 @@ vm:
         promscrape.dropOriginalLabels: "true"
     # -- (object) VMAgent ingress configuration
     ingress:
-      enabled: false
+      enabled: true
       # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
       # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-      # ingressClassName: nginx
+      ingressClassName: traefik
       # Values can be templated
       annotations:
         {}
@@ -789,7 +795,7 @@ vm:
       pathType: Prefix
 
       hosts:
-        - vmagent.domain.com
+        - vmagent.simonoscar.space
       extraPaths: []
       # - path: /*
       #   pathType: Prefix
@@ -828,7 +834,8 @@ vm:
             implementation: prometheus
     # -- Configure additional grafana datasources (passed through tpl).
     # Check [here](http://docs.grafana.org/administration/provisioning/#datasources) for details
-    extra: []
+    extra:
+      []
       # - name: prometheus-sample
       #   access: proxy
       #   basicAuth: true
@@ -879,10 +886,10 @@ vm:
     #    allow_loading_unsigned_plugins: victoriametrics-datasource
 
     ingress:
-      enabled: false
+      enabled: true
       # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
       # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-      # ingressClassName: nginx
+      ingressClassName: traefik
       # Values can be templated
       annotations:
         {}
@@ -893,7 +900,7 @@ vm:
       pathType: Prefix
 
       hosts:
-        - grafana.domain.com
+        - grafana.simonoscar.space
       # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
       extraPaths: []
       # - path: /*
@@ -919,7 +926,7 @@ vm:
           matchLabels:
             app.kubernetes.io/name: '{{ include "grafana.name" .Subcharts.grafana }}'
         endpoints:
-          - port: '{{ .Values.grafana.service.portName }}'
+          - port: "{{ .Values.grafana.service.portName }}"
 
   # -- prometheus-node-exporter dependency chart configuration. For possible values check [here](https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-node-exporter/values.yaml)
   prometheus-node-exporter:
