@@ -1459,9 +1459,9 @@ cert-manager:
                   apiKeySecretRef:
                     name: godaddy-api-key
                     key: token
-                  production: true
+                  production: false
                   ttl: 600
-                groupName: acme.mycompany.com
+                groupName: acme.simonoscar.space
                 solverName: godaddy
 
   # Field used by our release pipeline to produce the static manifests.
