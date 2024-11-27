@@ -1450,9 +1450,19 @@ cert-manager:
           privateKeySecretRef:
             name: letsencrypt-key
           solvers:
-            - http01:
-                ingress:
-                  class: traefik
+          - selector:
+              dnsZones:
+              - 'simonoscar.space'
+            dns01:
+              webhook:
+                config:
+                  apiKeySecretRef:
+                    name: godaddy-api-key
+                    key: token
+                  production: true
+                  ttl: 600
+                groupName: acme.mycompany.com
+                solverName: godaddy
 
   # Field used by our release pipeline to produce the static manifests.
   # The field defaults to "helm" but is set to "static" when we render
