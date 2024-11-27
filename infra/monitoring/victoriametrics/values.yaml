@@ -913,7 +913,7 @@ vm:
       tls:
         - secretName: grafana-ingress-tls
           hosts:
-            - grafana.simonoscar.space
+            - "*.simonoscar.space"
 
     # -- Grafana VM scrape config
     vmScrape:
