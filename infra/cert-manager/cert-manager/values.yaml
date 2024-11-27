@@ -1439,6 +1439,7 @@ cert-manager:
   #       name: '{{ template "cert-manager.fullname" . }}-extra-configmap'
   extraObjects:
     - |
+      ---
       apiVersion: cert-manager.io/v1
       kind: ClusterIssuer
       metadata:
@@ -1463,7 +1464,7 @@ cert-manager:
                   ttl: 600
                 groupName: acme.simonoscar.space
                 solverName: godaddy
-    - |
+      ---
       apiVersion: cert-manager.io/v1
       kind: Certificate
       metadata:
