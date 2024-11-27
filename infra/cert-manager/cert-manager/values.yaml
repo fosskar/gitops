@@ -1451,32 +1451,33 @@ cert-manager:
           privateKeySecretRef:
             name: letsencrypt-key
           solvers:
-          - selector:
-              dnsZones:
-              - 'simonoscar.space'
-            dns01:
-              webhook:
-                config:
-                  apiKeySecretRef:
-                    name: godaddy-api-key
-                    key: token
-                  production: false
-                  ttl: 600
-                groupName: acme.simonoscar.space
-                solverName: godaddy
+            - selector:
+                dnsZones:
+                  - 'simonoscar.space'
+              dns01:
+                webhook:
+                  config:
+                    apiKeySecretRef:
+                      name: godaddy-api-key
+                      key: token
+                    production: false
+                    ttl: 600
+                  groupName: acme.simonoscar.space
+                  solverName: godaddy
+    - |
       ---
       apiVersion: cert-manager.io/v1
       kind: Certificate
       metadata:
-      name: wildcard-tls
+        name: wildcard-tls
       spec:
         secretName: wildcard-tls
         renewBefore: 240h
         dnsNames:
           - '*.simonoscar.space'
-          issuerRef:
-            name: letsencrypt
-            kind: ClusterIssuer
+        issuerRef:
+          name: letsencrypt
+          kind: ClusterIssuer
 
   # Field used by our release pipeline to produce the static manifests.
   # The field defaults to "helm" but is set to "static" when we render
