@@ -1,176 +1,3 @@
-ollama:
-  # Default values for ollama-helm.
-  # This is a YAML-formatted file.
-  # Declare variables to be passed into your templates.
-
-  # -- Number of replicas
-  replicaCount: 1
-
-  # Knative configuration
-  knative:
-    # -- Enable Knative integration
-    enabled: false
-    # -- Knative service container concurrency
-    containerConcurrency: 0
-    # -- Knative service timeout seconds
-    timeoutSeconds: 300
-    # -- Knative service response start timeout seconds
-    responseStartTimeoutSeconds: 300
-    # -- Knative service idle timeout seconds
-    idleTimeoutSeconds: 300
-
-  # Docker image
-  image:
-    # -- Docker image registry
-    repository: ollama/ollama
-
-    # -- Docker pull policy
-    pullPolicy: IfNotPresent
-
-    # -- Docker image tag, overrides the image tag whose default is the chart appVersion.
-    tag: ""
-
-  # -- Docker registry secret names as an array
-  imagePullSecrets: []
-
-  # -- String to partially override template  (will maintain the release name)
-  nameOverride: ""
-
-  # -- String to fully override template
-  fullnameOverride: ""
-
-  # Ollama parameters
-  ollama:
-    gpu:
-      # -- Enable GPU integration
-      enabled: false
-
-      # -- GPU type: 'nvidia' or 'amd'
-      # If 'ollama.gpu.enabled', default value is nvidia
-      # If set to 'amd', this will add 'rocm' suffix to image tag if 'image.tag' is not override
-      # This is due cause AMD and CPU/CUDA are different images
-      type: "nvidia"
-
-      # -- Specify the number of GPU
-      # If you use MIG section below then this parameter is ignored
-      number: 1
-
-      # -- only for nvidia cards; change to (example) 'nvidia.com/mig-1g.10gb' to use MIG slice
-      nvidiaResource: "nvidia.com/gpu"
-      # nvidiaResource: "nvidia.com/mig-1g.10gb" # example
-      # If you want to use more than one NVIDIA MIG you can use the following syntax (then nvidiaResource is ignored and only the configuration in the following MIG section is used)
-
-      mig:
-        # -- Enable multiple mig devices
-        # If enabled you will have to specify the mig devices
-        # If enabled is set to false this section is ignored
-        enabled: false
-
-        # -- Specify the mig devices and the corresponding number
-        devices:
-          {}
-          #        1g.10gb: 1
-          #        3g.40gb: 1
-
-    # -- List of models to pull at container startup
-    # The more you add, the longer the container will take to start if models are not present
-    # models:
-    #  - llama2
-    #  - mistral
-    models:
-      - codellama:13b
-
-    # -- Add insecure flag for pulling at container startup
-    insecure: false
-
-    # -- Override ollama-data volume mount path, default: "/root/.ollama"
-    mountPath: ""
-
-  # Service account
-  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-  serviceAccount:
-    # -- Specifies whether a service account should be created
-    create: true
-
-    # -- Automatically mount a ServiceAccount's API credentials?
-    automount: true
-
-    # -- Annotations to add to the service account
-    annotations: {}
-
-    # -- The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
-  # -- Map of annotations to add to the pods
-  podAnnotations: {}
-
-  # -- Map of labels to add to the pods
-  podLabels: {}
-
-  # -- Pod Security Context
-  podSecurityContext:
-    {}
-    # fsGroup: 2000
-
-  # -- Container Security Context
-  securityContext:
-    {}
-    # capabilities:
-    #  drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  # -- Specify runtime class
-  runtimeClassName: ""
-
-  # Configure Service
-  service:
-    # -- Service type
-    type: ClusterIP
-
-    # -- Service port
-    port: 11434
-
-    # -- Service node port when service type is 'NodePort'
-    nodePort: 31434
-
-    # -- Load Balancer IP address
-    loadBalancerIP:
-
-    # -- Annotations to add to the service
-    annotations: {}
-
-  # Configure the ingress resource that allows you to access the
-  ingress:
-    # -- Enable ingress controller resource
-    enabled: true
-
-    # -- IngressClass that will be used to implement the Ingress (Kubernetes 1.18+)
-    className: traefik
-
-    # -- Additional annotations for the Ingress resource.
-    annotations:
-      cert-manager.io/cluster-issuer: tls-issuer
-      # kubernetes.io/ingress.class: traefik
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-
-    # The list of hostnames to be covered with this ingress record.
-    hosts:
-      - host: ollama.simonoscar.me
-        paths:
-          - path: /
-            pathType: Prefix
-
-    # --  The tls configuration for hostnames to be covered with this ingress record.
-    tls:
-      - secretName: ollama-ingress-tls
-        hosts:
-          - ollama.simonoscar.me
-
 open-webui:
   nameOverride: ""
 
@@ -195,16 +22,16 @@ open-webui:
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
         # The list of hostnames to be covered with this ingress record.
-        hosts:
-          - host: ollama.simonoscar.me
-            paths:
-              - path: /
-                pathType: Prefix
-            # --  The tls configuration for hostnames to be covered with this ingress record.
-        tls:
-          - secretName: ollama-ingress-tls
-            hosts:
-              - ollama.simonoscar.me
+      hosts:
+        - host: ollama.simonoscar.me
+          paths:
+            - path: /
+              pathType: Prefix
+          # --  The tls configuration for hostnames to be covered with this ingress record.
+      tls:
+        - secretName: ollama-ingress-tls
+          hosts:
+            - ollama.simonoscar.me
 
   pipelines:
     # -- Automatically install Pipelines chart to extend Open WebUI functionality using Pipelines: https://github.com/open-webui/pipelines
