@@ -1452,10 +1452,10 @@ cert-manager:
             name: issuer-account-key
           solvers:
             - dns01:
-              cloudflare:
-                apiTokenSecretRef:
-                  name: cloudflare-api-token-secret
-                  key: api-token
+                cloudflare:
+                  apiTokenSecretRef:
+                    name: cloudflare-api-token-secret
+                    key: api-token
               selector:
                 dnsZones:
                   - "simonoscar.me"
