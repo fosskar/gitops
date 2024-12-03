@@ -1446,12 +1446,19 @@ cert-manager:
         name: tls-issuer
       spec:
         acme:
+          email: simonoscr@proton.me
+          server: https://acme-staging-v02.api.letsencrypt.org/directory
+          privateKeySecretRef:
+            name: issuer-account-key
           solvers:
             - dns01:
               cloudflare:
                 apiTokenSecretRef:
                   name: cloudflare-api-token-secret
                   key: api-token
+              selector:
+                dnsZones:
+                  - "simonoscar.me"
 
   # Field used by our release pipeline to produce the static manifests.
   # The field defaults to "helm" but is set to "static" when we render
