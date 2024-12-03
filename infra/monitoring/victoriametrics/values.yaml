@@ -289,7 +289,7 @@ vm:
       enabled: true
       # -- Ingress annotations
       annotations:
-        {}
+        cert-manager.io/cluster-issuer: tls-issuer
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       # -- Ingress extra labels
@@ -303,7 +303,7 @@ vm:
 
       # -- Array of host objects
       hosts:
-        - vmsingle.simonoscar.space
+        - vmsingle.simonoscar.me
       # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
       extraPaths: []
       # - path: /*
@@ -315,10 +315,10 @@ vm:
       #         name: service
 
       # -- Array of TLS objects
-      tls: []
-      #  - secretName: vmsingle-ingress-tls
-      #    hosts:
-      #      - vmsingle.domain.com
+      tls:
+        - secretName: vmsingle-ingress-tls
+          hosts:
+            - vmsingle.simonoscar.me
 
   vmcluster:
     # -- Create VMCluster CR
@@ -653,7 +653,7 @@ vm:
       ingressClassName: traefik
       # Values can be templated
       annotations:
-        {}
+        cert-manager.io/cluster-issuer: tls-issuer
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       labels: {}
@@ -661,7 +661,7 @@ vm:
       pathType: Prefix
 
       hosts:
-        - alertmanager.simonoscar.space
+        - alertmanager.simonoscar.me
       # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
       extraPaths: []
       # - path: /*
@@ -671,10 +671,10 @@ vm:
       #       name: ssl-redirect
       #       port:
       #         name: service
-      tls: []
-      #  - secretName: alertmanager-ingress-tls
-      #    hosts:
-      #      - alertmanager.domain.com
+      tls:
+        - secretName: alertmanager-ingress-tls
+          hosts:
+            - alertmanager.simonoscar.me
 
   vmalert:
     # -- VMAlert annotations
@@ -722,7 +722,7 @@ vm:
       ingressClassName: traefik
       # Values can be templated
       annotations:
-        {}
+        cert-manager.io/cluster-issuer: tls-issuer
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       labels: {}
@@ -730,7 +730,7 @@ vm:
       pathType: Prefix
 
       hosts:
-        - vmalert.simonoscar.space
+        - vmalert.simonoscar.me
       # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
       extraPaths: []
       # - path: /*
@@ -740,10 +740,10 @@ vm:
       #       name: ssl-redirect
       #       port:
       #         name: service
-      tls: []
-      #  - secretName: vmalert-ingress-tls
-      #    hosts:
-      #      - vmalert.domain.com
+      tls:
+        - secretName: vmalert-ingress-tls
+          hosts:
+            - vmalert.simonoscar.me
 
   vmauth:
     # -- Enable VMAuth CR
@@ -787,7 +787,7 @@ vm:
       ingressClassName: traefik
       # Values can be templated
       annotations:
-        {}
+        cert-manager.io/cluster-issuer: tls-issuer
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       labels: {}
@@ -795,7 +795,7 @@ vm:
       pathType: Prefix
 
       hosts:
-        - vmagent.simonoscar.space
+        - vmagent.simonoscar.me
       extraPaths: []
       # - path: /*
       #   pathType: Prefix
@@ -804,10 +804,10 @@ vm:
       #       name: ssl-redirect
       #       port:
       #         name: service
-      tls: []
-      #  - secretName: vmagent-ingress-tls
-      #    hosts:
-      #      - vmagent.domain.com
+      tls:
+        - secretName: vmagent-ingress-tls
+          hosts:
+            - vmagent.simonoscar.me
 
   defaultDatasources:
     victoriametrics:
