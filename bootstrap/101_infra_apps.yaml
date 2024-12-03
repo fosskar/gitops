@@ -14,6 +14,7 @@ spec:
           - path: infra/monitoring/*
           - path: infra/oidc/*
           - path: infra/cert-manager/*
+          - path: infra/secrets/*
   template:
     metadata:
       name: "{{.path.basename}}"
