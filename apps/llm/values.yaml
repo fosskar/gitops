@@ -1,0 +1,360 @@
+ollama:
+  # Default values for ollama-helm.
+  # This is a YAML-formatted file.
+  # Declare variables to be passed into your templates.
+
+  # -- Number of replicas
+  replicaCount: 1
+
+  # Knative configuration
+  knative:
+    # -- Enable Knative integration
+    enabled: false
+    # -- Knative service container concurrency
+    containerConcurrency: 0
+    # -- Knative service timeout seconds
+    timeoutSeconds: 300
+    # -- Knative service response start timeout seconds
+    responseStartTimeoutSeconds: 300
+    # -- Knative service idle timeout seconds
+    idleTimeoutSeconds: 300
+
+  # Docker image
+  image:
+    # -- Docker image registry
+    repository: ollama/ollama
+
+    # -- Docker pull policy
+    pullPolicy: IfNotPresent
+
+    # -- Docker image tag, overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  # -- Docker registry secret names as an array
+  imagePullSecrets: []
+
+  # -- String to partially override template  (will maintain the release name)
+  nameOverride: ""
+
+  # -- String to fully override template
+  fullnameOverride: ""
+
+  # Ollama parameters
+  ollama:
+    gpu:
+      # -- Enable GPU integration
+      enabled: false
+
+      # -- GPU type: 'nvidia' or 'amd'
+      # If 'ollama.gpu.enabled', default value is nvidia
+      # If set to 'amd', this will add 'rocm' suffix to image tag if 'image.tag' is not override
+      # This is due cause AMD and CPU/CUDA are different images
+      type: "nvidia"
+
+      # -- Specify the number of GPU
+      # If you use MIG section below then this parameter is ignored
+      number: 1
+
+      # -- only for nvidia cards; change to (example) 'nvidia.com/mig-1g.10gb' to use MIG slice
+      nvidiaResource: "nvidia.com/gpu"
+      # nvidiaResource: "nvidia.com/mig-1g.10gb" # example
+      # If you want to use more than one NVIDIA MIG you can use the following syntax (then nvidiaResource is ignored and only the configuration in the following MIG section is used)
+
+      mig:
+        # -- Enable multiple mig devices
+        # If enabled you will have to specify the mig devices
+        # If enabled is set to false this section is ignored
+        enabled: false
+
+        # -- Specify the mig devices and the corresponding number
+        devices:
+          {}
+          #        1g.10gb: 1
+          #        3g.40gb: 1
+
+    # -- List of models to pull at container startup
+    # The more you add, the longer the container will take to start if models are not present
+    # models:
+    #  - llama2
+    #  - mistral
+    models:
+      - codellama:13b
+
+    # -- Add insecure flag for pulling at container startup
+    insecure: false
+
+    # -- Override ollama-data volume mount path, default: "/root/.ollama"
+    mountPath: ""
+
+  # Service account
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+  serviceAccount:
+    # -- Specifies whether a service account should be created
+    create: true
+
+    # -- Automatically mount a ServiceAccount's API credentials?
+    automount: true
+
+    # -- Annotations to add to the service account
+    annotations: {}
+
+    # -- The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  # -- Map of annotations to add to the pods
+  podAnnotations: {}
+
+  # -- Map of labels to add to the pods
+  podLabels: {}
+
+  # -- Pod Security Context
+  podSecurityContext:
+    {}
+    # fsGroup: 2000
+
+  # -- Container Security Context
+  securityContext:
+    {}
+    # capabilities:
+    #  drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  # -- Specify runtime class
+  runtimeClassName: ""
+
+  # Configure Service
+  service:
+    # -- Service type
+    type: ClusterIP
+
+    # -- Service port
+    port: 11434
+
+    # -- Service node port when service type is 'NodePort'
+    nodePort: 31434
+
+    # -- Load Balancer IP address
+    loadBalancerIP:
+
+    # -- Annotations to add to the service
+    annotations: {}
+
+  # Configure the ingress resource that allows you to access the
+  ingress:
+    # -- Enable ingress controller resource
+    enabled: true
+
+    # -- IngressClass that will be used to implement the Ingress (Kubernetes 1.18+)
+    className: traefik
+
+    # -- Additional annotations for the Ingress resource.
+    annotations:
+      cert-manager.io/cluster-issuer: tls-issuer
+      # kubernetes.io/ingress.class: traefik
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+
+    # The list of hostnames to be covered with this ingress record.
+    hosts:
+      - host: ollama.simonoscar.me
+        paths:
+          - path: /
+            pathType: Prefix
+
+    # --  The tls configuration for hostnames to be covered with this ingress record.
+    tls:
+      - secretName: ollama-ingress-tls
+        hosts:
+          - ollama.simonoscar.me
+
+open-webui:
+  nameOverride: ""
+
+  ollama:
+    # -- Automatically install Ollama Helm chart from https://otwld.github.io/ollama-helm/. Use [Helm Values](https://github.com/otwld/ollama-helm/#helm-values) to configure
+    enabled: true
+    # -- If enabling embedded Ollama, update fullnameOverride to your desired Ollama name value, or else it will use the default ollama.name value from the Ollama chart
+    fullnameOverride: "open-webui-ollama"
+    # -- Example Ollama configuration with nvidia GPU enabled, automatically downloading a model, and deploying a PVC for model persistence
+    ollama:
+      models:
+        - codellama:13b
+    ingress:
+      # -- Enable ingress controller resource
+      enabled: true
+      # -- IngressClass that will be used to implement the Ingress (Kubernetes 1.18+)
+      className: traefik
+      # -- Additional annotations for the Ingress resource.
+      annotations:
+        cert-manager.io/cluster-issuer: tls-issuer
+        # kubernetes.io/ingress.class: traefik
+        # kubernetes.io/ingress.class: nginx
+        # kubernetes.io/tls-acme: "true"
+        # The list of hostnames to be covered with this ingress record.
+        hosts:
+          - host: ollama.simonoscar.me
+            paths:
+              - path: /
+                pathType: Prefix
+            # --  The tls configuration for hostnames to be covered with this ingress record.
+        tls:
+          - secretName: ollama-ingress-tls
+            hosts:
+              - ollama.simonoscar.me
+
+  pipelines:
+    # -- Automatically install Pipelines chart to extend Open WebUI functionality using Pipelines: https://github.com/open-webui/pipelines
+    enabled: true
+    # -- This section can be used to pass required environment variables to your pipelines (e.g. Langfuse hostname)
+    extraEnvVars: []
+
+  tika:
+    # -- Automatically install Apache Tika to extend Open WebUI
+    enabled: false
+
+  # -- A list of Ollama API endpoints. These can be added in lieu of automatically installing the Ollama Helm chart, or in addition to it.
+  ollamaUrls: []
+
+  # -- Value of cluster domain
+  clusterDomain: cluster.local
+
+  annotations: {}
+  podAnnotations: {}
+  replicaCount: 1
+  # -- Open WebUI image tags can be found here: https://github.com/open-webui/open-webui/pkgs/container/open-webui
+  image:
+    repository: ghcr.io/open-webui/open-webui
+    tag: ""
+    pullPolicy: "IfNotPresent"
+
+  serviceAccount:
+    enable: true
+    name: ""
+    annotations: {}
+    automountServiceAccountToken: false
+
+  # -- Configure imagePullSecrets to use private registry
+  # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry>
+  imagePullSecrets: []
+  # imagePullSecrets:
+  # - name: myRegistryKeySecretName
+
+  resources: {}
+
+  copyAppData:
+    resources: {}
+
+  ingress:
+    enabled: true
+    class: "traefik"
+    # -- Use appropriate annotations for your Ingress controller, e.g., for NGINX:
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    annotations:
+      cert-manager.io/cluster-issuer: tls-issuer
+    host: llm.simonoscar.me
+    additionalHosts: []
+    tls: true
+    existingSecret: open-webui-ingress-tls
+  persistence:
+    enabled: true
+    size: 2Gi
+    # -- Use existingClaim if you want to re-use an existing Open WebUI PVC instead of creating a new one
+    existingClaim: ""
+    # -- Subdirectory of Open WebUI PVC to mount. Useful if root directory is not empty.
+    subPath: ""
+    # -- If using multiple replicas, you must update accessModes to ReadWriteMany
+    accessModes:
+      - ReadWriteOnce
+    storageClass: ""
+    selector: {}
+    annotations: {}
+
+  # -- Node labels for pod assignment.
+  nodeSelector: {}
+
+  # -- Tolerations for pod assignment
+  tolerations: []
+
+  # -- Affinity for pod assignment
+  affinity: {}
+
+  # -- Topology Spread Constraints for pod assignment
+  topologySpreadConstraints: []
+
+  # -- Service values to expose Open WebUI pods to cluster
+  service:
+    type: ClusterIP
+    annotations: {}
+    port: 80
+    containerPort: 8080
+    nodePort: ""
+    labels: {}
+    loadBalancerClass: ""
+
+  # -- OpenAI base API URL to use. Defaults to the Pipelines service endpoint when Pipelines are enabled, and "https://api.openai.com/v1" if Pipelines are not enabled and this value is blank
+  openaiBaseApiUrl: ""
+
+  # -- Env vars added to the Open WebUI deployment. Most up-to-date environment variables can be found here: https://docs.openwebui.com/getting-started/env-configuration/
+  extraEnvVars:
+    # -- Default API key value for Pipelines. Should be updated in a production deployment, or be changed to the required API key if not using Pipelines
+    - name: OPENAI_API_KEY
+      value: "0p3n-w3bu!"
+    # valueFrom:
+    #   secretKeyRef:
+    #     name: pipelines-api-key
+    #     key: api-key
+    # - name: OPENAI_API_KEY
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: openai-api-key
+    #       key: api-key
+    # - name: OLLAMA_DEBUG
+    #   value: "1"
+
+  # -- Configure container volume mounts
+  # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-volume-storage/>
+  volumeMounts:
+    initContainer: []
+    # - name: ""
+    #   mountPath: ""
+    container: []
+    # - name: ""
+    #   mountPath: ""
+
+  # -- Configure pod volumes
+  # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/configure-volume-storage/>
+  volumes: []
+  # - name: ""
+  #   configMap:
+  #     name: ""
+  # - name: ""
+  #   emptyDir: {}
+
+  # -- Configure pod security context
+  # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-containe>
+  podSecurityContext:
+    {}
+    # fsGroupChangePolicy: Always
+    # sysctls: []
+    # supplementalGroups: []
+    # fsGroup: 1001
+
+  # -- Configure container security context
+  # ref: <https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-containe>
+  containerSecurityContext:
+    {}
+    # runAsUser: 1001
+    # runAsGroup: 1001
+    # runAsNonRoot: true
+    # privileged: false
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: false
+    # capabilities:
+    #   drop:
+    #     - ALL
+    # seccompProfile:
+    #   type: "RuntimeDefault"

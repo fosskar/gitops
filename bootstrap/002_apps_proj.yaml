@@ -12,7 +12,7 @@ spec:
   destinations:
     - namespace: argocd
       server: https://kubernetes.default.svc
-    - namespace: ollama
+    - namespace: llm
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"
