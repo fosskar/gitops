@@ -892,7 +892,7 @@ vm:
       ingressClassName: traefik
       # Values can be templated
       annotations:
-        cert-manager.io/cluster-issuer: self-signed
+        cert-manager.io/cluster-issuer: tls-issuer
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       labels: {}
@@ -900,7 +900,7 @@ vm:
       pathType: Prefix
 
       hosts:
-        - grafana.simonoscar.space
+        - grafana.simonoscar.me
       # -- Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
       extraPaths: []
       # - path: /*
@@ -913,7 +913,7 @@ vm:
       tls:
         - secretName: grafana-ingress-tls
           hosts:
-            - "*.simonoscar.space"
+            - grafana.simonoscar.me
 
     # -- Grafana VM scrape config
     vmScrape:
