@@ -85,7 +85,7 @@ openbao:
       # -- image repo to use for agent image
       repository: "openbao/openbao"
       # -- image tag to use for agent image
-      tag: "2.1.0"
+      tag: "2.1.1"
       # -- image pull policy to use for agent image. if tag is "latest", set to "Always"
       pullPolicy: IfNotPresent
 
@@ -381,7 +381,7 @@ openbao:
       # -- image repo to use for server image
       repository: "openbao/openbao"
       # -- image tag to use for server image
-      tag: "2.1.0"
+      tag: "2.1.1"
       # -- image pull policy to use for server image. if tag is "latest", set to "Always"
       pullPolicy: IfNotPresent
 
@@ -1191,7 +1191,7 @@ openbao:
         # -- image repo to use for agent image
         repository: "openbao/openbao"
         # -- image tag to use for agent image
-        tag: "2.1.0"
+        tag: "2.1.1"
         # -- image pull policy to use for agent image. if tag is "latest", set to "Always"
         pullPolicy: IfNotPresent
 
