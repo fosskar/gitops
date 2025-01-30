@@ -7,4 +7,4 @@ appVersion: "0.1.0"
 dependencies:
   - name: dex
     repository: https://charts.dexidp.io
-    version: 0.19.1
+    version: 0.20.0
