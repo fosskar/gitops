@@ -484,8 +484,8 @@ harbor:
   # If service exposed via "ingress", the Nginx will not be used
   nginx:
     image:
-      repository: goharbor/nginx-photon
-      tag: v2.12.2
+      repository: ghcr.io/octohelm/harbor/nginx-photon
+      tag: v2.12.0
     # set the service account to be used, default if left empty
     serviceAccountName: ""
     # mount the service account token
@@ -515,8 +515,8 @@ harbor:
 
   portal:
     image:
-      repository: goharbor/harbor-portal
-      tag: v2.12.2
+      repository: ghcr.io/octohelm/harbor/harbor-portal
+      tag: v2.12.0
     # set the service account to be used, default if left empty
     serviceAccountName: ""
     # mount the service account token
@@ -555,8 +555,8 @@ harbor:
 
   core:
     image:
-      repository: goharbor/harbor-core
-      tag: v2.12.2
+      repository: ghcr.io/octohelm/harbor/harbor-core
+      tag: v2.12.0
     # set the service account to be used, default if left empty
     serviceAccountName: ""
     # mount the service account token
@@ -642,8 +642,8 @@ harbor:
 
   jobservice:
     image:
-      repository: goharbor/harbor-jobservice
-      tag: v2.12.2
+      repository: ghcr.io/octohelm/harbor/harbor-jobservice
+      tag: v2.12.0
     # set the service account to be used, default if left empty
     serviceAccountName: ""
     # mount the service account token
@@ -705,8 +705,8 @@ harbor:
   registry:
     registry:
       image:
-        repository: goharbor/registry-photon
-        tag: v2.12.2
+        repository: ghcr.io/octohelm/harbor/registry-photon
+        tag: v2.12.0
       # resources:
       #  requests:
       #    memory: 256Mi
@@ -714,8 +714,8 @@ harbor:
       extraEnvVars: []
     controller:
       image:
-        repository: goharbor/harbor-registryctl
-        tag: v2.12.2
+        repository: ghcr.io/octohelm/harbor/harbor-registryctl
+        tag: v2.12.0
       # resources:
       #  requests:
       #    memory: 256Mi
@@ -794,9 +794,9 @@ harbor:
     enabled: true
     image:
       # repository the repository for Trivy adapter image
-      repository: goharbor/trivy-adapter-photon
+      repository: ghcr.io/octohelm/harbor/trivy-adapter-photon
       # tag the tag for Trivy adapter image
-      tag: v2.12.2
+      tag: v2.12.0
     # set the service account to be used, default if left empty
     serviceAccountName: ""
     # mount the service account token
@@ -888,8 +888,8 @@ harbor:
     type: internal
     internal:
       image:
-        repository: goharbor/harbor-db
-        tag: v2.12.2
+        repository: ghcr.io/octohelm/harbor/harbor-db
+        tag: v2.12.0
       # set the service account to be used, default if left empty
       serviceAccountName: ""
       # mount the service account token
@@ -968,8 +968,8 @@ harbor:
     type: internal
     internal:
       image:
-        repository: goharbor/redis-photon
-        tag: v2.12.2
+        repository: ghcr.io/octohelm/harbor/redis-photon
+        tag: v2.12.0
       # set the service account to be used, default if left empty
       serviceAccountName: ""
       # mount the service account token
@@ -1030,8 +1030,8 @@ harbor:
 
   exporter:
     image:
-      repository: goharbor/harbor-exporter
-      tag: v2.12.2
+      repository: ghcr.io/octohelm/harbor/harbor-exporter
+      tag: v2.12.0
     serviceAccountName: ""
     # mount the service account token
     automountServiceAccountToken: false
