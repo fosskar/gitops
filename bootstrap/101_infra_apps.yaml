@@ -14,7 +14,7 @@ spec:
           - path: infra/monitoring/*
           - path: infra/oidc/*
           - path: infra/cert-manager/*
-          - path: infra/openbao/*
+          #- path: infra/openbao/*
           - path: infra/harbor/*
   template:
     metadata:
