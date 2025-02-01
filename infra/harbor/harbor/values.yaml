@@ -1031,7 +1031,7 @@ harbor:
   exporter:
     image:
       repository: ghcr.io/octohelm/harbor/harbor-exporter
-      tag: v2.12.0
+      tag: v2.11.0
     serviceAccountName: ""
     # mount the service account token
     automountServiceAccountToken: false
