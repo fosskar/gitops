@@ -369,7 +369,7 @@ openbao:
   server:
     # If true, or "-" with global.enabled true, OpenBao server will be installed.
     # See openbao.mode in _helpers.tpl for implementation details.
-    enabled: "-"
+    enabled: true
 
     # Resource requests, limits, etc. for the server cluster placement. This
     # should map directly to the value of the resources field for a PodSpec.
@@ -835,7 +835,7 @@ openbao:
     # the "file" backend.  This mode is not highly available and should not be scaled
     # past a single replica.
     standalone:
-      enabled: "-"
+      enabled: true
 
       # config is a raw string of default configuration when using a Stateful
       # deployment. Default is to use a PersistentVolumeClaim mounted at /openbao/data
@@ -847,12 +847,12 @@ openbao:
       # or through a Kube secret.  For more information see:
       # https://openbao.org/docs/platform/k8s/helm/run#protecting-sensitive-vault-configurations
       config: |
-        ui = false
+        ui = true
 
         listener "tcp" {
           tls_disable = 1
-          address = "[::]:8200"
-          cluster_address = "[::]:8201"
+          address = "0.0.0.0:8200"
+          cluster_address = "0.0.0.0:8201"
           # Enable unauthenticated metrics access (necessary for Prometheus Operator)
           #telemetry {
           #  unauthenticated_metrics_access = "true"
@@ -884,8 +884,8 @@ openbao:
     # Helm project by default.  It is possible to manually configure OpenBao to use a
     # different HA backend.
     ha:
-      enabled: true
-      replicas: 2
+      enabled: false
+      replicas: 3
 
       # Set the api_addr configuration for OpenBao HA
       # See https://openbao.org/docs/configuration#api_addr
@@ -903,9 +903,9 @@ openbao:
       # The OpenBao cluster will coordinate leader elections and failovers internally.
       raft:
         # Enables Raft integrated storage
-        enabled: true
+        enabled: false
         # Set the Node Raft ID to the name of the pod
-        setNodeId: false
+        setNodeId: true
 
         # Note: Configuration files are stored in ConfigMaps so sensitive data
         # such as passwords should be either mounted through extraSecretEnvironmentVars
