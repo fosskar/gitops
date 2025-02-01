@@ -411,7 +411,7 @@ openbao:
     # If deployment is on OpenShift, the following block is ignored.
     # In order to expose the service, use the route section below
     ingress:
-      enabled: true
+      enabled: false
       labels:
         {}
         # traffic: external
@@ -851,8 +851,8 @@ openbao:
 
         listener "tcp" {
           tls_disable = 1
-          address = "0.0.0.0:8200"
-          cluster_address = "0.0.0.0:8201"
+          address = "[::]:8200"
+          cluster_address = "[::]:8201"
           # Enable unauthenticated metrics access (necessary for Prometheus Operator)
           #telemetry {
           #  unauthenticated_metrics_access = "true"
@@ -905,19 +905,19 @@ openbao:
         # Enables Raft integrated storage
         enabled: false
         # Set the Node Raft ID to the name of the pod
-        setNodeId: true
+        setNodeId: false
 
         # Note: Configuration files are stored in ConfigMaps so sensitive data
         # such as passwords should be either mounted through extraSecretEnvironmentVars
         # or through a Kube secret.  For more information see:
         # https://openbao.org/docs/platform/k8s/helm/run#protecting-sensitive-vault-configurations
         config: |
-          ui = true
+          ui = false
 
           listener "tcp" {
             tls_disable = 1
-            address = "0.0.0.0:8200"
-            cluster_address = "0.0.0.0:8201"
+            address = "[::]:8200"
+            cluster_address = "[::]:8201"
             # Enable unauthenticated metrics access (necessary for Prometheus Operator)
             #telemetry {
             #  unauthenticated_metrics_access = "true"
@@ -939,7 +939,7 @@ openbao:
       # or through a Kube secret.  For more information see:
       # https://openbao.org/docs/platform/k8s/helm/run#protecting-sensitive-vault-configurations
       config: |
-        ui = true
+        ui = false
 
         listener "tcp" {
           tls_disable = 1
