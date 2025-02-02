@@ -55,7 +55,7 @@ dex:
   # -- Application configuration.
   # See the [official documentation](https://dexidp.io/docs/).
   config:
-    issuer: http://dex.simonoscar.me
+    issuer: http://dex.oidc.svc.cluster.local:5556
     storage:
       type: kubernetes
       config:
