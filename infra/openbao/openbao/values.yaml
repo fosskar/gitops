@@ -485,23 +485,7 @@ openbao:
     # This is useful if you need to run a script to provision TLS certificates or
     # write out configuration files in a dynamic way.
     extraInitContainers:
-      - name: apply-policies
-        image: bitnami/kubectl:latest
-        command:
-          - /bin/sh
-          - -c
-          - |
-            for policy in /policies/*.hcl; do
-              POLICY_NAME=$(basename $policy .hcl)
-              echo "Applying policy: $POLICY_NAME"
-              # Get the OpenBao pod name dynamically
-              OPENBAO_POD=$(kubectl get pods -l app.kubernetes.io/name=openbao -o jsonpath="{.items[0].metadata.name}" -n openbao)
-              kubectl exec -n openbao $OPENBAO_POD -- bao policy write $POLICY_NAME /policies/$POLICY_NAME.hcl
-            done
-        volumeMounts:
-          - name: policies
-            mountPath: /policies
-
+      []
       # # This example installs a plugin pulled from github into the /usr/local/libexec/vault/oauthapp folder,
       # # which is defined in the volumes value.
       # - name: oauthapp
@@ -627,7 +611,9 @@ openbao:
     # volumeMounts is a list of volumeMounts for the main server container. These are rendered
     # via toYaml rather than pre-processed like the extraVolumes value.
     # The purpose is to make it easy to share volumes between containers.
-    volumeMounts: null
+    volumeMounts:
+      - name: policies
+        mountPath: /policies
     #   - mountPath: /usr/local/libexec/vault
     #     name: plugins
     #     readOnly: true
