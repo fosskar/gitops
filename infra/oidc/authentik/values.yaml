@@ -117,11 +117,6 @@ authentik:
           secretKeyRef:
             name: oidc-authentik-secrets
             key: AUTHENTIK_SECRET_KEY
-      - name: AUTHENTIK_POSTGRESQL__PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: oidc-authentik-secrets
-            key: AUTHENTIK_POSTGRESQL__PASSWORD
       - name: AUTHENTIK_REDIS__PASSWORD
         valueFrom:
           secretKeyRef:
