@@ -112,7 +112,21 @@ authentik:
     # See configuration options at https://goauthentik.io/docs/installation/configuration/
     # @default -- `[]` (See [values.yaml])
     env:
-      []
+      - name: AUTHENTIK_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: oidc-authentik-secrets
+            key: AUTHENTIK_SECRET_KEY
+      - name: AUTHENTIK_POSTGRESQL__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: oidc-authentik-secrets
+            key: AUTHENTIK_POSTGRESQL__PASSWORD
+      - name: AUTHENTIK_REDIS__PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: oidc-authentik-secrets
+            key: AUTHENTIK_REDIS__PASSWORD
       # - name: AUTHENTIK_VAR_NAME
       #   value: VALUE
       # - name: AUTHENTIK_VAR_OTHER
