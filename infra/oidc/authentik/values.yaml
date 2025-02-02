@@ -120,13 +120,8 @@ authentik:
       - name: AUTHENTIK_POSTGRESQL__PASSWORD
         valueFrom:
           secretKeyRef:
-            name: oidc-authentik-secrets
-            key: AUTHENTIK_POSTGRESQL__PASSWORD
-      - name: POSTGRES_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: oidc-authentik-secrets
-            key: AUTHENTIK_POSTGRESQL__PASSWORD
+            name: authentik-postgresql
+            key: password
       # - name: AUTHENTIK_VAR_NAME
       #   value: VALUE
       # - name: AUTHENTIK_VAR_OTHER
