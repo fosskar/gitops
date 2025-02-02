@@ -494,7 +494,9 @@ openbao:
             for policy in /policies/*.hcl; do
               POLICY_NAME=$(basename $policy .hcl)
               echo "Applying policy: $POLICY_NAME"
-              kubectl exec -n openbao deploy/openbao -- bao policy write $POLICY_NAME /policies/$POLICY_NAME.hcl
+              # Get the OpenBao pod name dynamically
+              OPENBAO_POD=$(kubectl get pods -l app.kubernetes.io/name=openbao -o jsonpath="{.items[0].metadata.name}" -n openbao)
+              kubectl exec -n openbao $OPENBAO_POD -- bao policy write $POLICY_NAME /policies/$POLICY_NAME.hcl
             done
         volumeMounts:
           - name: policies
