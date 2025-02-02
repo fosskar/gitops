@@ -55,7 +55,7 @@ dex:
   # -- Application configuration.
   # See the [official documentation](https://dexidp.io/docs/).
   config:
-    issuer: http://dex.dex.svc.cluster.local:8080/dex
+    issuer: https://dex.simonoscar.me/dex
     storage:
       type: kubernetes
       config:
@@ -212,31 +212,31 @@ dex:
 
   ingress:
     # -- Enable [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/).
-    enabled: false
+    enabled: true
 
     # -- Ingress [class name](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class).
-    className: ""
+    className: "traefik"
 
     # -- Annotations to be added to the ingress.
     annotations:
-      {}
+      cert-manager.io/cluster-issuer: tls-issuer
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
 
     # -- Ingress host configuration.
     # @default -- See [values.yaml](values.yaml).
     hosts:
-      - host: chart-example.local
+      - host: dex.simonoscar.me
         paths:
           - path: /
             pathType: ImplementationSpecific
 
     # -- Ingress TLS configuration.
     # @default -- See [values.yaml](values.yaml).
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
+    tls:
+      - secretName: dex-ingress-tls
+        hosts:
+          - dex.simonoscar.me
 
   serviceMonitor:
     # -- Enable Prometheus ServiceMonitor.
