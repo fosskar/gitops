@@ -12,7 +12,7 @@ spec:
         revision: HEAD
         directories:
           - path: infra/monitoring/*
-          #- path: infra/oidc/*
+          - path: infra/oidc/*
           - path: infra/cert-manager/*
           - path: infra/openbao/*
           - path: infra/harbor/*

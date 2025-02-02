@@ -113,16 +113,6 @@ authentik:
     # @default -- `[]` (See [values.yaml])
     env:
       []
-      #- name: AUTHENTIK_SECRET_KEY
-      #  valueFrom:
-      #    secretKeyRef:
-      #      name: oidc-authentik-secrets
-      #      key: AUTHENTIK_SECRET_KEY
-      #- name: AUTHENTIK_POSTGRESQL__PASSWORD
-      #  valueFrom:
-      #    secretKeyRef:
-      #      name: authentik-postgresql
-      #      key: password
       # - name: AUTHENTIK_VAR_NAME
       #   value: VALUE
       # - name: AUTHENTIK_VAR_OTHER
@@ -607,7 +597,6 @@ authentik:
       # -- List of ingress hosts
       hosts:
         - auth.simonoscar.me
-        # - authentik.domain.tld
 
       # -- List of ingress paths
       paths:
@@ -632,7 +621,7 @@ authentik:
             - auth.simonoscar.me
 
       # -- uses `server.service.servicePortHttps` instead of `server.service.servicePortHttp`
-      https: true
+      https: false
 
   ## authentik worker
   worker:
