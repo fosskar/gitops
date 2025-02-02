@@ -16,6 +16,7 @@ spec:
           - path: infra/cert-manager/*
           - path: infra/openbao/*
           - path: infra/harbor/*
+          - path: infra/external-secrets/*
   template:
     metadata:
       name: "{{.path.basename}}"
