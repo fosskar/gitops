@@ -55,7 +55,7 @@ dex:
   # -- Application configuration.
   # See the [official documentation](https://dexidp.io/docs/).
   config:
-    issuer: https://dex.simonoscar.me/dex
+    issuer: https://dex.simonoscar.me
     storage:
       type: kubernetes
       config:
