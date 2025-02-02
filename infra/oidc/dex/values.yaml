@@ -57,7 +57,7 @@ dex:
   config:
     issuer: https://dex.simonoscar.me
     web:
-      allowedOrigins: ['*']
+      allowedOrigins: ["*"]
     storage:
       type: kubernetes
       config:
@@ -69,6 +69,7 @@ dex:
         name: ArgoCD
         redirectURIs:
           - "https://argocd.simonoscar.me/auth/callback"
+          - "https://argocd.simonoscar.me/pkce/verify"
       - id: vouch
         public: true
         name: "Vouch Proxy"
