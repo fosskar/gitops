@@ -70,11 +70,8 @@ dex:
         redirectURIs:
           - "https://argocd.simonoscar.me/auth/callback"
           - "https://argocd.simonoscar.me/pkce/verify"
-      - id: vouch
-        public: true
-        name: "Vouch Proxy"
-        redirectURIs:
-          - "https://vouch.simonoscar.me/auth"
+        trustedPeers:
+          - argocd
     # Set up an test user
     staticPasswords:
       - email: "simonoscar@simonoscar.me"
