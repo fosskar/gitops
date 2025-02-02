@@ -112,16 +112,17 @@ authentik:
     # See configuration options at https://goauthentik.io/docs/installation/configuration/
     # @default -- `[]` (See [values.yaml])
     env:
-      - name: AUTHENTIK_SECRET_KEY
-        valueFrom:
-          secretKeyRef:
-            name: oidc-authentik-secrets
-            key: AUTHENTIK_SECRET_KEY
-      - name: AUTHENTIK_POSTGRESQL__PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: authentik-postgresql
-            key: password
+      []
+      #- name: AUTHENTIK_SECRET_KEY
+      #  valueFrom:
+      #    secretKeyRef:
+      #      name: oidc-authentik-secrets
+      #      key: AUTHENTIK_SECRET_KEY
+      #- name: AUTHENTIK_POSTGRESQL__PASSWORD
+      #  valueFrom:
+      #    secretKeyRef:
+      #      name: authentik-postgresql
+      #      key: password
       # - name: AUTHENTIK_VAR_NAME
       #   value: VALUE
       # - name: AUTHENTIK_VAR_OTHER
@@ -164,7 +165,7 @@ authentik:
     log_level: info
     # -- Secret key used for cookie singing and unique user IDs,
     # don't change this after the first install
-    secret_key: ""
+    secret_key: "secret123"
     events:
       context_processors:
         # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
@@ -216,7 +217,7 @@ authentik:
       # -- postgresql Username
       # @default -- `authentik`
       user: "authentik"
-      password: ""
+      password: "secret123"
       port: 5432
     redis:
       # -- set the redis hostname to talk to
@@ -1026,7 +1027,7 @@ authentik:
     auth:
       username: authentik
       database: authentik
-      # password: ""
+      password: "secret123"
     primary:
       extendedConfiguration: |
         max_connections = 500
