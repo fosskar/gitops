@@ -1345,7 +1345,7 @@ policies:
       path "oidc/data/*" {
         capabilities = ["read", "list"]
       }
-    test.hcl: |
-      path "test/data/*" {
+    authentik.hcl: |
+      path "authentik/data/*" {
         capabilities = ["read", "list"]
       }

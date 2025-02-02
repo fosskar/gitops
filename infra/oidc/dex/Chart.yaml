@@ -1,10 +1,10 @@
 apiVersion: v2
-name: oidc
-description: A Helm chart for deploying VictoriaMetrics in Kubernetes
+name: authentik
+description: A Helm chart for deploying Authentik in Kubernetes
 version: 0.1.0
 appVersion: "0.1.0"
 
 dependencies:
-  - name: dex
-    repository: https://charts.dexidp.io
-    version: 0.20.0
+  - name: authentik
+    repository: https://charts.goauthentik.io
+    version: 2024.12.3
