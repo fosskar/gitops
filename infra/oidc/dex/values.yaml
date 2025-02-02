@@ -56,6 +56,8 @@ dex:
   # See the [official documentation](https://dexidp.io/docs/).
   config:
     issuer: https://dex.simonoscar.me
+    web:
+      allowedOrigins: ['*']
     storage:
       type: kubernetes
       config:
