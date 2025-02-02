@@ -78,7 +78,7 @@ dex:
     # Set up an test user
     staticPasswords:
       - email: "simonoscar@simonoscar.me"
-        hash: "$2b$05$vdl5MeKy2sfNJYu.ABAAUeeyMInvPIO2.ORoTKSIR1NPF/bO.k3iu"
+        hash: "$2y$10$F2YLtFpi7jQ.97GBsTzJYei63YUA8/rW45FvdQ425bbCkG7M1m.n."
         username: "simonoscar"
         userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
     # Enable local users
