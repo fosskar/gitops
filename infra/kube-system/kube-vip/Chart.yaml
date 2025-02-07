@@ -1,0 +1,10 @@
+apiVersion: v2
+name: kube-vip
+description: A Helm chart for deploying Kube-VIP in Kubernetes
+version: 0.1.0
+appVersion: "0.1.0"
+
+dependencies:
+  - name: kube-vip
+    repository: https://kube-vip.github.io/helm-charts
+    version: 0.6.6
