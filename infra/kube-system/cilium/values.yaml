@@ -387,7 +387,7 @@ cilium:
   # @schema
   # -- Enable installation of PodCIDR routes between worker
   # nodes if worker nodes share a common L2 network segment.
-  autoDirectNodeRoutes: true
+  autoDirectNodeRoutes: false
   # -- Enable skipping of PodCIDR routes between worker
   # nodes if the worker nodes are in a different L2 network segment.
   directRoutingSkipUnreachable: false
@@ -848,7 +848,7 @@ cilium:
     # Supported values: shared, dedicated
     # For granular control, use the following annotations on the ingress resource:
     # "ingress.cilium.io/loadbalancer-mode: dedicated" (or "shared").
-    loadbalancerMode: dedicated
+    loadbalancerMode: shared
     # -- Enforce https for host having matching TLS host in Ingress.
     # Incoming traffic to http listener will return 308 http error code with respective location in header.
     enforceHttps: true
@@ -1099,7 +1099,7 @@ cilium:
   # -- Configure socket LB
   socketLB:
     # -- Enable socket LB
-    enabled: true
+    enabled: false
     # -- Disable socket lb for non-root ns. This is used to enable Istio routing rules.
     # hostNamespaceOnly: false
     # -- Enable terminating pod connections to deleted service backends.
@@ -2099,7 +2099,7 @@ cilium:
   # direct routing and the Kubernetes CIDR is included in the native routing CIDR,
   # the user must configure the routes to reach pods, either manually or by
   # setting the auto-direct-node-routes flag.
-  ipv4NativeRoutingCIDR: "10.42.0.0/16"
+  ipv4NativeRoutingCIDR: ""
   # -- (string) Allows to explicitly specify the IPv6 CIDR for native routing.
   # When specified, Cilium assumes networking for this CIDR is preconfigured and
   # hands traffic destined for that range to the Linux network stack without
@@ -2666,7 +2666,7 @@ cilium:
   #   - native
   #   - tunnel
   # @default -- `"tunnel"`
-  routingMode: native
+  routingMode: "tunnel"
   # -- Configure VXLAN and Geneve tunnel port.
   # @default -- Port 8472 for VXLAN, Port 6081 for Geneve
   tunnelPort: 0
