@@ -593,7 +593,7 @@ authentik:
       # -- additional ingress labels
       labels: {}
       # -- defines which ingress controller will implement the resource
-      ingressClassName: tailscale
+      ingressClassName: cilium
       # -- List of ingress hosts
       hosts:
         - auth.simonoscar.me
