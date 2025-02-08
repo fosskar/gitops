@@ -17,7 +17,7 @@ spec:
           - path: infra/openbao/*
           - path: infra/harbor/*
           - path: infra/external-secrets/*
-          - path: infra/kube-system/*
+          - path: infra/tailscale/*
   template:
     metadata:
       name: "{{.path.basename}}"
