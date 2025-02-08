@@ -28,8 +28,6 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: authentik
       server: https://kubernetes.default.svc
-    - namespace: tailscale
-      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
