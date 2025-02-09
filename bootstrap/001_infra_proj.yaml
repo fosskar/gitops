@@ -8,7 +8,7 @@ metadata:
 spec:
   description: Infrastructure Project
   sourceRepos:
-    - "https://gitlab.com/simonoscr/gitops.git"
+    - "*"
   destinations:
     - namespace: argocd
       server: https://kubernetes.default.svc
