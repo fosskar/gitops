@@ -898,10 +898,10 @@ vm:
         # Optionally map user groups to Grafana roles
         role_attribute_path: contains(groups, 'authentik Admin') && 'Admin' || 'Viewer'
     extraSecretMounts:
-      - name: grafana-oauth
+      - name: grafana-oauth-mount
         secretName: grafana-oauth
         defaultMode: 0440
-        mountPath: /etc/secrets/auth_generic_oauth
+        mountPath: /etc/secrets/grafana-oauth
         readOnly: true
 
     ingress:
