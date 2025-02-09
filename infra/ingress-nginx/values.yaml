@@ -767,11 +767,11 @@ ingress-nginx:
             drop:
               - ALL
           readOnlyRootFilesystem: true
-        resources: {}
+        resources:
+          requests:
+            cpu: 10m
+            memory: 20Mi
         # limits:
-        #   cpu: 10m
-        #   memory: 20Mi
-        # requests:
         #   cpu: 10m
         #   memory: 20Mi
       patchWebhookJob:
@@ -788,7 +788,10 @@ ingress-nginx:
             drop:
               - ALL
           readOnlyRootFilesystem: true
-        resources: {}
+        resources:
+          requests:
+            cpu: 10m
+            memory: 20Mi
       patch:
         enabled: true
         image:
@@ -1099,13 +1102,13 @@ ingress-nginx:
     # -- Eviction policy for unhealthy pods guarded by PodDisruptionBudget.
     # Ref: https://kubernetes.io/blog/2023/01/06/unhealthy-pod-eviction-policy-for-pdbs/
     unhealthyPodEvictionPolicy: ""
-    resources: {}
-    # limits:
-    #   cpu: 10m
-    #   memory: 20Mi
-    # requests:
-    #   cpu: 10m
-    #   memory: 20Mi
+    resources:
+      # limits:
+      #   cpu: 10m
+      #   memory: 20Mi
+      requests:
+        cpu: 10m
+        memory: 20Mi
 
     extraVolumeMounts: []
     ## Additional volumeMounts to the default backend container.

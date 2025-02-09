@@ -366,12 +366,9 @@ authentik:
 
     # -- Resource limits and requests for the authentik server
     resources:
-      {}
-      # requests:
-      #   cpu: 100m
-      #   memory: 512Mi
-      # limits:
-      #   memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 512Mi
 
     # authentik server container ports
     containerPorts:
@@ -766,12 +763,9 @@ authentik:
 
     # -- Resource limits and requests for the authentik worker
     resources:
-      {}
-      # requests:
-      #   cpu: 100m
-      #   memory: 512Mi
-      # limits:
-      #   memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 512Mi
 
     # -- Host Network for authentik worker pods
     hostNetwork: false
@@ -971,12 +965,9 @@ authentik:
 
     # -- Resource limits and requests for GeoIP containers
     resources:
-      {}
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # limits:
-      #   memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
 
     # -- GeoIP container-level security context
     # @default -- See [values.yaml]

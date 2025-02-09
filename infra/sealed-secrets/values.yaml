@@ -181,9 +181,9 @@ sealed-secrets:
   ## @param resources.requests [object] The requested resources for the Sealed Secret containers
   ##
   resources:
-    limits:
-      cpu: 150m
-      memory: 256Mi
+    #limits:
+    #  cpu: 150m
+    #  memory: 256Mi
     requests:
       cpu: 150m
       memory: 256Mi

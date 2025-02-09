@@ -278,11 +278,11 @@ openbao:
       pod: {}
       container: {}
 
-    resources: {}
-    # resources:
-    #   requests:
-    #     memory: 256Mi
-    #     cpu: 250m
+
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 250m
     #   limits:
     #     memory: 256Mi
     #     cpu: 250m
@@ -397,11 +397,11 @@ openbao:
     # Supported log formats include: standard, json
     logFormat: ""
 
-    resources: {}
-    # resources:
-    #   requests:
-    #     memory: 256Mi
-    #     cpu: 250m
+
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 250m
     #   limits:
     #     memory: 256Mi
     #     cpu: 250m
@@ -1124,11 +1124,11 @@ openbao:
     #   mountPath: "/openbao/tls"
     #   readOnly: true
 
-    resources: {}
-    # resources:
-    #   requests:
-    #     cpu: 50m
-    #     memory: 128Mi
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
     #   limits:
     #     cpu: 50m
     #     memory: 128Mi
@@ -1201,11 +1201,11 @@ openbao:
       logFormat: standard
       logLevel: info
 
-      resources: {}
-      # resources:
-      #   requests:
-      #     memory: 256Mi
-      #     cpu: 250m
+
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 250m
       #   limits:
       #     memory: 256Mi
       #     cpu: 250m

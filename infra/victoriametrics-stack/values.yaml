@@ -369,25 +369,23 @@ vm:
                 requests:
                   storage: 2Gi
         resources:
-          {}
           # limits:
           #   cpu: "1"
           #   memory: "1000Mi"
-          # requests:
-          #   cpu: "0.5"
-          #   memory: "500Mi"
+          requests:
+            cpu: "0.5"
+            memory: "500Mi"
       vminsert:
         port: "8480"
         replicaCount: 2
         extraArgs: {}
         resources:
-          {}
           # limits:
           #   cpu: "1"
           #   memory: 1000Mi
-          # requests:
-          #   cpu: "0.5"
-          #   memory: "500Mi"
+          requests:
+            cpu: "0.5"
+            memory: "500Mi"
 
     ingress:
       storage:
