@@ -10,25 +10,7 @@ spec:
   sourceRepos:
     - "*"
   destinations:
-    - namespace: argocd
-      server: https://kubernetes.default.svc
-    - namespace: monitoring
-      server: https://kubernetes.default.svc
-    - namespace: kube-system
-      server: https://kubernetes.default.svc
-    - namespace: oidc
-      server: https://kubernetes.default.svc
-    - namespace: cert-manager
-      server: https://kubernetes.default.svc
-    - namespace: openbao
-      server: https://kubernetes.default.svc
-    - namespace: harbor
-      server: https://kubernetes.default.svc
-    - namespace: external-secrets
-      server: https://kubernetes.default.svc
-    - namespace: authentik
-      server: https://kubernetes.default.svc
-    - namespace: ingress-controller
+    - namespace: "*"
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"
