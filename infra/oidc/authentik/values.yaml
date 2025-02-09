@@ -1058,3 +1058,25 @@ authentik:
 
   # -- additional resources to deploy. Those objects are templated.
   additionalObjects: []
+  #  - apiVersion: v1
+  #    kind: ConfigMap
+  #    metadata:
+  #      name: blueprints-cm
+  #    data:
+  #      groups.yaml: |
+  #        version: 1
+  #        metadata:
+  #          name: Groups - Basic User Groups
+  #        context:
+  #          admin_name: "Admin Group"
+  #          readonly_name: "Read-Only Users"
+  #          devs_name: "Developers"
+  #        entries:
+  #        - model: authentik_core.group
+  #          id: default-admins-group
+  #          identifiers:
+  #            attributes:
+  #              better-blueprints/id: default-admins-group
+  #          attrs:
+  #            is_superuser: true
+  #            name: !Context name

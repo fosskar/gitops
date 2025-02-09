@@ -880,10 +880,23 @@ vm:
     # Uncomment the block below, if you want to enable VictoriaMetrics Datasource in Grafana:
     #plugins:
     #  - "https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.10.1/victoriametrics-datasource-v0.10.1.zip;victoriametrics-datasource"
-    #grafana.ini:
-    #  plugins:
-    #    # Why VictoriaMetrics datasource is unsigned: https://github.com/VictoriaMetrics/grafana-datasource/blob/main/README.md#why-victoriametrics-datasource-is-unsigned
-    #    allow_loading_unsigned_plugins: victoriametrics-datasource
+    grafana.ini:
+      server:
+        root_url: grafana.simonoscar.me
+      auth:
+        signout_redirect_url: "https://auth.simonoscar.me/application/o/grafana/end-session/"
+        oauth_auto_login: true
+      auth.generic_oauth:
+        name: authentik
+        enabled: true
+        client_id: "grafana"
+        client_secret: "Cf8SkLCb6tZCUyhjUXdlia3akhVLRDfpIIKoA07XjM6NCVn29pq3CTVkeVeM22OYSQP4al9gJ41jqj6Vn3GG6GgsIRM77dO2s2ncJnwL7D7W8d2uNUU8QDD30MNLSPQD"
+        scopes: "openid profile email"
+        auth_url: "https://auth.simonoscar.me/application/o/authorize/"
+        token_url: "https://auth.simonoscar.me/application/o/token/"
+        api_url: "https://auth.simonoscar.me/application/o/userinfo/"
+        # Optionally map user groups to Grafana roles
+        role_attribute_path: contains(groups, 'authentik Admin') && 'Admin' || 'Viewer'
 
     ingress:
       enabled: true
