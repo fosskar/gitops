@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: harbor
+  namespace: argocd
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: HEAD
+    path: infra/harbor
+    helm:
+      releaseName: harbor
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: harbor
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
