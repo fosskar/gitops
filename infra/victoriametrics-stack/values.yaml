@@ -889,14 +889,20 @@ vm:
       auth.generic_oauth:
         name: authentik
         enabled: true
-        client_id: "grafana"
-        client_secret: "Cf8SkLCb6tZCUyhjUXdlia3akhVLRDfpIIKoA07XjM6NCVn29pq3CTVkeVeM22OYSQP4al9gJ41jqj6Vn3GG6GgsIRM77dO2s2ncJnwL7D7W8d2uNUU8QDD30MNLSPQD"
+        client_id: $__file{/etc/secrets/grafana-oauth/client_id}
+        client_secret: $__file{/etc/secrets/grafana-oauth/client_secret}
         scopes: "openid profile email"
         auth_url: "https://auth.simonoscar.me/application/o/authorize/"
         token_url: "https://auth.simonoscar.me/application/o/token/"
         api_url: "https://auth.simonoscar.me/application/o/userinfo/"
         # Optionally map user groups to Grafana roles
         role_attribute_path: contains(groups, 'authentik Admin') && 'Admin' || 'Viewer'
+    extraSecretMounts:
+      - name: grafana-oauth
+        secretName: grafana-oauth
+        defaultMode: 0440
+        mountPath: /etc/secrets/auth_generic_oauth
+        readOnly: true
 
     ingress:
       enabled: true

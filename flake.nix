@@ -24,6 +24,7 @@
             nativeBuildInputs = with pkgs; [
               kubernetes-helm
               argocd
+              kubeseal
             ];
             name = "gitops";
           };
