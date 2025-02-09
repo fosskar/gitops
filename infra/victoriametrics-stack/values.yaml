@@ -882,7 +882,7 @@ vm:
     #  - "https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.10.1/victoriametrics-datasource-v0.10.1.zip;victoriametrics-datasource"
     grafana.ini:
       server:
-        root_url: grafana.simonoscar.me
+        root_url: https://grafana.simonoscar.me/
       auth:
         signout_redirect_url: "https://auth.simonoscar.me/application/o/grafana/end-session/"
         oauth_auto_login: true
