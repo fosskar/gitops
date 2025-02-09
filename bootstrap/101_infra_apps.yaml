@@ -17,6 +17,7 @@ spec:
           - path: infra/openbao/*
           - path: infra/harbor/*
           - path: infra/external-secrets/*
+          - path: infra/ingress-controller/*
   template:
     metadata:
       name: "{{.path.basename}}"
