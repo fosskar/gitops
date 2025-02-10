@@ -283,7 +283,7 @@ vm:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 20Gi
+            storage: 10Gi
     ingress:
       # -- Enable deployment of ingress for server component
       enabled: true
