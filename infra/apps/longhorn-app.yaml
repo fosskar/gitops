@@ -1,23 +1,23 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: longhorn
-  namespace: argocd
-spec:
-  project: infra
-  source:
-    repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
-    path: infra/longhorn
-    helm:
-      releaseName: longhorn
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: longhorn-system
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: longhorn
+#  namespace: argocd
+#spec:
+  #  project: infra
+  #  source:
+    #    repoURL: https://gitlab.com/simonoscr/gitops.git
+    #    targetRevision: HEAD
+    #    path: infra/longhorn
+    #    helm:
+      #      releaseName: longhorn
+      #  destination:
+        #    server: https://kubernetes.default.svc
+        #    namespace: longhorn-system
+        #  syncPolicy:
+          #    automated:
+            #      prune: true
+            #      selfHeal: true
+            #    syncOptions:
+              #      - CreateNamespace=true
+              #      - ServerSideApply=true
