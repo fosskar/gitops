@@ -906,7 +906,7 @@ openbao:
         # Enables Raft integrated storage
         enabled: true
         # Set the Node Raft ID to the name of the pod
-        setNodeId: false
+        setNodeId: true
 
         # Note: Configuration files are stored in ConfigMaps so sensitive data
         # such as passwords should be either mounted through extraSecretEnvironmentVars
