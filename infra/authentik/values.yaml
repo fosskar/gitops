@@ -219,7 +219,8 @@ authentik:
     # -- List of config maps to mount blueprints from.
     # Only keys in the configMap ending with `.yaml` will be discovered and applied.
     configMaps:
-      - blueprints
+      []
+      #- blueprints
     # -- List of secrets to mount blueprints from.
     # Only keys in the secret ending with `.yaml` will be discovered and applied.
     secrets: []
