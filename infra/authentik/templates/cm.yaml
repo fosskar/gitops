@@ -1,74 +1,75 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: blueprints
-data:
-  provider.yaml: |
-    version: 1
-    metadata:
-      name: provider-blueprint
-    entries:
-      - model: authentik_providers_oauth2.oauth2provider
-        state: present
-        attrs:
-          name: ArgoCD
-          client_id: argocd
-          client_secret: "nCvUbTh7Jl3FMmRzKLcq6EHgRlRh8poqPp1NXTntmig9akmrTLRMvuaDObQEA2ygVHXFpppZotzN1biXrBdFuDv0bLWJt9N5tNl3JEKHluwAkUGcF55v01cRoeN5USTm"
-          client_type: confidential
-          redirect_uris:
-            - matching_mode: strict
-              url: https://argocd.simonoscar.me/api/dex/callback
-            - matching_mode: strict
-              url: http://localhost:8085/auth/callback
-        identifiers:
-          slug: argocd
-      - model: authentik_providers_oauth2.oauth2provider
-        state: present
-        attrs:
-          name: Grafana
-          client_id: grafana
-          client_secret: "hrbaSoa8OYs4bR7L15Rny72mPROLw2j7LU8b9V52VQBe0pKR6xQZ5IpwYlku9WvraAUfH1eZQHG90vkTqJyYiitFXMUBJUaMmL4JRPyAb0WdYKFaGtn1MGXpY6hrMp3H"
-          client_type: confidential
-          redirect_uris:
-            - matching_mode: strict
-              url: https://grafana.simonoscar.me/login/generic_oauth
-        identifiers:
-          slug: grafana
-      - model: authentik_providers_oauth2.oauth2provider
-        state: present
-        attrs:
-          name: Harbor
-          client_id: harbor
-          client_secret: "5WZfSm4wAivyONXOW41yCbmhDFLWAALeRXQzcP6JNorFTSDzLxCS7S72NyNQW1YBBHR05IAUb5G1Uw5uzhwAPhW9cDec59WghDWYR2m6I42mJw9oTYzPu8ATeq3IJSEo"
-          client_type: confidential
-          redirect_uris:
-            - matching_mode: strict
-              url: https://harbor.simonoscar.me/c/oidc/callback
-        identifiers:
-          slug: harbor
-  applications.yaml: |
-    version: 1
-    metadata:
-      name: application-blueprint
-    entries:
-      - model: authentik_core.application
-        identifiers:
-          slug: argocd
-        state: present
-        attrs:
-          name: ArgoCD
-          provider: argocd
-      - model: authentik_core.application
-        identifiers:
-          slug: grafana
-        state: present
-        attrs:
-          name: Grafana
-          provider: harbor
-      - model: authentik_core.application
-        identifiers:
-          slug: harbor
-        state: present
-        attrs:
-          name: Harbor
-          provider: harbor
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: blueprints
+#data:
+#  provider.yaml: |
+#    version: 1
+#    metadata:
+#      name: provider-blueprint
+#    entries:
+#      - model: authentik_providers_oauth2.oauth2provider
+#        state: present
+#        attrs:
+#          name: ArgoCD
+#          client_id: argocd
+#          client_secret: "nCvUbTh7Jl3FMmRzKLcq6EHgRlRh8poqPp1NXTntmig9akmrTLRMvuaDObQEA2ygVHXFpppZotzN1biXrBdFuDv0bLWJt9N5tNl3JEKHluwAkUGcF55v01cRoeN5USTm"
+#          client_type: confidential
+#          redirect_uris:
+#            - matching_mode: strict
+#              url: https://argocd.simonoscar.me/api/dex/callback
+#            - matching_mode: strict
+#              url: http://localhost:8085/auth/callback
+#        identifiers:
+#          name: argocd
+#      - model: authentik_providers_oauth2.oauth2provider
+#        state: present
+#        attrs:
+#          name: Grafana
+#          client_id: grafana
+#          client_secret: "hrbaSoa8OYs4bR7L15Rny72mPROLw2j7LU8b9V52VQBe0pKR6xQZ5IpwYlku9WvraAUfH1eZQHG90vkTqJyYiitFXMUBJUaMmL4JRPyAb0WdYKFaGtn1MGXpY6hrMp3H"
+#          client_type: confidential
+#          redirect_uris:
+#            - matching_mode: strict
+#              url: https://grafana.simonoscar.me/login/generic_oauth
+#        identifiers:
+#          slug: grafana
+#      - model: authentik_providers_oauth2.oauth2provider
+#        state: present
+#        attrs:
+#          name: Harbor
+#          client_id: harbor
+#          client_secret: "5WZfSm4wAivyONXOW41yCbmhDFLWAALeRXQzcP6JNorFTSDzLxCS7S72NyNQW1YBBHR05IAUb5G1Uw5uzhwAPhW9cDec59WghDWYR2m6I42mJw9oTYzPu8ATeq3IJSEo"
+#          client_type: confidential
+#          redirect_uris:
+#            - matching_mode: strict
+#              url: https://harbor.simonoscar.me/c/oidc/callback
+#        identifiers:
+#          slug: harbor
+#  applications.yaml: |
+#    version: 1
+#    metadata:
+#      name: application-blueprint
+#    entries:
+#      - model: authentik_core.application
+#        identifiers:
+#          slug: argocd
+#        state: present
+#        attrs:
+#          name: ArgoCD
+#          provider: argocd
+#      - model: authentik_core.application
+#        identifiers:
+#          slug: grafana
+#        state: present
+#        attrs:
+#          name: Grafana
+#          provider: harbor
+#      - model: authentik_core.application
+#        identifiers:
+#          slug: harbor
+#        state: present
+#        attrs:
+#          name: Harbor
+#          provider: harbor
+#
