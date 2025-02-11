@@ -278,7 +278,6 @@ openbao:
       pod: {}
       container: {}
 
-
     resources:
       requests:
         memory: 256Mi
@@ -396,7 +395,6 @@ openbao:
     # Configure the logging format for the OpenBao server.
     # Supported log formats include: standard, json
     logFormat: ""
-
 
     resources:
       requests:
@@ -838,7 +836,7 @@ openbao:
     # the "file" backend.  This mode is not highly available and should not be scaled
     # past a single replica.
     standalone:
-      enabled: true
+      enabled: false
 
       # config is a raw string of default configuration when using a Stateful
       # deployment. Default is to use a PersistentVolumeClaim mounted at /openbao/data
@@ -887,7 +885,7 @@ openbao:
     # Helm project by default.  It is possible to manually configure OpenBao to use a
     # different HA backend.
     ha:
-      enabled: false
+      enabled: true
       replicas: 3
 
       # Set the api_addr configuration for OpenBao HA
@@ -906,7 +904,7 @@ openbao:
       # The OpenBao cluster will coordinate leader elections and failovers internally.
       raft:
         # Enables Raft integrated storage
-        enabled: false
+        enabled: true
         # Set the Node Raft ID to the name of the pod
         setNodeId: false
 
@@ -1124,7 +1122,6 @@ openbao:
     #   mountPath: "/openbao/tls"
     #   readOnly: true
 
-
     resources:
       requests:
         cpu: 50m
@@ -1200,7 +1197,6 @@ openbao:
 
       logFormat: standard
       logLevel: info
-
 
       resources:
         requests:
