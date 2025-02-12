@@ -1,0 +1,18 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: infrastructure-warehouse
+spec:
+  subscriptions:
+    - chart:
+        repoURL: https://bitnami-labs.github.io/sealed-secrets
+        name: sealed-secrets
+        #discoveryLimit: 10 # default is 20
+        #semverConstraint: ^2.0.0 # only add if you dont want to upgrade major versions or something like that
+## add more helm-.chart references here
+#    - chart:
+#        repoURL: https://kubernetes.github.io/ingress-nginx
+#        name: ingress-nginx
+## OCI example. dont set name for OCI repos. append the name of the chart to the OCI URL
+#    - chart:
+#        repoURL: oci://ghcr.io/akuity/kargo-charts/kargo
