@@ -1,0 +1,174 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-qa
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: HEAD
+    path: infra/hello-world/qa
+    helm:
+      releaseName: hello-world-qa
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-world-qa
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-stg-a
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: HEAD
+    path: infra/hello-world/stg-a
+    helm:
+      releaseName: hello-world-stg-a
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-world-stg-a
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-stg-b
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: HEAD
+    path: infra/hello-world/stg-b
+    helm:
+      releaseName: hello-world-stg-b
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-world-stg-b
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-stg-c
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: HEAD
+    path: infra/hello-world/stg-c
+    helm:
+      releaseName: hello-world-stg-c
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-world-stg-c
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-prd-a
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: HEAD
+    path: infra/hello-world/prd-a
+    helm:
+      releaseName: hello-world-prd-a
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-world-prd-a
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-prd-b
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: HEAD
+    path: infra/hello-world/prd-b
+    helm:
+      releaseName: hello-world-prd-b
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-world-prd-b
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-prd-c
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: HEAD
+    path: infra/hello-world/prd-c
+    helm:
+      releaseName: hello-world-prd-c
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-world-prd-c
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

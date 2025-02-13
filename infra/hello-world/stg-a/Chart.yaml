@@ -1,0 +1,11 @@
+apiVersion: v2
+name: inhress-nginx
+description: A Helm chart for deploying Ingress-NGINX in Kubernetes
+version: 0.1.0
+appVersion: "0.1.0"
+
+dependencies:
+  - name: nginx
+    alias: hello-world
+    repository: oci://chartproxy.container-registry.com/charts.bitnami.com/bitnami
+    version: 12.0.1
