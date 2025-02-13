@@ -34,11 +34,7 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: longhorn-system
       server: https://kubernetes.default.svc
-    - namespace: qa
-      server: https://kubernetes.default.svc
-    - namespace: stg
-      server: https://kubernetes.default.svc
-    - namespace: prd
+    - namespace: "hello-world-*"
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"
