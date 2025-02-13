@@ -7,3 +7,5 @@ pdb:
   create: false
 networkPolicy:
   enabled: false
+service:
+  type: ClusterIP
