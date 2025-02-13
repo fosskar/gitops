@@ -1,12 +1,44 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
-  name: infrastructure-warehouse
+  name: infra-warehouse
+  namespace: infra
 spec:
   subscriptions:
     - chart:
+        repoURL: https://charts.goauthentik.io
+        name: authentik
+    - chart:
+        repoURL: https://charts.jetstack.io
+        name: cert-manager
+    - chart:
+        repoURL: https://charts.external-secrets.io
+        name: external-secrets
+    - chart:
+        repoURL: https://helm.goharbor.io
+        name: harbor
+    - chart:
+        repoURL: https://charts.longhorn.io
+        name: longhorn
+    - chart:
+        repoURL: https://openbao.github.io/openbao-helm
+        name: openbao
+    - chart:
         repoURL: https://bitnami-labs.github.io/sealed-secrets
         name: sealed-secrets
+    - chart:
+        repoURL: https://victoriametrics.github.io/helm-charts/
+        name: victoria-metrics-k8s-stack
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: infrastructure-warehouse
+  namespace: infrastructure
+spec:
+  subscriptions:
+    - chart:
+        repoURL: oci://registry-1.docker.io/bitnamicharts/nginx
         #discoveryLimit: 10 # default is 20
         #semverConstraint: ^2.0.0 # only add if you dont want to upgrade major versions or something like that
 ## add more helm-.chart references here

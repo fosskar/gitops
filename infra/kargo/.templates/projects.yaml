@@ -1,21 +1,31 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Project
 metadata:
+  name: infra
+  namespace: infra
+spec:
+  promotionPolicies:
+    - stage: main
+      autoPromotionEnabled: true
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
   name: infrastructure
   namespace: infrastructure
 spec:
   promotionPolicies:
-    - stage: cluster-qa # just naming can also be cluster name
+    - stage: qa
       autoPromotionEnabled: true # auto-update in qa
-    - stage: cluster-stg-a
+    - stage: stg-a
       autoPromotionEnabled: true # auto-promote to stg
-    - stage: cluster-stg-b
+    - stage: stg-b
       autoPromotionEnabled: true # auto-promote to stg
-    - stage: cluster-stg-c
+    - stage: stg-c
       autoPromotionEnabled: true # auto-promote to stg
-    - stage: cluster-prd-a
+    - stage: prd-a
       autoPromotionEnabled: false # dont autopromote
-    - stage: cluster-prd-b
+    - stage: prd-b
       autoPromotionEnabled: false # dont autopromote
-    - stage: cluster-prd-c
+    - stage: prd-c
       autoPromotionEnabled: false # dont autopromote
