@@ -1,7 +1,7 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
 metadata:
-  name: infra-update-helm-dependency
+  name: infrastructure-update-helm-chart-dep
   namespace: infrastructure
 spec:
   vars:
@@ -11,47 +11,28 @@ spec:
     - name: sourceBranch
       value: main
     - name: targetBranch
-      value: ${{ vars.sourceBranch }}
-    - name: chartRepo
-      value: ${{ freight.contents["Warehouse/infrastructure-warehouse"].charts[vars.chartName].repoURL }}
-    - name: chartName
-      value: ${{ freight.contents["Warehouse/infrastructure-warehouse"].charts.keys[0] }}
+      value: main
     - name: chartDir
-      value: ${{ vars.chartName }}
+    - name: chartName
   steps:
     - uses: git-clone
-      as: clone
       config:
         repoURL: ${{ vars.gitRepo }}
         checkout:
-          - branch: ${{ vars.sourceBranch }}
-            path: ./out
-    ## OCI chartRepo
-    #- uses: helm-update-chart
-    #  as: update
-    #  config:
-    #    path: ./out/infra/${{ vars.chartDir }}/${{ ctx.stage }}
-    #    charts:
-    #      - repository: ${{ vars.chartRepo }}
-    #        name: ${{ vars.chartName }}
-    #        version: ${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}
-    ## HTTPS chartRepo
+          - path: ./out
     - uses: helm-update-chart
-      as: update
       config:
-        path: ./out/infra/${{ vars.chartDir }}/${{ ctx.stage }}
+        path: ./out/${{ vars.chartDir }}/${{ ctx.stage }}
         charts:
           - repository: ${{ vars.chartRepo }}
             name: ${{ vars.chartName }}
-            version: ${{ freight.contents["Warehouse/infrastructure-warehouse"].charts[vars.chartName].version }}
+            version: ${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}
     - uses: git-commit
-      as: commit
       config:
         path: ./out
         message: |
-          ${{ vars.chartName }}(${{ ctx.stage }}): update helm-chart to ${{ freight.contents["Warehouse/infrastructure-warehouse"].charts[vars.chartName].version }}
+          ${{ vars.chartName }}(${{ ctx.stage }}): update helm-chart to ${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}
     - uses: git-push
-      as: push
       config:
         path: ./out
         branch: ${{ vars.targetBranch }}
