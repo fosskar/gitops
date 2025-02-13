@@ -1,1 +1,9 @@
 ---
+tls:
+  enabled: false
+serviceAccount:
+  create: false
+pdb:
+  create: false
+networkPolicy:
+  enabled: false
