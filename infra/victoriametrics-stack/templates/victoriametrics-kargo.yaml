@@ -4,7 +4,7 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Project
 metadata:
-  name: {{ $chartName }}
+  name: monitoring
 spec:
   promotionPolicies:
     - autoPromotionEnabled: true
