@@ -1,0 +1,79 @@
+{{- $chartName := .Chart.Name }}
+{{- range .Chart.Dependencies }}
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: {{ $chartName }}
+spec:
+  promotionPolicies:
+    - autoPromotionEnabled: true
+      stage: main
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: {{ .Name }}
+spec:
+  freightCreationPolicy: Automatic
+  interval: 5m0s
+  subscriptions:
+    - chart:
+        name: {{ .Name }}
+        repoURL: {{ .Repository }}
+
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  finalizers:
+    - kargo.akuity.io/finalizer
+  name: main
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: {{ .Name }}
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      vars:
+        - name: gitRepo
+          value: https://gitlab.com/simonoscr/gitops.git
+        - name: chartDir
+          value: {{ $chartName }}
+        - name: chartName
+          value: {{ .Name }}
+        - name: chartRepo
+          value: {{ .Repository }}
+      steps:
+        - uses: git-clone
+          config:
+            repoURL: '{{`${{ vars.gitRepo }}`}}'
+            checkout:
+              - branch: main
+                path: ./out
+        - uses: helm-update-chart
+          config:
+            path: ./out/infra/{{ $chartName }}
+          charts:
+            - repository: '{{`${{ vars.chartRepo }}`}}'
+              name: '{{`${{ vars.chartName }}`}}'
+              version: '{{`${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}`}}'
+        - uses: helm-template
+          config:
+            path: ./out/infra/{{ $chartName }}
+            outPath: ./out/manifests.yaml
+        - uses: delete
+          config:
+            path: ./out/manifests.yaml
+        - uses: git-commit
+          config:
+            path: ./out
+            message: |
+              {{ .Name }}: update helm-chart to '{{`${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}`}}'
+        - uses: git-push
+          config:
+            path: ./out
+{{- end }}
