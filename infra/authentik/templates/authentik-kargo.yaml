@@ -56,10 +56,10 @@ spec:
         - uses: helm-update-chart
           config:
             path: ./out/infra/{{ $chartName }}
-          charts:
-            - repository: '{{`${{ vars.chartRepo }}`}}'
-              name: '{{`${{ vars.chartName }}`}}'
-              version: '{{`${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}`}}'
+            charts:
+              - repository: '{{`${{ vars.chartRepo }}`}}'
+                name: '{{`${{ vars.chartName }}`}}'
+                version: '{{`${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}`}}'
         - uses: helm-template
           config:
             path: ./out/infra/{{ $chartName }}
