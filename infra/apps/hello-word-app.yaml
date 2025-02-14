@@ -5,6 +5,8 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    kargo.akuity.io/authorized-stage: infrastructure:qa
 spec:
   project: infra
   source:
@@ -30,11 +32,13 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    kargo.akuity.io/authorized-stage: infrastructure:stg-a
 spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
+    targetRevision: hello-world-stg-a
     path: infra/hello-world/stg-a
     helm:
       releaseName: hello-world-stg-a
@@ -55,11 +59,13 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    kargo.akuity.io/authorized-stage: infrastructure:stg-b
 spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
+    targetRevision: hello-world-stg-b
     path: infra/hello-world/stg-b
     helm:
       releaseName: hello-world-stg-b
@@ -80,11 +86,13 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    kargo.akuity.io/authorized-stage: infrastructure:stg-c
 spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
+    targetRevision: hello-world-stg-c
     path: infra/hello-world/stg-c
     helm:
       releaseName: hello-world-stg-c
@@ -105,6 +113,8 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    kargo.akuity.io/authorized-stage: infrastructure:prd-a
 spec:
   project: infra
   source:
@@ -130,6 +140,8 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    kargo.akuity.io/authorized-stage: infrastructure:prd-b
 spec:
   project: infra
   source:
@@ -155,6 +167,8 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    kargo.akuity.io/authorized-stage: infrastructure:prd-c
 spec:
   project: infra
   source:
