@@ -520,8 +520,8 @@ vm:
       replicaCount: 1
       port: "9093"
       selectAllByDefault: true
-      image:
-        tag: v0.27.0
+      #image:
+        #tag: v0.27.0
       externalURL: ""
       routePrefix: /
 

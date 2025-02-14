@@ -72,7 +72,7 @@ openbao:
       # -- image repo to use for k8s image
       repository: "hashicorp/vault-k8s"
       # -- image tag to use for k8s image
-      tag: "1.6.1"
+      #tag: "1.6.1"
       # -- image pull policy to use for k8s image. if tag is "latest", set to "Always"
       pullPolicy: IfNotPresent
 
@@ -85,7 +85,7 @@ openbao:
       # -- image repo to use for agent image
       repository: "openbao/openbao"
       # -- image tag to use for agent image
-      tag: "2.1.1"
+      #tag: "2.1.1"
       # -- image pull policy to use for agent image. if tag is "latest", set to "Always"
       pullPolicy: IfNotPresent
 
@@ -380,7 +380,7 @@ openbao:
       # -- image repo to use for server image
       repository: "openbao/openbao"
       # -- image tag to use for server image
-      tag: "2.1.1"
+      #tag: "2.1.1"
       # -- image pull policy to use for server image. if tag is "latest", set to "Always"
       pullPolicy: IfNotPresent
 
@@ -1102,7 +1102,7 @@ openbao:
       # -- image repo to use for csi image
       repository: "hashicorp/vault-csi-provider"
       # -- image tag to use for csi image
-      tag: "1.5.0"
+      #tag: "1.5.0"
       # -- image pull policy to use for csi image. if tag is "latest", set to "Always"
       pullPolicy: IfNotPresent
 
@@ -1191,7 +1191,7 @@ openbao:
         # -- image repo to use for agent image
         repository: "openbao/openbao"
         # -- image tag to use for agent image
-        tag: "2.1.1"
+        #tag: "2.1.1"
         # -- image pull policy to use for agent image. if tag is "latest", set to "Always"
         pullPolicy: IfNotPresent
 
