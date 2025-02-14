@@ -49,7 +49,7 @@ spec:
       steps:
         - uses: git-clone
           config:
-            repoURL: '{{`${{ vars.gitRepo }}`}}'
+            repoURL: {{`${{ vars.gitRepo }}`}}
             checkout:
               - branch: main
                 path: ./out
@@ -57,9 +57,9 @@ spec:
           config:
             path: ./out/infra/{{ $chartName }}
             charts:
-              - repository: '{{`${{ vars.chartRepo }}`}}'
-                name: '{{`${{ vars.chartName }}`}}'
-                version: '{{`${{ chartFrom(vars.chartRepo, vars.chartName).Version }}`}}'
+              - repository: {{`${{ vars.chartRepo }}`}}
+                name: {{`${{ vars.chartName }}`}}
+                version: {{`${{ chartFrom(vars.chartRepo, vars.chartName).Version }}`}}
         - uses: helm-template
           config:
             releaseName: {{ .Name }}
@@ -72,7 +72,7 @@ spec:
           config:
             path: ./out
             message: |
-              {{ .Name }}: update helm-chart to '{{`${{ chartFrom(vars.chartRepo, vars.chartName).Version }}`}}'
+              {{ .Name }}: update helm-chart to {{`${{ chartFrom(vars.chartRepo, vars.chartName).Version }}`}}
         - uses: git-push
           config:
             path: ./out
