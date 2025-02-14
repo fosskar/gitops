@@ -6,7 +6,7 @@ metadata:
 spec:
   vars:
     - name: gitRepo
-      value: git@gitlab.com:simonoscr/gitops.git
+      value: https://gitlab.com/simonoscr/gitops.git
   steps:
     - uses: argocd-update
       config:
