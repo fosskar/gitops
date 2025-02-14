@@ -1,0 +1,18 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: pt-infrastructure
+  namespace: infrastructure
+spec:
+  vars:
+    - name: gitRepo
+      value: git@gitlab.com:simonoscr/gitops.git
+  steps:
+    - uses: argocd-update
+      config:
+        apps:
+          - name: hello-world-${{ ctx.stage }}
+            sources:
+              - repoURL: ${{ vars.gitRepo }}
+                desiredRevision: ${{ commitFrom(vars.gitRepo).ID }}
+                updateTargetRevision: true

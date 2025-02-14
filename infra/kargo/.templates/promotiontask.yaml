@@ -1,8 +1,8 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
 metadata:
-  name: infrastructure-update-helm-chart-dep
-  namespace: infrastructure
+  name: infra-update-helm-chart-dep
+  namespace: infra
 spec:
   vars:
     # Variables without a default value are required and must be provided when the task is referenced in a Promotion Template.
@@ -19,20 +19,20 @@ spec:
       config:
         repoURL: ${{ vars.gitRepo }}
         checkout:
-          - path: ./out
+          - branch: ${{ vars.sourceBranch }}
+            path: ./out
     - uses: helm-update-chart
       config:
-        path: ./out/${{ vars.chartDir }}/${{ ctx.stage }}
+        path: ./out/infra/${{ vars.chartName }}
         charts:
           - repository: ${{ vars.chartRepo }}
             name: ${{ vars.chartName }}
-            version: ${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}
+            version: ${{ chartFrom(vars.chartRepo, vars.chartName, warehouse(vars.chartName)).Version }}
     - uses: git-commit
       config:
         path: ./out
         message: |
-          ${{ vars.chartName }}(${{ ctx.stage }}): update helm-chart to ${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}
+          ${{ vars.chartName }}: update helm-chart to ${{ chartFrom(vars.chartRepo, vars.chartName).Version }}
     - uses: git-push
       config:
         path: ./out
-        branch: ${{ vars.targetBranch }}
