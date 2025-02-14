@@ -59,7 +59,7 @@ spec:
             charts:
               - repository: '{{`${{ vars.chartRepo }}`}}'
                 name: '{{`${{ vars.chartName }}`}}'
-                version: '{{`${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}`}}'
+                version: '{{`${{ chartFrom(vars.chartRepo, vars.chartName).Version }}`}}'
         - uses: helm-template
           config:
             path: ./out/infra/{{ $chartName }}
@@ -71,7 +71,7 @@ spec:
           config:
             path: ./out
             message: |
-              {{ .Name }}: update helm-chart to '{{`${{ chartFrom(vars.chartRepo + "/" + vars.chartName).Version }}`}}'
+              {{ .Name }}: update helm-chart to '{{`${{ chartFrom(vars.chartRepo, vars.chartName).Version }}`}}'
         - uses: git-push
           config:
             path: ./out
