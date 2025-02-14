@@ -205,42 +205,27 @@ kargo:
       ## NOTE: Kargo uses the Authorization Code Flow with Proof Key for Code Exchange (PKCE) and does not require a client secret. Some OIDC identity providers may not support this. If yours does not, enabling the optional Dex server and configuring its connectors can adapt most identity providers to work this way.
       ## Note also: The PKCE code challenge used by Kargo is SHA256 hashed.
       ## For more information about PKCE, please visit: https://oauth.net/2/pkce/
-      enabled: false
+      enabled: true
       ## @param api.oidc.issuerURL The issuer URL for the identity provider. If Dex is enabled, this value will be ignored and the issuer URL will be automatically configured. If Dex is not enabled, this should be set to the issuer URL provided to you by your identity provider.
-      issuerURL:
+      issuerURL: "https://authentik.simonoscar.me/application/o/kargo/"
       ## @param api.oidc.clientID The client ID for the OIDC client. If Dex is enabled, this value will be ignored and the client ID will be automatically configured. If Dex is not enabled, this should be set to the client ID provided to you by your identity provider.
-      clientID:
+      clientID: kargo
       ## @param api.oidc.cliClientID The client ID for the OIDC client used by CLI (optional). Needed by some OIDC providers (such as Dex) that require a separate Client ID for web app login vs. CLI login (`http://localhost`). If Dex is enabled, this value will be ignored and cli client ID will be automatically configured. If Dex is not enabled, and a different client app is configured for localhost CLI login, this should be the client ID configured in the IdP.
-      cliClientID:
+      cliClientID: kargo
       ## @param api.oidc.additionalScopes The additional scopes to send to the OIDC provider. This should be set to the scopes you wish to be provided to your identity provider from clients of Kargo, the scopes openid, profile and email are always requested and don't need to be added, this value is intended for any additional ones you require.
       additionalScopes:
         - groups
+        - profile
 
       admins:
-        ## @param api.oidc.admins.claims Subjects having any of these claims will automatically be Kargo admins.
         claims:
-          {}
-          # sub:
-          # - alice
-          # - bob
-          # email:
-          # - alice@example.com
-          # - bob@examples.com
-          # groups:
-          # - kargo-admin
+          groups:
+            - authentik Admins
 
       viewers:
-        ## @param api.oidc.viewers.claims Subjects having any of these claims will automatically receive read-only access to all Kargo resources.
         claims:
-          {}
-          # sub:
-          # - alice
-          # - bob
-          # email:
-          # - alice@example.com
-          # - bob@examples.com
-          # groups:
-          # - kargo-viewer
+          groups:
+            - authentik Read-only
 
       globalServiceAccounts:
         ## @param api.oidc.globalServiceAccounts.namespaces List of namespaces to look for shared service accounts.
