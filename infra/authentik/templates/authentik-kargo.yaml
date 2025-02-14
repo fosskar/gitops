@@ -62,6 +62,7 @@ spec:
                 version: '{{`${{ chartFrom(vars.chartRepo, vars.chartName).Version }}`}}'
         - uses: helm-template
           config:
+            releaseName: {{ .Name }}
             path: ./out/infra/{{ $chartName }}
             outPath: ./out/manifests.yaml
         - uses: delete
