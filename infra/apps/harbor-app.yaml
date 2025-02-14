@@ -20,3 +20,6 @@
 #      selfHeal: true
 #    syncOptions:
 #      - CreateNamespace=true
+#    managedNamespaceMetadata:
+#      labels:
+#        kargo.akuity.io/project: "true"
