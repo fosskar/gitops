@@ -22,6 +22,7 @@ spec:
     - chart:
         name: {{ .Name }}
         repoURL: {{ .Repository }}
+        discoveryLimit: 10
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
