@@ -19,7 +19,7 @@ vm:
   # -- If this chart is used in "Argocd" with "releaseName" field then
   # VMServiceScrapes couldn't select the proper services.
   # For correct working need set value 'argocdReleaseOverride=$ARGOCD_APP_NAME'
-  argocdReleaseOverride: ""
+  argocdReleaseOverride: "vm"
 
   # -- VictoriaMetrics Operator dependency chart configuration. More values can be found [here](https://docs.victoriametrics.com/helm/victoriametrics-operator#parameters). Also checkout [here](https://docs.victoriametrics.com/operator/vars) possible ENV variables to configure operator behaviour
   victoria-metrics-operator:
@@ -521,7 +521,7 @@ vm:
       port: "9093"
       selectAllByDefault: true
       #image:
-        #tag: v0.27.0
+      #tag: v0.27.0
       externalURL: ""
       routePrefix: /
 
