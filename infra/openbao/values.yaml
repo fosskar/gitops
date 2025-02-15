@@ -940,7 +940,7 @@ openbao:
       # or through a Kube secret.  For more information see:
       # https://openbao.org/docs/platform/k8s/helm/run#protecting-sensitive-vault-configurations
       config: |
-        ui = false
+        ui = true
 
         listener "tcp" {
           tls_disable = 1
@@ -1191,7 +1191,7 @@ openbao:
         # -- image repo to use for agent image
         repository: "openbao/openbao"
         # -- image tag to use for agent image
-        #tag: "2.1.1"
+        tag: "2.2.0-beta20250213"
         # -- image pull policy to use for agent image. if tag is "latest", set to "Always"
         pullPolicy: IfNotPresent
 
