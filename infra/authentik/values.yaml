@@ -1011,11 +1011,9 @@ authentik:
       extendedConfiguration: |
         max_connections = 500
       resourcesPreset: "none"
-      # persistence:
-      #   enabled: true
-      #   storageClass: longhorn
-      #   accessModes:
-      #     - ReadWriteOnce
+      persistence:
+        enabled: true
+        size: 4Gi
     readReplicas:
       resourcesPreset: "none"
     backup:
@@ -1035,6 +1033,9 @@ authentik:
       enabled: false
     master:
       resourcesPreset: "none"
+      persistence:
+        enabled: true
+        size: 4Gi
     replica:
       resourcesPreset: "none"
     sentinel:
