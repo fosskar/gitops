@@ -16,6 +16,8 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
+    helm:
+      releaseName: vm
   syncPolicy:
     automated:
       prune: true
