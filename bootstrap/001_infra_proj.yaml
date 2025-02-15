@@ -32,7 +32,7 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: monitoring
       server: https://kubernetes.default.svc
-    - namespace: longhorn
+    - namespace: longhorn-system
       server: https://kubernetes.default.svc
     - namespace: "hello-world-*"
       server: https://kubernetes.default.svc
