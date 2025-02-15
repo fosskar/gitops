@@ -894,7 +894,7 @@ victoria-metrics-k8s-stack:
         token_url: "https://auth.simonoscar.me/application/o/token/"
         api_url: "https://auth.simonoscar.me/application/o/userinfo/"
         # Optionally map user groups to Grafana roles
-        role_attribute_path: contains(groups, 'authentik Admin') && 'Admin' || 'Viewer'
+        role_attribute_path: contains(groups, 'authentik Admins') && 'Admin' || 'Viewer'
     extraSecretMounts:
       - name: grafana-oauth-mount
         secretName: grafana-oauth
