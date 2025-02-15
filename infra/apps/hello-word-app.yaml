@@ -5,8 +5,6 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    kargo.akuity.io/authorized-stage: infrastructure:qa
 spec:
   project: infra
   source:
@@ -32,8 +30,6 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    kargo.akuity.io/authorized-stage: infrastructure:stg-a
 spec:
   project: infra
   source:
@@ -59,8 +55,6 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    kargo.akuity.io/authorized-stage: infrastructure:stg-b
 spec:
   project: infra
   source:
@@ -86,19 +80,42 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    kargo.akuity.io/authorized-stage: infrastructure:stg-c
 spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
+    targetRevision: 7c4cf19e339f1fb1b568b8502f685123f7e128e5
     path: infra/hello-world/stg-c
     helm:
       releaseName: hello-world-stg-c
   destination:
     server: https://kubernetes.default.svc
     namespace: hello-world-stg-c
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-stg-d
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://gitlab.com/simonoscr/gitops.git
+    targetRevision: 7c4cf19e339f1fb1b568b8502f685123f7e128e5
+    path: infra/hello-world/stg-d
+    helm:
+      releaseName: hello-world-stg-d
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello-world-stg-d
   syncPolicy:
     automated:
       prune: true

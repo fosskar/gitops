@@ -2,90 +2,12 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
-  name: authentik
-  namespace: infra
+  name: hello-world
+  namespace: infrastructure
 spec:
   subscriptions:
     - chart:
-        repoURL: https://charts.goauthentik.io
-        name: authentik
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Warehouse
-metadata:
-  name: cert-manager
-  namespace: infra
-spec:
-  subscriptions:
-    - chart:
-        repoURL: https://charts.jetstack.io
-        name: cert-manager
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Warehouse
-metadata:
-  name: external-secrets
-  namespace: infra
-spec:
-  subscriptions:
-    - chart:
-        repoURL: https://charts.external-secrets.io
-        name: external-secrets
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Warehouse
-metadata:
-  name: harbor
-  namespace: infra
-spec:
-  subscriptions:
-    - chart:
-        repoURL: https://helm.goharbor.io
-        name: harbor
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Warehouse
-metadata:
-  name: longhorn
-  namespace: infra
-spec:
-  subscriptions:
-    - chart:
-        repoURL: https://charts.longhorn.io
-        name: longhorn
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Warehouse
-metadata:
-  name: openbao
-  namespace: infra
-spec:
-  subscriptions:
-    - chart:
-        repoURL: https://openbao.github.io/openbao-helm
-        name: openbao
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Warehouse
-metadata:
-  name: sealed-secrets
-  namespace: infra
-spec:
-  subscriptions:
-    - chart:
-        repoURL: https://bitnami-labs.github.io/sealed-secrets
-        name: sealed-secrets
----
-apiVersion: kargo.akuity.io/v1alpha1
-kind: Warehouse
-metadata:
-  name: victoria-metrics-k8s-stack
-  namespace: infra
-spec:
-  subscriptions:
-    - chart:
-        repoURL: https://victoriametrics.github.io/helm-charts/
-        name: victoria-metrics-k8s-stack
+        repoURL: oci://registry-1.docker.io/bitnamicharts/nginx
 ---
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
