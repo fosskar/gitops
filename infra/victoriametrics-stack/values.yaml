@@ -1,4 +1,4 @@
-vm:
+victoria-metrics-k8s-stack:
   global:
     # -- Cluster label to use for dashboards and rules
     clusterLabel: cluster
