@@ -84,7 +84,7 @@ spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: 7c4cf19e339f1fb1b568b8502f685123f7e128e5
+    targetRevision: d5826370b09623bc071d5dcd76897083531123b1
     path: infra/hello-world/stg-c
     helm:
       releaseName: hello-world-stg-c
@@ -109,7 +109,7 @@ spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: 7c4cf19e339f1fb1b568b8502f685123f7e128e5
+    targetRevision: d5826370b09623bc071d5dcd76897083531123b1
     path: infra/hello-world/stg-d
     helm:
       releaseName: hello-world-stg-d
