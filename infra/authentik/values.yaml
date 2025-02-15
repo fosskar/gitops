@@ -229,7 +229,7 @@ authentik:
     name: server
 
     # -- The number of server pods to run
-    replicas: 2
+    replicas: 1
 
     ## authentik server Horizontal Pod Autoscaler
     autoscaling:
@@ -626,7 +626,7 @@ authentik:
     name: worker
 
     # -- The number of worker pods to run
-    replicas: 2
+    replicas: 1
 
     ## authentik worker Horizontal Pod Autoscaler
     autoscaling:
