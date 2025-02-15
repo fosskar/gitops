@@ -229,7 +229,7 @@ authentik:
     name: server
 
     # -- The number of server pods to run
-    replicas: 1
+    replicas: 2
 
     ## authentik server Horizontal Pod Autoscaler
     autoscaling:
@@ -1032,20 +1032,20 @@ authentik:
     auth:
       enabled: false
     master:
-      resourcesPreset: "none"
+      resourcesPreset: "nano"
       persistence:
         enabled: true
         size: 4Gi
     replica:
-      resourcesPreset: "none"
+      resourcesPreset: "nano"
     sentinel:
-      resourcesPreset: "none"
+      resourcesPreset: "nano"
     metrics:
-      resourcesPreset: "none"
+      resourcesPreset: "nano"
     volumePermissions:
-      resourcesPreset: "none"
+      resourcesPreset: "nano"
     sysctl:
-      resourcesPreset: "none"
+      resourcesPreset: "nano"
 
   # -- additional resources to deploy. Those objects are templated.
   additionalObjects: []
