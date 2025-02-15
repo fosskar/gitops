@@ -12,11 +12,8 @@ spec:
   destinations:
     - namespace: argocd
       server: https://kubernetes.default.svc
-    - namespace: cert-manager
+    - namespace: cluster
       server: https://kubernetes.default.svc
-    - namespace: kube-system
-      server: https://kubernetes.default.svc
-
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
