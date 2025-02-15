@@ -126,14 +126,11 @@ authentik:
       #       name: config-map-name
       #       key: config-map-key
 
-    # -- envFrom to pass to all deployed Deployments. Does not apply to GeoIP
-    # @default -- `[]` (See [values.yaml])
     envFrom:
-      []
-      # - configMapRef:
-      #     name: config-map-name
       # - secretRef:
       #     name: secret-name
+      # - configMapRef:
+      #     name: config-map-name
 
     # -- Additional volumeMounts to all deployed Deployments. Does not apply to GeoIP
     # @default -- `[]` (See [values.yaml])
@@ -718,11 +715,10 @@ authentik:
     # -- envFrom to pass to the authentik worker. Does not apply to GeoIP
     # @default -- `[]` (See [values.yaml])
     envFrom:
-      []
+      - secretRef:
+          name: authentik-bootstrap
       # - configMapRef:
       #     name: config-map-name
-      # - secretRef:
-      #     name: secret-name
 
     # -- Specify postStart and preStop lifecycle hooks for you authentik worker container
     lifecycle: {}
