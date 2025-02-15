@@ -127,6 +127,7 @@ authentik:
       #       key: config-map-key
 
     envFrom:
+      []
       # - secretRef:
       #     name: secret-name
       # - configMapRef:
