@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
     targetRevision: HEAD
-    path: infra/cert-manager
+    path: infra/cert-manager/k3s-mgmt
     helm:
       releaseName: cert-manager
   destination:
