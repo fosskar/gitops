@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: hello-world-qa
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
   source:
@@ -28,8 +26,6 @@ kind: Application
 metadata:
   name: hello-world-stg-a
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
   source:
@@ -53,8 +49,6 @@ kind: Application
 metadata:
   name: hello-world-stg-b
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
   source:
@@ -78,8 +72,6 @@ kind: Application
 metadata:
   name: hello-world-stg-c
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
   source:
@@ -103,8 +95,6 @@ kind: Application
 metadata:
   name: hello-world-stg-d
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: infra
   source:
