@@ -16,6 +16,8 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: cluster-api-operator
       server: https://kubernetes.default.svc
+    - namespace: cdi
+      server: https://kubernetes.default.svc
     - namespace: kubevirt
       server: https://kubernetes.default.svc
     - namespace: kube-system
