@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: cluster-api-operator
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,12 +10,12 @@ spec:
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
     targetRevision: HEAD
-    path: infra/cert-manager/k3s-mgmt
+    path: infra/cluster-api-operator/kubevirt-mgmt
     helm:
-      releaseName: cert-manager
+      releaseName: cluster-api-operator
   destination:
     server: https://kubernetes.default.svc
-    namespace: cert-manager
+    namespace: cluster-api-operator
   syncPolicy:
     automated:
       prune: true

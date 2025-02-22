@@ -12,7 +12,7 @@ spec:
   destinations:
     - namespace: argocd
       server: https://kubernetes.default.svc
-    - namespace: cluster
+    - namespace: cluster-api-operator
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"

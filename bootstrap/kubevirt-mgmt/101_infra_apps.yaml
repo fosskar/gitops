@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
     targetRevision: HEAD
-    path: infra/apps/k3s-mgmt
+    path: infra/apps/kubevirt-mgmt
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
