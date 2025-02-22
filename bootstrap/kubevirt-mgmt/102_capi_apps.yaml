@@ -9,7 +9,7 @@
 #  project: infra
 #  source:
 #    repoURL: https://gitlab.com/simonoscr/gitops.git
-#    targetRevision: HEAD
+#    targetRevision: main
 #    path: cluster/
 #  destination:
 #    server: https://kubernetes.default.svc

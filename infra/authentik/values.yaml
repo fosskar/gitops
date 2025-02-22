@@ -544,7 +544,7 @@ authentik:
       service:
         # -- metrics service type
         type: ClusterIP
-        # -- metrics service clusterIP. `None` makes a "headless service" (no virtual IP)
+        # -- metrics service clusterIP. `None` makes a "mainless service" (no virtual IP)
         clusterIP: ""
         # -- metrics service annotations
         annotations: {}

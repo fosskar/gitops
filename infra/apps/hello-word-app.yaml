@@ -34,7 +34,7 @@ spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
+    targetRevision: main
     path: infra/hello-world/stg-a
     helm:
       releaseName: hello-world-stg-a
@@ -59,7 +59,7 @@ spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
+    targetRevision: main
     path: infra/hello-world/stg-b
     helm:
       releaseName: hello-world-stg-b

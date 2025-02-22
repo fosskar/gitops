@@ -9,7 +9,7 @@ spec:
   project: infra
   source:
     repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: HEAD
+    targetRevision: main
     path: infra/kargo
     helm:
       releaseName: kargo
