@@ -2,8 +2,8 @@ cluster-api-operator:
   # ---
   # Cluster API provider options
   core: "cluster-api"
-  bootstrap: "k3s"
-  controlPlane: "k3s"
+  bootstrap: ""
+  controlPlane: ""
   infrastructure: "kubevirt"
   ipam: ""
   addon: "helm"
