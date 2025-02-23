@@ -8,9 +8,8 @@ spec:
   certificateRotateStrategy: {}
   configuration:
     developerConfiguration:
-      developerConfiguration:
-        # https://kubevirt.io/user-guide/compute/node_overcommit/#node-cpu-allocation-ratio
-        cpuAllocationRatio: 10 # 1vcpu = 1/10 cpu core
+      # https://kubevirt.io/user-guide/compute/node_overcommit/#node-cpu-allocation-ratio
+      cpuAllocationRatio: 10 # 1vcpu = 1/10 cpu core
       featureGates:
         - Snapshot
         - VMExport
