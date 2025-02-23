@@ -4,7 +4,7 @@ cluster-api-operator:
   core: "cluster-api"
   bootstrap: "k3s"
   controlPlane: "k3s"
-  infrastructure: "hetzner"
+  infrastructure: "kubevirt"
   ipam: ""
   addon: "helm"
   manager.featureGates: {}

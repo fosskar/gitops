@@ -20,6 +20,16 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: kube-system
       server: https://kubernetes.default.svc
+    - namespace: helm-addon-system
+      server: https://kubernetes.default.svc
+    - namespace: capi-system
+      server: https://kubernetes.default.svc
+    - namespace: kubevirt-infrastructure-system
+      server: https://kubernetes.default.svc
+    - namespace: k3s-control-plane-system
+      server: https://kubernetes.default.svc
+    - namespace: k3s-bootstrap-system
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
