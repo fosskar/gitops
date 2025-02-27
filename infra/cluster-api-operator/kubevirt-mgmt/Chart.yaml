@@ -7,4 +7,4 @@ appVersion: "0.1.0"
 dependencies:
   - name: cluster-api-operator
     repository: https://kubernetes-sigs.github.io/cluster-api-operator
-    version: 0.16.0
+    version: 0.17.0
