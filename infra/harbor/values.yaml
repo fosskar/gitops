@@ -643,7 +643,7 @@ harbor:
   jobservice:
     image:
       repository: ghcr.io/octohelm/harbor/harbor-jobservice
-      tag: v2.12.0
+      tag: v2.12.2
     # set the service account to be used, default if left empty
     serviceAccountName: ""
     # mount the service account token
