@@ -706,7 +706,7 @@ harbor:
     registry:
       image:
         repository: ghcr.io/octohelm/harbor/registry-photon
-        tag: v2.12.0
+        tag: v2.12.2
       resources:
         requests:
           memory: 256Mi
