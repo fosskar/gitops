@@ -1,22 +1,4 @@
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: infra-apps
-  namespace: argocd
-spec:
-  project: infra
-  source:
-    repoURL: https://gitlab.com/simonoscr/gitops.git
-    targetRevision: main
-    path: infra/apps
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+# infra-apps application removed - applications are managed directly
 ---
 #apiVersion: argoproj.io/v1alpha1
 #kind: ApplicationSet
