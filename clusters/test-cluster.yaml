@@ -5,21 +5,24 @@ metadata:
   name: test-cluster
   namespace: default
 spec:
+  credentialsRef:
+    name: proxmox-credentials
+    namespace: default
   allowedNodes:
-  - prx-prd-1
+    - prx-prd-1
   controlPlaneEndpoint:
-    host: 10.10.10.100  # VIP for control plane
+    host: 10.10.10.100 # VIP for control plane
     port: 6443
   dnsServers:
-  - 8.8.8.8
-  - 8.8.4.4
+    - 8.8.8.8
+    - 8.8.4.4
   ipv4Config:
     addresses:
-    - 10.10.10.101-10.10.10.110  # IP range for cluster nodes
+      - 10.10.10.101-10.10.10.110 # IP range for cluster nodes
     gateway: 10.10.10.1
     prefix: 24
   schedulerHints:
-    memoryAdjustment: 0  # allow memory overprovisioning
+    memoryAdjustment: 0 # allow memory overprovisioning
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
