@@ -6,7 +6,7 @@ metadata:
   namespace: default
 spec:
   allowedNodes:
-  - pve  # CHANGE THIS to your proxmox node name
+  - prx-prd-1
   controlPlaneEndpoint:
     host: 10.10.10.100  # VIP for control plane
     port: 6443
@@ -57,8 +57,8 @@ spec:
           model: virtio
       numCores: 2
       numSockets: 1
-      sourceNode: pve  # CHANGE THIS to your proxmox node name
-      templateID: 999  # CHANGE THIS - talos nocloud template id
+      sourceNode: prx-prd-1
+      templateID: 999
       checks:
         skipCloudInitStatus: true
       metadataSettings:
