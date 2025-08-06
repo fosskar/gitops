@@ -1,6 +1,7 @@
 # Override global defaults for single-node cluster
 network:
-  # No VIP or IP range needed for single-node clusters
+  # For single-node: use different IP range to avoid endpoint conflict
+  ipRange: "10.10.10.101-10.10.10.110"
   gateway: 10.10.10.1
 
 # Use VM ID range for this cluster
