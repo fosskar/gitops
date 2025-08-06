@@ -58,7 +58,7 @@ spec:
       sourceNode: {{ .Values.proxmox.node }}
       templateID: {{ .Values.proxmox.templateId }}
 {{- if $vmID }}
-      vmID: {{ $vmID }}
+      virtualMachineID: {{ $vmID }}
 {{- end }}
       agent: 1
       checks:
