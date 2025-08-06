@@ -23,13 +23,7 @@ spec:
       source:
         repoURL: https://codeberg.org/smonoscr/gitops.git
         targetRevision: main
-        path: cluster/templates
-        helm:
-          valueFiles:
-            - "../{{.path.basename}}/values.yaml"
-          parameters:
-            - name: targetNamespace
-              value: "cluster-{{.path.basename}}"
+        path: cluster/{{.path.basename}}
       destination:
         server: https://kubernetes.default.svc
         namespace: "cluster-{{.path.basename}}"

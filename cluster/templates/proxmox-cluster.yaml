@@ -1,0 +1,26 @@
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxCluster
+metadata:
+  name: {{ .clusterName }}
+  namespace: {{ .targetNamespace }}
+spec:
+  credentialsRef:
+    name: {{ .proxmox.credentialsSecret }}
+    namespace: {{ .targetNamespace }}
+  allowedNodes:
+    - {{ .proxmox.node }}
+  controlPlaneEndpoint:
+    host: {{ .network.vip }}
+    port: 6443
+  dnsServers:
+    {{- range .network.dnsServers }}
+    - {{ . }}
+    {{- end }}
+  ipv4Config:
+    addresses:
+      - {{ .network.ipRange }}
+    gateway: {{ .network.gateway }}
+    prefix: 24
+  schedulerHints:
+    memoryAdjustment: 0
