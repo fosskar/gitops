@@ -65,7 +65,9 @@ spec:
         providerIDInjection: true
       tags:
         - {{ $.Values.clusterName }}
+{{- if ne $nodeName $.Values.clusterName }}
         - {{ $nodeName }}
+{{- end }}
 {{- if $node.ip }}
         - {{ $node.ip }}
 {{- else if or (eq $node.type "control-plane") (eq $node.type "single-node") }}
