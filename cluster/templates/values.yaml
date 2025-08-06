@@ -4,7 +4,7 @@ clusterName: ""  # Will be set by ApplicationSet
 # Network Configuration (global defaults)
 network:
   vip: ""  # Must be overridden per cluster
-  ipRange: ""  # Must be overridden per cluster  
+  ipRange: ""  # Must be overridden per cluster
   gateway: 10.10.10.1  # Common gateway
   bridge: vmbr1  # Standard bridge
   vlan: 10  # Standard VLAN
