@@ -2,11 +2,11 @@
 {{- $singleNodeCount := 0 }}
 {{- $workerCount := 0 }}
 {{- range .Values.nodes }}
-  {{- if or (eq .type "control-plane") (eq .type "control") }}
+  {{- if eq .type "control-plane" }}
     {{- $controlPlaneCount = add $controlPlaneCount 1 }}
   {{- else if eq .type "single-node" }}
     {{- $singleNodeCount = add $singleNodeCount 1 }}
-  {{- else if or (eq .type "worker-node") (eq .type "worker") }}
+  {{- else if eq .type "worker" }}
     {{- $workerCount = add $workerCount 1 }}
   {{- end }}
 {{- end }}
@@ -17,7 +17,7 @@
 {{- if gt $totalControlPlanes 0 }}
 {{- $firstControlPlaneNode := "" }}
 {{- range .Values.nodes }}
-  {{- if or (eq .type "control-plane") (eq .type "control") (eq .type "single-node") }}
+  {{- if or (eq .type "control-plane") (eq .type "single-node") }}
     {{- if eq $firstControlPlaneNode "" }}
       {{- $firstControlPlaneNode = . }}
     {{- end }}
@@ -26,7 +26,7 @@
 
 {{/* Merge node specs with defaults */}}
 {{- $nodeType := "single-node" }}
-{{- if or (eq $firstControlPlaneNode.type "control-plane") (eq $firstControlPlaneNode.type "control") }}
+{{- if eq $firstControlPlaneNode.type "control-plane" }}
   {{- $nodeType = "control-plane" }}
 {{- end }}
 {{- $defaultSpecs := index .Values.nodeDefaults $nodeType }}
@@ -84,7 +84,7 @@ spec:
 ---
 {{- $firstWorkerNode := "" }}
 {{- range .Values.nodes }}
-  {{- if or (eq .type "worker-node") (eq .type "worker") }}
+  {{- if eq .type "worker" }}
     {{- if eq $firstWorkerNode "" }}
       {{- $firstWorkerNode = . }}
     {{- end }}
@@ -92,7 +92,7 @@ spec:
 {{- end }}
 
 {{/* Merge worker node specs with defaults */}}
-{{- $defaultSpecs := index .Values.nodeDefaults "worker-node" }}
+{{- $defaultSpecs := index .Values.nodeDefaults "worker" }}
 {{- $memory := $firstWorkerNode.memory | default $defaultSpecs.memory }}
 {{- $cores := $firstWorkerNode.cores | default $defaultSpecs.cores }}
 {{- $disk := $firstWorkerNode.disk | default $defaultSpecs.disk }}

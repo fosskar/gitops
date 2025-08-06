@@ -31,7 +31,7 @@ nodeDefaults:
     cores: 2
     disk: 40
     # vmID: 1001  # Optional: specific VM ID
-  worker-node:
+  worker:
     memory: 8192
     cores: 4
     disk: 100
