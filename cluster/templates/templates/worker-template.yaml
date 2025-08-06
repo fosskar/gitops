@@ -22,7 +22,7 @@
 {{- end }}
 
 {{/* Merge worker node specs with defaults */}}
-{{- $defaultSpecs := .Values.nodeDefaults.worker-node }}
+{{- $defaultSpecs := index .Values.nodeDefaults "worker-node" }}
 {{- $memory := $firstWorkerNode.memory | default $defaultSpecs.memory }}
 {{- $cores := $firstWorkerNode.cores | default $defaultSpecs.cores }}
 {{- $disk := $firstWorkerNode.disk | default $defaultSpecs.disk }}
