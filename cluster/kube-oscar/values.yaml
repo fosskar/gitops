@@ -11,11 +11,10 @@ proxmox:
 
 # Extra tags for VMs
 extraTags:
-  - test-env
+  - test-label
 
 # Node Definitions (inherits specs from nodeDefaults.single-node)
 nodes:
-  - name: test-control-plane-1
-    type: single-node # Single node that acts as both control plane and allows workloads
+  - type: single-node # Single node that acts as both control plane and allows workloads
     # vmID: 110 # Let's try vmIDRange approach instead
     # memory, cores, disk inherited from global nodeDefaults.single-node
