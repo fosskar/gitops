@@ -68,10 +68,10 @@ spec:
       metadataSettings:
         providerIDInjection: true
       tags:
-        - "cluster:test-cluster"
-        - "role:control-plane"
-        - "managed-by:cluster-api"
-        - "environment:test"
+        - "test-cluster"
+        - "control-plane" 
+        - "cluster-api"
+        - "test-env"
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
 kind: TalosControlPlane
