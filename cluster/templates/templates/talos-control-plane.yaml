@@ -45,7 +45,6 @@ metadata:
   name: {{ .Values.clusterName }}-cp
   namespace: {{ .Values.targetNamespace | default "default" }}
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
 spec:
   version: {{ .Values.kubernetes.version }}
   replicas: {{ $totalControlPlanes }}
