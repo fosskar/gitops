@@ -4,6 +4,8 @@ kind: ProxmoxCluster
 metadata:
   name: {{ .Values.clusterName }}
   namespace: {{ .Values.targetNamespace | default "default" }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   credentialsRef:
     name: {{ .Values.proxmox.credentialsSecret }}

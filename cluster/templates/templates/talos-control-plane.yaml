@@ -44,6 +44,8 @@ kind: TalosControlPlane
 metadata:
   name: {{ .Values.clusterName }}-cp
   namespace: {{ .Values.targetNamespace | default "default" }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   version: {{ .Values.kubernetes.version }}
   replicas: {{ $totalControlPlanes }}

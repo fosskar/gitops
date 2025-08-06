@@ -17,6 +17,8 @@ kind: TalosConfigTemplate
 metadata:
   name: {{ .Values.clusterName }}-workers
   namespace: {{ .Values.targetNamespace | default "default" }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   template:
     spec:

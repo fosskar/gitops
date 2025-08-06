@@ -30,6 +30,9 @@ kind: MachineDeployment
 metadata:
   name: {{ .Values.clusterName }}-workers
   namespace: {{ .Values.targetNamespace | default "default" }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+    argocd.argoproj.io/sync-options: "SkipDryRunOnMissingResource=true"
 spec:
   clusterName: {{ .Values.clusterName }}
   replicas: {{ $workerCount }}
