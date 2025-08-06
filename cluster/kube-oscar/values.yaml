@@ -8,8 +8,11 @@ network:
 proxmox:
   vmIdRange: "110-120"
 
-# Extra tags for VMs
-extraTags: []
+# Extra tags for VMs (create these in Proxmox with custom colors first)
+extraTags:
+  - "single-node"     # Create this tag in Proxmox with green color
+  - "talos"          # Create this tag in Proxmox with blue color
+  - "production"     # Create this tag in Proxmox with red color
 
 # Node Definitions (inherits specs from nodeDefaults.single-node)
 nodes:
