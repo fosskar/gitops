@@ -2,11 +2,11 @@
 {{- $singleNodeCount := 0 }}
 {{- $workerCount := 0 }}
 {{- range .Values.nodes }}
-  {{- if eq .type "control-plane" }}
+  {{- if or (eq .type "control-plane") (eq .type "control") }}
     {{- $controlPlaneCount = add $controlPlaneCount 1 }}
   {{- else if eq .type "single-node" }}
     {{- $singleNodeCount = add $singleNodeCount 1 }}
-  {{- else if eq .type "worker-node" }}
+  {{- else if or (eq .type "worker-node") (eq .type "worker") }}
     {{- $workerCount = add $workerCount 1 }}
   {{- end }}
 {{- end }}
@@ -16,7 +16,7 @@
 {{- if gt $totalControlPlanes 0 }}
 {{- $firstControlPlaneNode := "" }}
 {{- range .Values.nodes }}
-  {{- if or (eq .type "control-plane") (eq .type "single-node") }}
+  {{- if or (eq .type "control-plane") (eq .type "control") (eq .type "single-node") }}
     {{- if eq $firstControlPlaneNode "" }}
       {{- $firstControlPlaneNode = . }}
     {{- end }}
