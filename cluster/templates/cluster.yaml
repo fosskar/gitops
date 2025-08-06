@@ -49,7 +49,9 @@ spec:
     {{- $singleNodes = append $singleNodes . }}
   {{- end }}
 {{- end }}
-{{- $totalControlPlanes := add (len $controlPlaneNodes) (len $singleNodes) }}
+{{- $totalControlPlanes := 0 }}
+{{- $totalControlPlanes = (add $totalControlPlanes (len $controlPlaneNodes)) }}
+{{- $totalControlPlanes = (add $totalControlPlanes (len $singleNodes)) }}
 
 {{- if gt $totalControlPlanes 0 }}
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
