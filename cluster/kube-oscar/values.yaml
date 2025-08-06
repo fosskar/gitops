@@ -1,7 +1,7 @@
 # Override global defaults for single-node cluster
 network:
-  # For single-node: use different IP pool (not the node IP)
-  ipRange: "10.10.10.102"
+  # For single-node: use same IP for both endpoint and range
+  ipRange: "10.10.10.101-10.10.10.101"
   gateway: 10.10.10.1
 
 # Use VM ID range for this cluster
@@ -14,6 +14,6 @@ extraTags: []
 # Node Definitions (inherits specs from nodeDefaults.single-node)
 nodes:
   - type: single-node # Single node that acts as both control plane and allows workloads
-    ip: 10.10.10.100 # Use the VIP as the node IP for single-node clusters
+    ip: 10.10.10.101 # Use same IP as the range
     # vmID: 110 # Let's try vmIDRange approach instead
     # memory, cores, disk inherited from global nodeDefaults.single-node
