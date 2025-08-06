@@ -1,8 +1,8 @@
 # Override global defaults for single-node cluster
 network:
   vip: 10.10.10.10
-  # Minimal DHCP range - VMs will get these initially but TalosConfig overrides with static IPs
-  ipRange: "10.10.10.200-10.10.10.210"
+  # IP range for CAPMOX to assign automatically (like test-cluster.yaml.backup)
+  ipRange: "10.10.10.101-10.10.10.110"
   gateway: 10.10.10.1
 
 # Use smaller VM ID range for predictable ordering (4 VMs = 111-114)
@@ -12,13 +12,9 @@ proxmox:
 # Extra tags for VMs (create these in Proxmox with custom colors first)
 extraTags: []
 
-# Node Definitions with fixed VM IDs for predictable ordering
+# Node Definitions (IPs assigned automatically by CAPMOX from ipRange)
 nodes:
   - type: control-plane
-    ip: 10.10.10.101
   - type: control-plane
-    ip: 10.10.10.102
   - type: worker
-    ip: 10.10.10.105
   - type: worker
-    ip: 10.10.10.106

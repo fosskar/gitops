@@ -44,7 +44,6 @@ spec:
   tags:
     - {{ $.Values.clusterName }}
     - {{ $.Values.clusterName }}-worker
-    - {{ .ip }}
 {{- range $.Values.extraTags }}
     - {{ . }}
 {{- end }}
@@ -83,11 +82,6 @@ spec:
         value:
           - interface: eth0
             dhcp: false
-            addresses:
-              - {{ .ip }}/24
-            routes:
-              - network: 0.0.0.0/0
-                gateway: {{ $.Values.network.gateway }}
       - op: add
         path: /machine/kubelet/extraArgs
         value:
