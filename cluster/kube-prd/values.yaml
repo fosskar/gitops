@@ -5,27 +5,20 @@ network:
   ipRange: "10.10.10.100-10.10.10.110"
   gateway: 10.10.10.1
 
-# Use VM ID range for this cluster
+# Use smaller VM ID range for predictable ordering (4 VMs = 111-114)
 proxmox:
-  vmIdRange: "110-120"
+  vmIdRange: "111-114"
 
 # Extra tags for VMs (create these in Proxmox with custom colors first)
-extraTags:
-  - "single-node" # Create this tag in Proxmox with green color
-  - "talos" # Create this tag in Proxmox with blue color
-  - "production" # Create this tag in Proxmox with red color
+extraTags: []
 
 # Node Definitions with fixed VM IDs for predictable ordering
 nodes:
   - type: control-plane
     ip: 10.10.10.101
-    vmID: 111  # Fixed VM ID for cp-1
   - type: control-plane
     ip: 10.10.10.102
-    vmID: 112  # Fixed VM ID for cp-2
   - type: worker
     ip: 10.10.10.105
-    vmID: 115  # Fixed VM ID for worker-1
   - type: worker
     ip: 10.10.10.106
-    vmID: 116  # Fixed VM ID for worker-2
