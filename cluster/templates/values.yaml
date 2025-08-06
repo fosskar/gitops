@@ -17,9 +17,8 @@ proxmox:
   node: prx-prd-1  # Default node
   templateId: 999  # Standard template ID
   credentialsSecret: proxmox-credentials  # Standard secret name
-  # Optional: VM ID range configuration
-  vmIdStart: 1000  # Starting VM ID for auto-assignment
-  vmIdRange: "1000-1099"  # VM ID range for this cluster
+  # Optional: VM ID range configuration (alternative to specific vmID)
+  vmIdRange: "110-120"  # VM ID range for automatic assignment
 
 # Kubernetes Configuration (global defaults)
 kubernetes:

@@ -59,6 +59,10 @@ spec:
       templateID: {{ .Values.proxmox.templateId }}
 {{- if $vmID }}
       virtualMachineID: {{ $vmID }}
+{{- else if .Values.proxmox.vmIdRange }}
+      vmIDRange:
+        start: {{ (split "-" .Values.proxmox.vmIdRange)._0 | int }}
+        end: {{ (split "-" .Values.proxmox.vmIdRange)._1 | int }}
 {{- end }}
       checks:
         skipCloudInitStatus: true
