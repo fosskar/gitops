@@ -7,4 +7,5 @@ network:
 nodes:
   - name: control-plane-1
     type: single-node    # Single node that acts as both control plane and allows workloads
+    vmID: 1050          # Specific VM ID for this node
     # memory, cores, disk inherited from global nodeDefaults.single-node

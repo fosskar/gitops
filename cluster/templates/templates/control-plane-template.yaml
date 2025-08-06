@@ -32,6 +32,7 @@
 {{- $memory := $firstControlPlaneNode.memory | default $defaultSpecs.memory }}
 {{- $cores := $firstControlPlaneNode.cores | default $defaultSpecs.cores }}
 {{- $disk := $firstControlPlaneNode.disk | default $defaultSpecs.disk }}
+{{- $vmID := $firstControlPlaneNode.vmID | default $defaultSpecs.vmID }}
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
@@ -56,6 +57,9 @@ spec:
       numSockets: 1
       sourceNode: {{ .Values.proxmox.node }}
       templateID: {{ .Values.proxmox.templateId }}
+{{- if $vmID }}
+      vmID: {{ $vmID }}
+{{- end }}
       agent: 1
       checks:
         skipCloudInitStatus: true
