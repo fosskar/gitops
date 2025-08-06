@@ -69,4 +69,7 @@ spec:
         - {{ .Values.clusterName }}
         - control-plane
         - cluster-api
+{{- range .Values.extraTags | default (list) }}
+        - {{ . }}
+{{- end }}
 {{- end }}

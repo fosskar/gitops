@@ -3,6 +3,10 @@ network:
   vip: 10.10.10.100
   ipRange: "10.10.10.101-10.10.10.110"
 
+# Extra tags for VMs
+extraTags:
+  - test-env
+
 # Node Definitions (inherits specs from nodeDefaults.single-node)
 nodes:
   - name: control-plane-1
