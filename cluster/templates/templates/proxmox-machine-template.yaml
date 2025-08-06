@@ -13,6 +13,7 @@
 
 {{- $totalControlPlanes := add $controlPlaneCount $singleNodeCount }}
 
+{{/* Control Plane / Single Node Template */}}
 {{- if gt $totalControlPlanes 0 }}
 {{- $firstControlPlaneNode := "" }}
 {{- range .Values.nodes }}
@@ -33,6 +34,7 @@
 {{- $cores := $firstControlPlaneNode.cores | default $defaultSpecs.cores }}
 {{- $disk := $firstControlPlaneNode.disk | default $defaultSpecs.disk }}
 {{- $vmID := $firstControlPlaneNode.vmID | default $defaultSpecs.vmID }}
+
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
@@ -71,6 +73,69 @@ spec:
       tags:
         - {{ .Values.clusterName }}
         - control-plane
+        - cluster-api
+{{- range .Values.extraTags | default (list) }}
+        - {{ . }}
+{{- end }}
+{{- end }}
+
+{{/* Worker Node Template */}}
+{{- if gt $workerCount 0 }}
+---
+{{- $firstWorkerNode := "" }}
+{{- range .Values.nodes }}
+  {{- if eq .type "worker-node" }}
+    {{- if eq $firstWorkerNode "" }}
+      {{- $firstWorkerNode = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{/* Merge worker node specs with defaults */}}
+{{- $defaultSpecs := index .Values.nodeDefaults "worker-node" }}
+{{- $memory := $firstWorkerNode.memory | default $defaultSpecs.memory }}
+{{- $cores := $firstWorkerNode.cores | default $defaultSpecs.cores }}
+{{- $disk := $firstWorkerNode.disk | default $defaultSpecs.disk }}
+{{- $vmID := $firstWorkerNode.vmID | default $defaultSpecs.vmID }}
+
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxMachineTemplate
+metadata:
+  name: {{ .Values.clusterName }}-worker-template
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  template:
+    spec:
+      disks:
+        bootVolume:
+          disk: scsi0
+          sizeGb: {{ $disk }}
+      format: qcow2
+      full: true
+      memoryMiB: {{ $memory }}
+      network:
+        default:
+          bridge: {{ .Values.network.bridge }}
+          model: virtio
+          vlan: {{ .Values.network.vlan }}
+      numCores: {{ $cores }}
+      numSockets: 1
+      sourceNode: {{ .Values.proxmox.node }}
+      templateID: {{ .Values.proxmox.templateId }}
+{{- if $vmID }}
+      virtualMachineID: {{ $vmID }}
+{{- else if .Values.proxmox.vmIdRange }}
+      vmIDRange:
+        start: {{ (split "-" .Values.proxmox.vmIdRange)._0 | int }}
+        end: {{ (split "-" .Values.proxmox.vmIdRange)._1 | int }}
+{{- end }}
+      checks:
+        skipCloudInitStatus: true
+      metadataSettings:
+        providerIDInjection: true
+      tags:
+        - {{ .Values.clusterName }}
+        - worker-node
         - cluster-api
 {{- range .Values.extraTags | default (list) }}
         - {{ . }}
