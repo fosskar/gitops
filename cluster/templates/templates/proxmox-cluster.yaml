@@ -24,7 +24,13 @@ spec:
     {{- end }}
   ipv4Config:
     addresses:
+{{- if contains "," .Values.network.ipRange }}
+{{- range (splitList "," .Values.network.ipRange) }}
+      - {{ . }}
+{{- end }}
+{{- else }}
       - {{ .Values.network.ipRange }}
+{{- end }}
     gateway: {{ .Values.network.gateway }}
     prefix: 24
   schedulerHints:
