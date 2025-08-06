@@ -1,59 +1,38 @@
-{{- $controlPlaneCount := 0 }}
-{{- $singleNodeCount := 0 }}
-{{- $workerCount := 0 }}
-{{- range .Values.nodes }}
-  {{- if eq .type "control-plane" }}
-    {{- $controlPlaneCount = add $controlPlaneCount 1 }}
-  {{- else if eq .type "single-node" }}
-    {{- $singleNodeCount = add $singleNodeCount 1 }}
-  {{- else if eq .type "worker" }}
-    {{- $workerCount = add $workerCount 1 }}
-  {{- end }}
-{{- end }}
-
-{{- $totalControlPlanes := add $controlPlaneCount $singleNodeCount }}
-
-{{/* Control Plane / Single Node Template */}}
-{{- if gt $totalControlPlanes 0 }}
-{{- $firstControlPlaneNode := dict }}
+{{/* Generate ProxmoxMachineTemplate for each node */}}
 {{- $controlPlaneIndex := 0 }}
-{{- range .Values.nodes }}
-  {{- if or (eq .type "control-plane") (eq .type "single-node") }}
-    {{- $controlPlaneIndex = add $controlPlaneIndex 1 }}
-    {{- if not $firstControlPlaneNode.type }}
-      {{- $firstControlPlaneNode = . }}
-    {{- end }}
-  {{- end }}
-{{- end }}
+{{- $workerIndex := 0 }}
+{{- $singleNodeIndex := 0 }}
+{{- range $nodeIndex, $node := .Values.nodes }}
 
-{{/* Auto-generate node name if not provided */}}
-{{- $nodeName := "" }}
-{{- if $firstControlPlaneNode.name }}
-  {{- $nodeName = $firstControlPlaneNode.name }}
-{{- else }}
-  {{- if eq $firstControlPlaneNode.type "single-node" }}
-    {{- $nodeName = printf "%s-single-1" .Values.clusterName }}
-  {{- else }}
-    {{- $nodeName = printf "%s-control-1" .Values.clusterName }}
+{{/* Generate node name if not provided */}}
+{{- $nodeName := $node.name }}
+{{- if not $nodeName }}
+  {{- if eq $node.type "control-plane" }}
+    {{- $controlPlaneIndex = add $controlPlaneIndex 1 }}
+    {{- $nodeName = printf "%s-control-%d" $.Values.clusterName $controlPlaneIndex }}
+  {{- else if eq $node.type "worker" }}
+    {{- $workerIndex = add $workerIndex 1 }}
+    {{- $nodeName = printf "%s-worker-%d" $.Values.clusterName $workerIndex }}
+  {{- else if eq $node.type "single-node" }}
+    {{- $nodeName = printf "%s-node" $.Values.clusterName }}
   {{- end }}
 {{- end }}
 
 {{/* Merge node specs with defaults */}}
-{{- $nodeType := "single-node" }}
-{{- if eq $firstControlPlaneNode.type "control-plane" }}
-  {{- $nodeType = "control-plane" }}
-{{- end }}
-{{- $defaultSpecs := index .Values.nodeDefaults $nodeType }}
-{{- $memory := $firstControlPlaneNode.memory | default $defaultSpecs.memory }}
-{{- $cores := $firstControlPlaneNode.cores | default $defaultSpecs.cores }}
-{{- $disk := $firstControlPlaneNode.disk | default $defaultSpecs.disk }}
-{{- $vmID := $firstControlPlaneNode.vmID | default $defaultSpecs.vmID }}
+{{- $defaultSpecs := index $.Values.nodeDefaults $node.type }}
+{{- $memory := $node.memory | default $defaultSpecs.memory }}
+{{- $cores := $node.cores | default $defaultSpecs.cores }}
+{{- $disk := $node.disk | default $defaultSpecs.disk }}
+{{- $vmID := $node.vmID | default $defaultSpecs.vmID }}
 
+{{- if gt $nodeIndex 0 }}
+---
+{{- end }}
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
   name: {{ $nodeName }}
-  namespace: {{ .Values.targetNamespace | default "default" }}
+  namespace: {{ $.Values.targetNamespace | default "default" }}
 spec:
   template:
     spec:
@@ -66,108 +45,35 @@ spec:
       memoryMiB: {{ $memory }}
       network:
         default:
-          bridge: {{ .Values.network.bridge }}
+          bridge: {{ $.Values.network.bridge }}
           model: virtio
-          vlan: {{ .Values.network.vlan }}
+          vlan: {{ $.Values.network.vlan }}
       numCores: {{ $cores }}
       numSockets: 1
-      sourceNode: {{ .Values.proxmox.node }}
-      templateID: {{ .Values.proxmox.templateId }}
+      sourceNode: {{ $.Values.proxmox.node }}
+      templateID: {{ $.Values.proxmox.templateId }}
 {{- if $vmID }}
       virtualMachineID: {{ $vmID }}
-{{- else if .Values.proxmox.vmIdRange }}
+{{- else if $.Values.proxmox.vmIdRange }}
       vmIDRange:
-        start: {{ (split "-" .Values.proxmox.vmIdRange)._0 | int }}
-        end: {{ (split "-" .Values.proxmox.vmIdRange)._1 | int }}
+        start: {{ (split "-" $.Values.proxmox.vmIdRange)._0 | int }}
+        end: {{ (split "-" $.Values.proxmox.vmIdRange)._1 | int }}
 {{- end }}
       checks:
         skipCloudInitStatus: true
       metadataSettings:
         providerIDInjection: true
       tags:
-        - {{ .Values.clusterName }}
+        - {{ $.Values.clusterName }}
         - {{ $nodeName }}
-{{- if $firstControlPlaneNode.ip }}
-        - {{ $firstControlPlaneNode.ip }}
+{{- if $node.ip }}
+        - {{ $node.ip }}
+{{- else if or (eq $node.type "control-plane") (eq $node.type "single-node") }}
+        - {{ $.Values.network.vip }}
 {{- else }}
-        - {{ .Values.network.vip }}
+        - {{ $.Values.network.ipRange }}
 {{- end }}
-{{- range .Values.extraTags | default (list) }}
-        - {{ . }}
-{{- end }}
-{{- end }}
-
-{{/* Worker Node Template */}}
-{{- if gt $workerCount 0 }}
----
-{{- $firstWorkerNode := dict }}
-{{- $workerIndex := 0 }}
-{{- range .Values.nodes }}
-  {{- if eq .type "worker" }}
-    {{- $workerIndex = add $workerIndex 1 }}
-    {{- if not $firstWorkerNode.type }}
-      {{- $firstWorkerNode = . }}
-    {{- end }}
-  {{- end }}
-{{- end }}
-
-{{/* Auto-generate worker node name if not provided */}}
-{{- $workerNodeName := $firstWorkerNode.name }}
-{{- if not $workerNodeName }}
-  {{- $workerNodeName = printf "%s-worker-1" .Values.clusterName }}
-{{- end }}
-
-{{/* Merge worker node specs with defaults */}}
-{{- $defaultSpecs := index .Values.nodeDefaults "worker" }}
-{{- $memory := $firstWorkerNode.memory | default $defaultSpecs.memory }}
-{{- $cores := $firstWorkerNode.cores | default $defaultSpecs.cores }}
-{{- $disk := $firstWorkerNode.disk | default $defaultSpecs.disk }}
-{{- $vmID := $firstWorkerNode.vmID | default $defaultSpecs.vmID }}
-
-apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
-kind: ProxmoxMachineTemplate
-metadata:
-  name: {{ $workerNodeName }}
-  namespace: {{ .Values.targetNamespace | default "default" }}
-spec:
-  template:
-    spec:
-      disks:
-        bootVolume:
-          disk: scsi0
-          sizeGb: {{ $disk }}
-      format: qcow2
-      full: true
-      memoryMiB: {{ $memory }}
-      network:
-        default:
-          bridge: {{ .Values.network.bridge }}
-          model: virtio
-          vlan: {{ .Values.network.vlan }}
-      numCores: {{ $cores }}
-      numSockets: 1
-      sourceNode: {{ .Values.proxmox.node }}
-      templateID: {{ .Values.proxmox.templateId }}
-{{- if $vmID }}
-      virtualMachineID: {{ $vmID }}
-{{- else if .Values.proxmox.vmIdRange }}
-      vmIDRange:
-        start: {{ (split "-" .Values.proxmox.vmIdRange)._0 | int }}
-        end: {{ (split "-" .Values.proxmox.vmIdRange)._1 | int }}
-{{- end }}
-      checks:
-        skipCloudInitStatus: true
-      metadataSettings:
-        providerIDInjection: true
-      tags:
-        - {{ .Values.clusterName }}
-        - {{ $workerNodeName }}
-{{- if $firstWorkerNode.ip }}
-        - {{ $firstWorkerNode.ip }}
-{{- else }}
-        - {{ .Values.network.ipRange }}
-{{- end }}
-{{- range .Values.extraTags | default (list) }}
+{{- range $.Values.extraTags | default (list) }}
         - {{ . }}
 {{- end }}
 {{- end }}

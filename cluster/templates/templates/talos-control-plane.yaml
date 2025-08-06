@@ -16,9 +16,14 @@
 {{- if gt $totalControlPlanes 0 }}
 {{- $firstControlPlaneNode := dict }}
 {{- $controlPlaneIndex := 0 }}
+{{- $singleNodeIndex := 0 }}
 {{- range .Values.nodes }}
   {{- if or (eq .type "control-plane") (eq .type "single-node") }}
-    {{- $controlPlaneIndex = add $controlPlaneIndex 1 }}
+    {{- if eq .type "control-plane" }}
+      {{- $controlPlaneIndex = add $controlPlaneIndex 1 }}
+    {{- else if eq .type "single-node" }}
+      {{- $singleNodeIndex = add $singleNodeIndex 1 }}
+    {{- end }}
     {{- if not $firstControlPlaneNode.type }}
       {{- $firstControlPlaneNode = . }}
     {{- end }}
@@ -29,7 +34,7 @@
 {{- $nodeName := $firstControlPlaneNode.name }}
 {{- if not $nodeName }}
   {{- if eq $firstControlPlaneNode.type "single-node" }}
-    {{- $nodeName = printf "%s-single-1" .Values.clusterName }}
+    {{- $nodeName = printf "%s-node" .Values.clusterName }}
   {{- else }}
     {{- $nodeName = printf "%s-control-1" .Values.clusterName }}
   {{- end }}

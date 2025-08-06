@@ -13,8 +13,10 @@
 
 {{- if gt $workerCount 0 }}
 {{- $firstWorkerNode := dict }}
+{{- $workerIndex := 0 }}
 {{- range .Values.nodes }}
   {{- if eq .type "worker" }}
+    {{- $workerIndex = add $workerIndex 1 }}
     {{- if not $firstWorkerNode.type }}
       {{- $firstWorkerNode = . }}
     {{- end }}
