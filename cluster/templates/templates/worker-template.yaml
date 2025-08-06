@@ -1,0 +1,56 @@
+{{- $controlPlaneCount := 0 }}
+{{- $singleNodeCount := 0 }}
+{{- $workerCount := 0 }}
+{{- range .Values.nodes }}
+  {{- if eq .type "control-plane" }}
+    {{- $controlPlaneCount = add $controlPlaneCount 1 }}
+  {{- else if eq .type "single-node" }}
+    {{- $singleNodeCount = add $singleNodeCount 1 }}
+  {{- else if eq .type "worker-node" }}
+    {{- $workerCount = add $workerCount 1 }}
+  {{- end }}
+{{- end }}
+
+{{- if gt $workerCount 0 }}
+{{- $firstWorkerNode := "" }}
+{{- range .Values.nodes }}
+  {{- if eq .type "worker-node" }}
+    {{- if eq $firstWorkerNode "" }}
+      {{- $firstWorkerNode = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxMachineTemplate
+metadata:
+  name: {{ .Values.clusterName }}-worker-template
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  template:
+    spec:
+      disks:
+        bootVolume:
+          disk: scsi0
+          sizeGb: {{ $firstWorkerNode.disk }}
+      format: qcow2
+      full: true
+      memoryMiB: {{ $firstWorkerNode.memory }}
+      network:
+        default:
+          bridge: {{ .Values.network.bridge }}
+          model: virtio
+          vlan: {{ .Values.network.vlan }}
+      numCores: {{ $firstWorkerNode.cores }}
+      numSockets: 1
+      sourceNode: {{ .Values.proxmox.node }}
+      templateID: {{ .Values.proxmox.templateId }}
+      agent: 1
+      checks:
+        skipCloudInitStatus: true
+      metadataSettings:
+        providerIDInjection: true
+      tags:
+        - {{ .Values.clusterName }}
+        - worker-node
+        - cluster-api
+{{- end }}

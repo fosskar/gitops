@@ -1,0 +1,77 @@
+{{- $controlPlaneCount := 0 }}
+{{- $singleNodeCount := 0 }}
+{{- $workerCount := 0 }}
+{{- range .Values.nodes }}
+  {{- if eq .type "control-plane" }}
+    {{- $controlPlaneCount = add $controlPlaneCount 1 }}
+  {{- else if eq .type "single-node" }}
+    {{- $singleNodeCount = add $singleNodeCount 1 }}
+  {{- else if eq .type "worker-node" }}
+    {{- $workerCount = add $workerCount 1 }}
+  {{- end }}
+{{- end }}
+
+{{- $totalControlPlanes := add $controlPlaneCount $singleNodeCount }}
+
+{{- if gt $totalControlPlanes 0 }}
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: TalosControlPlane
+metadata:
+  name: {{ .Values.clusterName }}-cp
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  version: {{ .Values.kubernetes.version }}
+  replicas: {{ $totalControlPlanes }}
+  infrastructureTemplate:
+    kind: ProxmoxMachineTemplate
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+    name: {{ .Values.clusterName }}-control-plane-template
+    namespace: {{ .Values.targetNamespace | default "default" }}
+  controlPlaneConfig:
+    controlplane:
+      generateType: controlplane
+      strategicPatches:
+        - |
+          - op: replace
+            path: /machine/install
+            value:
+              disk: /dev/sda
+              extensions:
+                - image: ghcr.io/siderolabs/qemu-guest-agent:9.2.0
+          - op: add
+            path: /machine/install/extraKernelArgs
+            value:
+              - net.ifnames=0
+          - op: add
+            path: /machine/network/interfaces
+            value:
+              - interface: eth0
+                dhcp: false
+                vip:
+                  ip: {{ .Values.network.vip }}
+          - op: add
+            path: /cluster/externalCloudProvider
+            value:
+              enabled: true
+              manifests:
+                - https://raw.githubusercontent.com/siderolabs/talos-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
+                - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+          - op: add
+            path: /machine/kubelet/extraArgs
+            value:
+              cloud-provider: external
+              rotate-server-certificates: "true"
+          - op: add
+            path: /machine/features/kubernetesTalosAPIAccess
+            value:
+              enabled: true
+              allowedRoles:
+                - os:reader
+              allowedKubernetesNamespaces:
+                - kube-system
+{{- if gt $singleNodeCount 0 }}
+          - op: add
+            path: /cluster/allowSchedulingOnControlPlanes
+            value: true
+{{- end }}
+{{- end }}

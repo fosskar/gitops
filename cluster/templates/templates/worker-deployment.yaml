@@ -1,0 +1,44 @@
+{{- $controlPlaneCount := 0 }}
+{{- $singleNodeCount := 0 }}
+{{- $workerCount := 0 }}
+{{- range .Values.nodes }}
+  {{- if eq .type "control-plane" }}
+    {{- $controlPlaneCount = add $controlPlaneCount 1 }}
+  {{- else if eq .type "single-node" }}
+    {{- $singleNodeCount = add $singleNodeCount 1 }}
+  {{- else if eq .type "worker-node" }}
+    {{- $workerCount = add $workerCount 1 }}
+  {{- end }}
+{{- end }}
+
+{{- if gt $workerCount 0 }}
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  name: {{ .Values.clusterName }}-workers
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  clusterName: {{ .Values.clusterName }}
+  replicas: {{ $workerCount }}
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: {{ .Values.clusterName }}
+      cluster.x-k8s.io/deployment-name: {{ .Values.clusterName }}-workers
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: {{ .Values.clusterName }}
+        cluster.x-k8s.io/deployment-name: {{ .Values.clusterName }}-workers
+    spec:
+      clusterName: {{ .Values.clusterName }}
+      version: {{ .Values.kubernetes.version }}
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+          kind: TalosConfigTemplate
+          name: {{ .Values.clusterName }}-workers
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+        kind: ProxmoxMachineTemplate
+        name: {{ .Values.clusterName }}-worker-template
+{{- end }}
