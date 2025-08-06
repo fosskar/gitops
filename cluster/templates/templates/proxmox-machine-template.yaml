@@ -3,6 +3,7 @@
 {{- $workerIndex := 0 }}
 {{- $singleNodeCount := 0 }}
 {{- $processedControlPlane := false }}
+{{- $processedWorker := false }}
 
 {{/* Count nodes by type */}}
 {{- range .Values.nodes }}
@@ -26,11 +27,13 @@
     {{- $processedControlPlane = true }}
     {{- $nodeName = printf "%s-control-plane" $.Values.clusterName }}
   {{- end }}
-{{/* For workers: generate individual templates */}}
+{{/* For workers: only generate ONE shared template */}}
 {{- else if eq $node.type "worker" }}
-  {{- $workerIndex = add $workerIndex 1 }}
-  {{- if not $nodeName }}
-    {{- $nodeName = printf "%s-worker-%d" $.Values.clusterName $workerIndex }}
+  {{- if $processedWorker }}
+    {{- $shouldGenerate = false }}
+  {{- else }}
+    {{- $processedWorker = true }}
+    {{- $nodeName = printf "%s-worker" $.Values.clusterName }}
   {{- end }}
 {{/* For single-node: use cluster name */}}  
 {{- else if eq $node.type "single-node" }}
