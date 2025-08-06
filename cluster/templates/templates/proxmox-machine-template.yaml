@@ -15,12 +15,26 @@
 
 {{/* Control Plane / Single Node Template */}}
 {{- if gt $totalControlPlanes 0 }}
-{{- $firstControlPlaneNode := "" }}
+{{- $firstControlPlaneNode := dict }}
+{{- $controlPlaneIndex := 0 }}
 {{- range .Values.nodes }}
   {{- if or (eq .type "control-plane") (eq .type "single-node") }}
-    {{- if eq $firstControlPlaneNode "" }}
+    {{- $controlPlaneIndex = add $controlPlaneIndex 1 }}
+    {{- if not $firstControlPlaneNode.type }}
       {{- $firstControlPlaneNode = . }}
     {{- end }}
+  {{- end }}
+{{- end }}
+
+{{/* Auto-generate node name if not provided */}}
+{{- $nodeName := "" }}
+{{- if $firstControlPlaneNode.name }}
+  {{- $nodeName = $firstControlPlaneNode.name }}
+{{- else }}
+  {{- if eq $firstControlPlaneNode.type "single-node" }}
+    {{- $nodeName = printf "%s-single-1" .Values.clusterName }}
+  {{- else }}
+    {{- $nodeName = printf "%s-control-1" .Values.clusterName }}
   {{- end }}
 {{- end }}
 
@@ -38,7 +52,7 @@
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
-  name: {{ $firstControlPlaneNode.name }}
+  name: {{ $nodeName }}
   namespace: {{ .Values.targetNamespace | default "default" }}
 spec:
   template:
@@ -72,7 +86,7 @@ spec:
         providerIDInjection: true
       tags:
         - {{ .Values.clusterName }}
-        - {{ $firstControlPlaneNode.name }}
+        - {{ $nodeName }}
 {{- if $firstControlPlaneNode.ip }}
         - {{ $firstControlPlaneNode.ip }}
 {{- else }}
@@ -86,13 +100,21 @@ spec:
 {{/* Worker Node Template */}}
 {{- if gt $workerCount 0 }}
 ---
-{{- $firstWorkerNode := "" }}
+{{- $firstWorkerNode := dict }}
+{{- $workerIndex := 0 }}
 {{- range .Values.nodes }}
   {{- if eq .type "worker" }}
-    {{- if eq $firstWorkerNode "" }}
+    {{- $workerIndex = add $workerIndex 1 }}
+    {{- if not $firstWorkerNode.type }}
       {{- $firstWorkerNode = . }}
     {{- end }}
   {{- end }}
+{{- end }}
+
+{{/* Auto-generate worker node name if not provided */}}
+{{- $workerNodeName := $firstWorkerNode.name }}
+{{- if not $workerNodeName }}
+  {{- $workerNodeName = printf "%s-worker-1" .Values.clusterName }}
 {{- end }}
 
 {{/* Merge worker node specs with defaults */}}
@@ -105,7 +127,7 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
-  name: {{ $firstWorkerNode.name }}
+  name: {{ $workerNodeName }}
   namespace: {{ .Values.targetNamespace | default "default" }}
 spec:
   template:
@@ -139,7 +161,7 @@ spec:
         providerIDInjection: true
       tags:
         - {{ .Values.clusterName }}
-        - {{ $firstWorkerNode.name }}
+        - {{ $workerNodeName }}
 {{- if $firstWorkerNode.ip }}
         - {{ $firstWorkerNode.ip }}
 {{- else }}

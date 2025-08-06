@@ -14,12 +14,24 @@
 {{- $totalControlPlanes := add $controlPlaneCount $singleNodeCount }}
 
 {{- if gt $totalControlPlanes 0 }}
-{{- $firstControlPlaneNode := "" }}
+{{- $firstControlPlaneNode := dict }}
+{{- $controlPlaneIndex := 0 }}
 {{- range .Values.nodes }}
   {{- if or (eq .type "control-plane") (eq .type "single-node") }}
-    {{- if eq $firstControlPlaneNode "" }}
+    {{- $controlPlaneIndex = add $controlPlaneIndex 1 }}
+    {{- if not $firstControlPlaneNode.type }}
       {{- $firstControlPlaneNode = . }}
     {{- end }}
+  {{- end }}
+{{- end }}
+
+{{/* Auto-generate node name if not provided */}}
+{{- $nodeName := $firstControlPlaneNode.name }}
+{{- if not $nodeName }}
+  {{- if eq $firstControlPlaneNode.type "single-node" }}
+    {{- $nodeName = printf "%s-single-1" .Values.clusterName }}
+  {{- else }}
+    {{- $nodeName = printf "%s-control-1" .Values.clusterName }}
   {{- end }}
 {{- end }}
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
@@ -33,7 +45,7 @@ spec:
   infrastructureTemplate:
     kind: ProxmoxMachineTemplate
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
-    name: {{ $firstControlPlaneNode.name }}
+    name: {{ $nodeName }}
     namespace: {{ .Values.targetNamespace | default "default" }}
   controlPlaneConfig:
     controlplane:

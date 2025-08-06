@@ -12,13 +12,19 @@
 {{- end }}
 
 {{- if gt $workerCount 0 }}
-{{- $firstWorkerNode := "" }}
+{{- $firstWorkerNode := dict }}
 {{- range .Values.nodes }}
   {{- if eq .type "worker" }}
-    {{- if eq $firstWorkerNode "" }}
+    {{- if not $firstWorkerNode.type }}
       {{- $firstWorkerNode = . }}
     {{- end }}
   {{- end }}
+{{- end }}
+
+{{/* Auto-generate worker node name if not provided */}}
+{{- $workerNodeName := $firstWorkerNode.name }}
+{{- if not $workerNodeName }}
+  {{- $workerNodeName = printf "%s-worker-1" .Values.clusterName }}
 {{- end }}
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineDeployment
@@ -48,5 +54,5 @@ spec:
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
         kind: ProxmoxMachineTemplate
-        name: {{ $firstWorkerNode.name }}
+        name: {{ $workerNodeName }}
 {{- end }}
