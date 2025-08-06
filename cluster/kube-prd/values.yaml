@@ -1,8 +1,8 @@
 # Override global defaults for single-node cluster
 network:
   vip: 10.10.10.10
-  # Specific IPs for CAPMOX to assign to all machines
-  ipRange: "10.10.10.101,10.10.10.102,10.10.10.105,10.10.10.106"
+  # Minimal DHCP range - VMs will get these initially but TalosConfig overrides with static IPs
+  ipRange: "10.10.10.200-10.10.10.210"
   gateway: 10.10.10.1
 
 # Use smaller VM ID range for predictable ordering (4 VMs = 111-114)
