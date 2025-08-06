@@ -72,8 +72,14 @@ spec:
             value:
               - interface: eth0
                 dhcp: false
+{{- if eq $firstControlPlaneNode.type "single-node" }}
+                addresses:
+                  - {{ $firstControlPlaneNode.ip }}/24
+                gateway: {{ .Values.network.gateway }}
+{{- else }}
                 vip:
                   ip: {{ .Values.network.vip }}
+{{- end }}
           - op: add
             path: /cluster/externalCloudProvider
             value:
