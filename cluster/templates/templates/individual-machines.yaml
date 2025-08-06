@@ -87,11 +87,6 @@ spec:
         value:
           - interface: eth0
             dhcp: false
-            addresses:
-              - {{ .ip }}/24
-            routes:
-              - network: 0.0.0.0/0
-                gateway: {{ $.Values.network.gateway }}
             vip:
               ip: {{ $.Values.network.vip }}
       - op: add

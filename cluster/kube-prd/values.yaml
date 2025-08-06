@@ -1,8 +1,8 @@
 # Override global defaults for single-node cluster
 network:
   vip: 10.10.10.10
-  # DHCP range that doesn't conflict with static IPs (101,102,105,106)
-  ipRange: "10.10.10.120-10.10.10.130"
+  # DHCP range for control planes + workers
+  ipRange: "10.10.10.101-10.10.10.106"
   gateway: 10.10.10.1
 
 # Use smaller VM ID range for predictable ordering (4 VMs = 111-114)
