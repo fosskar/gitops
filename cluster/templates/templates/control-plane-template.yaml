@@ -22,6 +22,16 @@
     {{- end }}
   {{- end }}
 {{- end }}
+
+{{/* Merge node specs with defaults */}}
+{{- $nodeType := "single-node" }}
+{{- if eq $firstControlPlaneNode.type "control-plane" }}
+  {{- $nodeType = "control-plane" }}
+{{- end }}
+{{- $defaultSpecs := index .Values.nodeDefaults $nodeType }}
+{{- $memory := $firstControlPlaneNode.memory | default $defaultSpecs.memory }}
+{{- $cores := $firstControlPlaneNode.cores | default $defaultSpecs.cores }}
+{{- $disk := $firstControlPlaneNode.disk | default $defaultSpecs.disk }}
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
@@ -33,16 +43,16 @@ spec:
       disks:
         bootVolume:
           disk: scsi0
-          sizeGb: {{ $firstControlPlaneNode.disk }}
+          sizeGb: {{ $disk }}
       format: qcow2
       full: true
-      memoryMiB: {{ $firstControlPlaneNode.memory }}
+      memoryMiB: {{ $memory }}
       network:
         default:
           bridge: {{ .Values.network.bridge }}
           model: virtio
           vlan: {{ .Values.network.vlan }}
-      numCores: {{ $firstControlPlaneNode.cores }}
+      numCores: {{ $cores }}
       numSockets: 1
       sourceNode: {{ .Values.proxmox.node }}
       templateID: {{ .Values.proxmox.templateId }}

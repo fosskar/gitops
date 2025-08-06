@@ -1,0 +1,41 @@
+# Global defaults for all clusters
+clusterName: ""  # Will be set by ApplicationSet
+
+# Network Configuration (global defaults)
+network:
+  vip: ""  # Must be overridden per cluster
+  ipRange: ""  # Must be overridden per cluster  
+  gateway: 10.10.10.1  # Common gateway
+  bridge: vmbr1  # Standard bridge
+  vlan: 10  # Standard VLAN
+  dnsServers:
+    - 1.1.1.1
+    - 8.8.8.8
+
+# Proxmox Configuration (global defaults)
+proxmox:
+  node: prx-prd-1  # Default node
+  templateId: 999  # Standard template ID
+  credentialsSecret: proxmox-credentials  # Standard secret name
+
+# Kubernetes Configuration (global defaults)
+kubernetes:
+  version: v1.33.3  # Default k8s version
+
+# Default Node Specifications
+nodeDefaults:
+  control-plane:
+    memory: 4096
+    cores: 2
+    disk: 40
+  worker-node:
+    memory: 8192
+    cores: 4
+    disk: 100
+  single-node:
+    memory: 4096
+    cores: 2
+    disk: 40
+
+# Nodes must be defined per cluster
+nodes: []

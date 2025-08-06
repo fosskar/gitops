@@ -20,6 +20,12 @@
     {{- end }}
   {{- end }}
 {{- end }}
+
+{{/* Merge worker node specs with defaults */}}
+{{- $defaultSpecs := .Values.nodeDefaults.worker-node }}
+{{- $memory := $firstWorkerNode.memory | default $defaultSpecs.memory }}
+{{- $cores := $firstWorkerNode.cores | default $defaultSpecs.cores }}
+{{- $disk := $firstWorkerNode.disk | default $defaultSpecs.disk }}
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
@@ -31,16 +37,16 @@ spec:
       disks:
         bootVolume:
           disk: scsi0
-          sizeGb: {{ $firstWorkerNode.disk }}
+          sizeGb: {{ $disk }}
       format: qcow2
       full: true
-      memoryMiB: {{ $firstWorkerNode.memory }}
+      memoryMiB: {{ $memory }}
       network:
         default:
           bridge: {{ .Values.network.bridge }}
           model: virtio
           vlan: {{ .Values.network.vlan }}
-      numCores: {{ $firstWorkerNode.cores }}
+      numCores: {{ $cores }}
       numSockets: 1
       sourceNode: {{ .Values.proxmox.node }}
       templateID: {{ .Values.proxmox.templateId }}
