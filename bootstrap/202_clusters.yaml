@@ -12,7 +12,8 @@ spec:
         revision: main
         directories:
           - path: cluster/*
-            exclude: cluster/templates
+          - path: cluster/templates
+            exclude: true
   template:
     metadata:
       name: "{{.path.basename}}"
