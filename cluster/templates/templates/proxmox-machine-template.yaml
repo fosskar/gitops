@@ -61,6 +61,7 @@ spec:
 {{- end }}
       checks:
         skipCloudInitStatus: true
+        skipGuestAgentCheck: true
       metadataSettings:
         providerIDInjection: true
       agent: 1
