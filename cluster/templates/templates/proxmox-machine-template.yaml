@@ -14,7 +14,7 @@
     {{- $workerIndex = add $workerIndex 1 }}
     {{- $nodeName = printf "%s-worker-%d" $.Values.clusterName $workerIndex }}
   {{- else if eq $node.type "single-node" }}
-    {{- $nodeName = printf "%s-node" $.Values.clusterName }}
+    {{- $nodeName = $.Values.clusterName }}
   {{- end }}
 {{- end }}
 
