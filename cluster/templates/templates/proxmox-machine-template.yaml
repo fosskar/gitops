@@ -38,7 +38,7 @@
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
-  name: talos-capi-template
+  name: {{ $firstControlPlaneNode.name }}
   namespace: {{ .Values.targetNamespace | default "default" }}
 spec:
   template:
@@ -101,7 +101,7 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxMachineTemplate
 metadata:
-  name: {{ .Values.clusterName }}-worker-template
+  name: {{ $firstWorkerNode.name }}
   namespace: {{ .Values.targetNamespace | default "default" }}
 spec:
   template:

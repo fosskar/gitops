@@ -12,6 +12,14 @@
 {{- end }}
 
 {{- if gt $workerCount 0 }}
+{{- $firstWorkerNode := "" }}
+{{- range .Values.nodes }}
+  {{- if eq .type "worker" }}
+    {{- if eq $firstWorkerNode "" }}
+      {{- $firstWorkerNode = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineDeployment
 metadata:
@@ -40,5 +48,5 @@ spec:
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
         kind: ProxmoxMachineTemplate
-        name: {{ .Values.clusterName }}-worker-template
+        name: {{ $firstWorkerNode.name }}
 {{- end }}
