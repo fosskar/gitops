@@ -54,7 +54,6 @@ spec:
 {{- if $vmID }}
       virtualMachineID: {{ $vmID }}
 {{- end }}
-      agent: 1
       checks:
         skipCloudInitStatus: true
       metadataSettings:
