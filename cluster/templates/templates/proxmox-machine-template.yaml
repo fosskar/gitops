@@ -1,22 +1,45 @@
-{{/* Generate ProxmoxMachineTemplate for each node */}}
-{{- $controlPlaneIndex := 0 }}
+{{/* Generate ProxmoxMachineTemplate for each node type */}}
+{{- $controlPlaneCount := 0 }}
 {{- $workerIndex := 0 }}
-{{- $singleNodeIndex := 0 }}
-{{- range $nodeIndex, $node := .Values.nodes }}
+{{- $singleNodeCount := 0 }}
+{{- $processedControlPlane := false }}
 
-{{/* Generate node name if not provided */}}
+{{/* Count nodes by type */}}
+{{- range .Values.nodes }}
+  {{- if eq .type "control-plane" }}
+    {{- $controlPlaneCount = add $controlPlaneCount 1 }}
+  {{- else if eq .type "single-node" }}
+    {{- $singleNodeCount = add $singleNodeCount 1 }}
+  {{- end }}
+{{- end }}
+
+{{/* Generate templates */}}
+{{- range $nodeIndex, $node := .Values.nodes }}
 {{- $nodeName := $node.name }}
-{{- if not $nodeName }}
-  {{- if eq $node.type "control-plane" }}
-    {{- $controlPlaneIndex = add $controlPlaneIndex 1 }}
-    {{- $nodeName = printf "%s-control-%d" $.Values.clusterName $controlPlaneIndex }}
-  {{- else if eq $node.type "worker" }}
-    {{- $workerIndex = add $workerIndex 1 }}
+{{- $shouldGenerate := true }}
+
+{{/* For control-plane: only generate ONE shared template */}}
+{{- if eq $node.type "control-plane" }}
+  {{- if $processedControlPlane }}
+    {{- $shouldGenerate = false }}
+  {{- else }}
+    {{- $processedControlPlane = true }}
+    {{- $nodeName = printf "%s-control-plane" $.Values.clusterName }}
+  {{- end }}
+{{/* For workers: generate individual templates */}}
+{{- else if eq $node.type "worker" }}
+  {{- $workerIndex = add $workerIndex 1 }}
+  {{- if not $nodeName }}
     {{- $nodeName = printf "%s-worker-%d" $.Values.clusterName $workerIndex }}
-  {{- else if eq $node.type "single-node" }}
+  {{- end }}
+{{/* For single-node: use cluster name */}}  
+{{- else if eq $node.type "single-node" }}
+  {{- if not $nodeName }}
     {{- $nodeName = $.Values.clusterName }}
   {{- end }}
 {{- end }}
+
+{{- if $shouldGenerate }}
 
 {{/* Merge node specs with defaults */}}
 {{- $defaultSpecs := index $.Values.nodeDefaults $node.type }}
@@ -69,14 +92,17 @@ spec:
 {{- if ne $nodeName $.Values.clusterName }}
         - {{ $nodeName }}
 {{- end }}
-{{- if $node.ip }}
+{{- if and $node.ip (eq $node.type "single-node") }}
         - {{ $node.ip }}
-{{- else if or (eq $node.type "control-plane") (eq $node.type "single-node") }}
+{{- else if eq $node.type "control-plane" }}
         - {{ $.Values.network.vip }}
+{{- else if $node.ip }}
+        - {{ $node.ip }}
 {{- else }}
         - {{ $.Values.network.ipRange }}
 {{- end }}
 {{- range $.Values.extraTags | default (list) }}
         - {{ . }}
+{{- end }}
 {{- end }}
 {{- end }}
