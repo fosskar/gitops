@@ -14,6 +14,14 @@
 {{- $totalControlPlanes := add $controlPlaneCount $singleNodeCount }}
 
 {{- if gt $totalControlPlanes 0 }}
+{{- $firstControlPlaneNode := "" }}
+{{- range .Values.nodes }}
+  {{- if or (eq .type "control-plane") (eq .type "single-node") }}
+    {{- if eq $firstControlPlaneNode "" }}
+      {{- $firstControlPlaneNode = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
 kind: TalosControlPlane
 metadata:
@@ -25,7 +33,7 @@ spec:
   infrastructureTemplate:
     kind: ProxmoxMachineTemplate
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
-    name: {{ .Values.clusterName }}-control-plane-template
+    name: {{ $firstControlPlaneNode.name }}
     namespace: {{ .Values.targetNamespace | default "default" }}
   controlPlaneConfig:
     controlplane:

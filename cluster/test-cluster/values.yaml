@@ -1,3 +1,5 @@
+clusterName: "test1" # Will be set by ApplicationSet
+
 # Override global defaults for test-cluster
 network:
   vip: 10.10.10.100
@@ -9,7 +11,7 @@ extraTags:
 
 # Node Definitions (inherits specs from nodeDefaults.single-node)
 nodes:
-  - name: control-plane-1
-    type: single-node    # Single node that acts as both control plane and allows workloads
-    vmID: 1050          # Specific VM ID for this node
+  - name: test-control-plane-1
+    type: single-node # Single node that acts as both control plane and allows workloads
+    vmID: 1050 # Specific VM ID for this node
     # memory, cores, disk inherited from global nodeDefaults.single-node
