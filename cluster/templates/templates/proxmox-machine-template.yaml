@@ -1,0 +1,53 @@
+{{- $controlPlaneCount := 0 }}
+{{- $singleNodeCount := 0 }}
+{{- range .Values.nodes }}
+  {{- if eq .type "control-plane" }}
+    {{- $controlPlaneCount = add $controlPlaneCount 1 }}
+  {{- else if eq .type "single-node" }}
+    {{- $singleNodeCount = add $singleNodeCount 1 }}
+  {{- end }}
+{{- end }}
+
+{{- $totalControlPlanes := add $controlPlaneCount $singleNodeCount }}
+
+{{- if gt $totalControlPlanes 0 }}
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxMachineTemplate
+metadata:
+  name: {{ .Values.clusterName }}-control-plane
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  template:
+    spec:
+      disks:
+        bootVolume:
+          disk: scsi0
+          sizeGb: {{ index .Values.nodeDefaults "control-plane" "disk" }}
+      format: qcow2
+      full: true
+      memoryMiB: {{ index .Values.nodeDefaults "control-plane" "memory" }}
+      network:
+        default:
+          bridge: {{ .Values.network.bridge }}
+          model: virtio
+          vlan: {{ .Values.network.vlan }}
+      numCores: {{ index .Values.nodeDefaults "control-plane" "cores" }}
+      numSockets: 1
+      sourceNode: {{ .Values.proxmox.node }}
+      templateID: {{ .Values.proxmox.templateId }}
+      vmIDRange:
+        start: {{ (splitList "-" .Values.proxmox.vmIdRange) | first }}
+        end: {{ (splitList "-" .Values.proxmox.vmIdRange) | last }}
+      checks:
+        skipCloudInitStatus: true
+        skipQemuGuestAgent: true
+      metadataSettings:
+        providerIDInjection: true
+      tags:
+        - {{ .Values.clusterName }}
+        - {{ .Values.clusterName }}-control-plane
+        - {{ .Values.network.vip }}
+{{- range .Values.extraTags }}
+        - {{ . }}
+{{- end }}
+{{- end }}

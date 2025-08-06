@@ -5,9 +5,10 @@ metadata:
   namespace: {{ .Values.targetNamespace | default "default" }}
   annotations:
 spec:
-  controlPlaneEndpoint:
-    host: {{ .Values.network.vip }}
-    port: 6443
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+    kind: TalosControlPlane
+    name: {{ .Values.clusterName }}-cp
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
     kind: ProxmoxCluster
