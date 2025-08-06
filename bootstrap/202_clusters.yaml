@@ -30,7 +30,7 @@ spec:
           parameters:
             - name: targetNamespace
               value: "cluster-{{.path.basename}}"
-            - name: clusterName  
+            - name: clusterName
               value: "{{.path.basename}}"
       destination:
         server: https://kubernetes.default.svc
