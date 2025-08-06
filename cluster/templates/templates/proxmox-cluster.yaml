@@ -23,7 +23,8 @@ spec:
     {{- end }}
   ipv4Config:
 {{- if eq $firstNode.type "single-node" }}
-    addresses: []
+    addresses:
+      - {{ .Values.network.ipRange }}
 {{- else }}
     addresses:
       - {{ .Values.network.ipRange }}
