@@ -10,11 +10,13 @@ spec:
     namespace: {{ .Values.targetNamespace | default "default" }}
   allowedNodes:
     - {{ .Values.proxmox.node }}
-{{- if ne $firstNode.type "single-node" }}
   controlPlaneEndpoint:
+{{- if eq $firstNode.type "single-node" }}
+    host: {{ $firstNode.ip }}
+{{- else }}
     host: {{ .Values.network.vip }}
-    port: 6443
 {{- end }}
+    port: 6443
   dnsServers:
     {{- range .Values.network.dnsServers }}
     - {{ . }}
