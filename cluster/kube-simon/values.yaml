@@ -1,7 +1,8 @@
-# Override global defaults for test-cluster
+# Override global defaults for single-node cluster
 network:
-  vip: 10.10.10.100
-  ipRange: "10.10.10.102-10.10.10.110"
+  # No VIP needed for single-node clusters
+  ipRange: "10.10.10.101-10.10.10.110"
+  gateway: 10.10.10.1
 
 # Use VM ID range for this cluster
 proxmox:
