@@ -1,3 +1,4 @@
+{{- $firstNode := index .Values.nodes 0 }}
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: ProxmoxCluster
 metadata:
@@ -9,14 +10,11 @@ spec:
     namespace: {{ .Values.targetNamespace | default "default" }}
   allowedNodes:
     - {{ .Values.proxmox.node }}
+{{- if ne $firstNode.type "single-node" }}
   controlPlaneEndpoint:
-{{- $firstNode := index .Values.nodes 0 }}
-{{- if eq $firstNode.type "single-node" }}
-    host: {{ $firstNode.ip }}
-{{- else }}
     host: {{ .Values.network.vip }}
-{{- end }}
     port: 6443
+{{- end }}
   dnsServers:
     {{- range .Values.network.dnsServers }}
     - {{ . }}
