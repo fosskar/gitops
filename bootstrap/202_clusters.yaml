@@ -11,8 +11,8 @@ spec:
         repoURL: https://codeberg.org/smonoscr/gitops.git
         revision: main
         directories:
-          - path: clusters/*
-          - exclude: clusters/templates
+          - path: cluster/*
+          - exclude: cluster/templates
   template:
     metadata:
       name: "{{.path.basename}}"
@@ -22,7 +22,7 @@ spec:
       source:
         repoURL: https://codeberg.org/smonoscr/gitops.git
         targetRevision: main
-        path: clusters/templates
+        path: cluster/templates
         helm:
           valueFiles:
             - "../{{.path.basename}}/values.yaml"
