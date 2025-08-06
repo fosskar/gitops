@@ -22,10 +22,5 @@ spec:
     {{- range .Values.network.dnsServers }}
     - {{ . }}
     {{- end }}
-  ipv4Config:
-    addresses:
-      - {{ .Values.network.ipRange }}
-    gateway: {{ .Values.network.gateway }}
-    prefix: 24
   schedulerHints:
     memoryAdjustment: 0

@@ -37,9 +37,13 @@ spec:
   numSockets: 1
   sourceNode: {{ $.Values.proxmox.node }}
   templateID: {{ $.Values.proxmox.templateId }}
+{{- if .vmID }}
+  virtualMachineID: {{ .vmID }}
+{{- else }}
   vmIDRange:
     start: {{ (splitList "-" $.Values.proxmox.vmIdRange) | first }}
     end: {{ (splitList "-" $.Values.proxmox.vmIdRange) | last }}
+{{- end }}
   checks:
     skipCloudInitStatus: true
     skipQemuGuestAgent: true
@@ -164,9 +168,13 @@ spec:
   numSockets: 1
   sourceNode: {{ $.Values.proxmox.node }}
   templateID: {{ $.Values.proxmox.templateId }}
+{{- if .vmID }}
+  virtualMachineID: {{ .vmID }}
+{{- else }}
   vmIDRange:
     start: {{ (splitList "-" $.Values.proxmox.vmIdRange) | first }}
     end: {{ (splitList "-" $.Values.proxmox.vmIdRange) | last }}
+{{- end }}
   checks:
     skipCloudInitStatus: true
     skipQemuGuestAgent: true

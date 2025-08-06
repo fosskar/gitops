@@ -15,13 +15,17 @@ extraTags:
   - "talos" # Create this tag in Proxmox with blue color
   - "production" # Create this tag in Proxmox with red color
 
-# Node Definitions (inherits specs from nodeDefaults.single-node)
+# Node Definitions with fixed VM IDs for predictable ordering
 nodes:
-  - type: control-plane # Single node that acts as both control plane and allows workloads
-    ip: 10.10.10.101 # Different IP from the range
+  - type: control-plane
+    ip: 10.10.10.101
+    vmID: 111  # Fixed VM ID for cp-1
   - type: control-plane
     ip: 10.10.10.102
+    vmID: 112  # Fixed VM ID for cp-2
   - type: worker
     ip: 10.10.10.105
+    vmID: 115  # Fixed VM ID for worker-1
   - type: worker
     ip: 10.10.10.106
+    vmID: 116  # Fixed VM ID for worker-2
