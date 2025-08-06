@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.clusterName }}
   namespace: {{ .Values.targetNamespace | default "default" }}
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   credentialsRef:
     name: {{ .Values.proxmox.credentialsSecret }}

@@ -18,7 +18,7 @@ metadata:
   name: {{ .Values.clusterName }}-workers
   namespace: {{ .Values.targetNamespace | default "default" }}
   annotations:
-    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   template:
     spec:
