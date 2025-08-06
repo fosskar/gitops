@@ -72,8 +72,12 @@ spec:
         providerIDInjection: true
       tags:
         - {{ .Values.clusterName }}
-        - control-plane
-        - cluster-api
+        - {{ $firstControlPlaneNode.name }}
+{{- if $firstControlPlaneNode.ip }}
+        - {{ $firstControlPlaneNode.ip }}
+{{- else }}
+        - {{ .Values.network.vip }}
+{{- end }}
 {{- range .Values.extraTags | default (list) }}
         - {{ . }}
 {{- end }}
@@ -135,8 +139,12 @@ spec:
         providerIDInjection: true
       tags:
         - {{ .Values.clusterName }}
-        - worker-node
-        - cluster-api
+        - {{ $firstWorkerNode.name }}
+{{- if $firstWorkerNode.ip }}
+        - {{ $firstWorkerNode.ip }}
+{{- else }}
+        - {{ .Values.network.ipRange }}
+{{- end }}
 {{- range .Values.extraTags | default (list) }}
         - {{ . }}
 {{- end }}
