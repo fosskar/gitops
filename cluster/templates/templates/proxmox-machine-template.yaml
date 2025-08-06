@@ -61,10 +61,9 @@ spec:
 {{- end }}
       checks:
         skipCloudInitStatus: true
-        skipGuestAgentCheck: true
+        skipQemuGuestAgent: true
       metadataSettings:
         providerIDInjection: true
-      agent: 1
       tags:
         - {{ $.Values.clusterName }}
 {{- if ne $nodeName $.Values.clusterName }}
