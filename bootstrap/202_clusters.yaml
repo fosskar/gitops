@@ -1,0 +1,40 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: clusters
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://codeberg.org/smonoscr/gitops.git
+        revision: main
+        directories:
+          - path: clusters/*
+          - exclude: clusters/templates
+  template:
+    metadata:
+      name: "{{.path.basename}}"
+      namespace: argocd
+    spec:
+      project: cluster
+      source:
+        repoURL: https://codeberg.org/smonoscr/gitops.git
+        targetRevision: main
+        path: clusters/templates
+        helm:
+          valueFiles:
+            - "../{{.path.basename}}/values.yaml"
+          parameters:
+            - name: targetNamespace
+              value: "cluster-{{.path.basename}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "cluster-{{.path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

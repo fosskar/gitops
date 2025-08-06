@@ -1,0 +1,250 @@
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxCluster
+metadata:
+  name: {{ .Values.clusterName }}
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  credentialsRef:
+    name: {{ .Values.proxmox.credentialsSecret }}
+    namespace: {{ .Values.targetNamespace | default "default" }}
+  allowedNodes:
+    - {{ .Values.proxmox.node }}
+  controlPlaneEndpoint:
+    host: {{ .Values.network.vip }}
+    port: 6443
+  dnsServers:
+    {{- range .Values.network.dnsServers }}
+    - {{ . }}
+    {{- end }}
+  ipv4Config:
+    addresses:
+      - {{ .Values.network.ipRange }}
+    gateway: {{ .Values.network.gateway }}
+    prefix: 24
+  schedulerHints:
+    memoryAdjustment: 0
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: {{ .Values.clusterName }}
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+    kind: TalosControlPlane
+    name: {{ .Values.clusterName }}-cp
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+    kind: ProxmoxCluster
+    name: {{ .Values.clusterName }}
+---
+{{- $controlPlaneNodes := list }}
+{{- $singleNodes := list }}
+{{- range .Values.nodes }}
+  {{- if eq .type "control-plane" }}
+    {{- $controlPlaneNodes = append $controlPlaneNodes . }}
+  {{- else if eq .type "single-node" }}
+    {{- $singleNodes = append $singleNodes . }}
+  {{- end }}
+{{- end }}
+{{- $totalControlPlanes := add (len $controlPlaneNodes) (len $singleNodes) }}
+
+{{- if gt $totalControlPlanes 0 }}
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxMachineTemplate
+metadata:
+  name: {{ .Values.clusterName }}-control-plane-template
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  template:
+    spec:
+      disks:
+        bootVolume:
+          disk: scsi0
+          sizeGb: {{ (index (concat $controlPlaneNodes $singleNodes) 0).disk }}
+      format: qcow2
+      full: true
+      memoryMiB: {{ (index (concat $controlPlaneNodes $singleNodes) 0).memory }}
+      network:
+        default:
+          bridge: {{ .Values.network.bridge }}
+          model: virtio
+          vlan: {{ .Values.network.vlan }}
+      numCores: {{ (index (concat $controlPlaneNodes $singleNodes) 0).cores }}
+      numSockets: 1
+      sourceNode: {{ .Values.proxmox.node }}
+      templateID: {{ .Values.proxmox.templateId }}
+      checks:
+        skipCloudInitStatus: true
+      metadataSettings:
+        providerIDInjection: true
+      tags:
+        - {{ .Values.clusterName }}
+        - control-plane
+        - cluster-api
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: TalosControlPlane
+metadata:
+  name: {{ .Values.clusterName }}-cp
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  replicas: {{ $totalControlPlanes }}
+  version: {{ .Values.kubernetes.version }}
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+    kind: ProxmoxMachineTemplate
+    name: {{ .Values.clusterName }}-control-plane-template
+  controlPlaneConfig:
+    controlplane:
+      generateType: controlplane
+      hostname: ""
+      strategicPatches:
+        - op: replace
+          path: /machine/install
+          value:
+            disk: /dev/sda
+            extensions:
+              - image: ghcr.io/siderolabs/qemu-guest-agent:9.2.0
+        - op: add
+          path: /machine/install/extraKernelArgs
+          value:
+            - net.ifnames=0
+        - op: add
+          path: /machine/network/interfaces
+          value:
+            - interface: eth0
+              dhcp: false
+              vip:
+                ip: {{ .Values.network.vip }}
+        - op: add
+          path: /cluster/externalCloudProvider
+          value:
+            enabled: true
+            manifests:
+              - https://raw.githubusercontent.com/siderolabs/talos-cloud-controller-manager/main/docs/deploy/cloud-controller-manager.yml
+              - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+        - op: add
+          path: /machine/kubelet/extraArgs
+          value:
+            cloud-provider: external
+            rotate-server-certificates: "true"
+        - op: add
+          path: /machine/features/kubernetesTalosAPIAccess
+          value:
+            enabled: true
+            allowedRoles:
+              - os:reader
+            allowedKubernetesNamespaces:
+              - kube-system
+{{- if gt (len $singleNodes) 0 }}
+        - op: add
+          path: /cluster/allowSchedulingOnControlPlanes
+          value: true
+{{- end }}
+    init:
+      generateType: ""
+      hostname: ""
+{{- end }}
+
+{{- $workerNodes := list }}
+{{- range .Values.nodes }}
+  {{- if eq .type "worker-node" }}
+    {{- $workerNodes = append $workerNodes . }}
+  {{- end }}
+{{- end }}
+
+{{- if gt (len $workerNodes) 0 }}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxMachineTemplate
+metadata:
+  name: {{ .Values.clusterName }}-worker-template
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  template:
+    spec:
+      disks:
+        bootVolume:
+          disk: scsi0
+          sizeGb: {{ (index $workerNodes 0).disk }}
+      format: qcow2
+      full: true
+      memoryMiB: {{ (index $workerNodes 0).memory }}
+      network:
+        default:
+          bridge: {{ .Values.network.bridge }}
+          model: virtio
+          vlan: {{ .Values.network.vlan }}
+      numCores: {{ (index $workerNodes 0).cores }}
+      numSockets: 1
+      sourceNode: {{ .Values.proxmox.node }}
+      templateID: {{ .Values.proxmox.templateId }}
+      checks:
+        skipCloudInitStatus: true
+      metadataSettings:
+        providerIDInjection: true
+      tags:
+        - {{ .Values.clusterName }}
+        - worker-node
+        - cluster-api
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  name: {{ .Values.clusterName }}-workers
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  clusterName: {{ .Values.clusterName }}
+  replicas: {{ len $workerNodes }}
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: {{ .Values.clusterName }}
+      cluster.x-k8s.io/deployment-name: {{ .Values.clusterName }}-workers
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: {{ .Values.clusterName }}
+        cluster.x-k8s.io/deployment-name: {{ .Values.clusterName }}-workers
+    spec:
+      clusterName: {{ .Values.clusterName }}
+      version: {{ .Values.kubernetes.version }}
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+          kind: TalosConfigTemplate
+          name: {{ .Values.clusterName }}-workers
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+        kind: ProxmoxMachineTemplate
+        name: {{ .Values.clusterName }}-worker-template
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+kind: TalosConfigTemplate
+metadata:
+  name: {{ .Values.clusterName }}-workers
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  template:
+    spec:
+      generateType: worker
+      hostname: ""
+      strategicPatches:
+        - op: replace
+          path: /machine/install
+          value:
+            disk: /dev/sda
+            extensions:
+              - image: ghcr.io/siderolabs/qemu-guest-agent:9.2.0
+        - op: add
+          path: /machine/install/extraKernelArgs
+          value:
+            - net.ifnames=0
+        - op: add
+          path: /machine/kubelet/extraArgs
+          value:
+            cloud-provider: external
+            rotate-server-certificates: "true"
+{{- end }}

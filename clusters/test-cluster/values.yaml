@@ -1,0 +1,30 @@
+clusterName: test-cluster
+
+# Network Configuration
+network:
+  vip: 10.10.10.100
+  ipRange: "10.10.10.101-10.10.10.110"
+  gateway: 10.10.10.1
+  bridge: vmbr1
+  vlan: 10
+  dnsServers:
+    - 1.1.1.1
+    - 8.8.8.8
+
+# Proxmox Configuration
+proxmox:
+  node: prx-prd-1
+  templateId: 999
+  credentialsSecret: proxmox-credentials
+
+# Kubernetes Configuration
+kubernetes:
+  version: v1.33.3
+
+# Node Definitions
+nodes:
+  - name: control-plane-1
+    type: single-node    # Single node that acts as both control plane and allows workloads
+    memory: 4096
+    cores: 2
+    disk: 40

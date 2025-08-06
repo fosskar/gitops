@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cluster-template
+description: Modular Kubernetes cluster template for CAPMOX
+type: application
+version: 0.1.0
+appVersion: "1.0"
