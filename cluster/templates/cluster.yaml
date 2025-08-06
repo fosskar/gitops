@@ -76,6 +76,7 @@ spec:
       numSockets: 1
       sourceNode: {{ .Values.proxmox.node }}
       templateID: {{ .Values.proxmox.templateId }}
+      agent: 1
       checks:
         skipCloudInitStatus: true
       metadataSettings:
@@ -182,6 +183,7 @@ spec:
       numSockets: 1
       sourceNode: {{ .Values.proxmox.node }}
       templateID: {{ .Values.proxmox.templateId }}
+      agent: 1
       checks:
         skipCloudInitStatus: true
       metadataSettings:
