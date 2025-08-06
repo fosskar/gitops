@@ -74,6 +74,9 @@ spec:
               - {{ . }}
 {{- end }}
           - op: add
+            path: /machine/network/disableSearchDomain
+            value: true
+          - op: add
             path: /machine/network/interfaces
             value:
               - interface: eth0
@@ -84,6 +87,10 @@ spec:
                 routes:
                   - network: 0.0.0.0/0
                     gateway: {{ .Values.network.gateway }}
+                nameservers:
+{{- range .Values.network.dnsServers }}
+                  - {{ . }}
+{{- end }}
 {{- else }}
                 vip:
                   ip: {{ .Values.network.vip }}
