@@ -1,0 +1,27 @@
+# Override global defaults for single-node cluster
+network:
+  vip: 10.10.10.10
+  # IP range for single-node cluster (different from node IP)
+  ipRange: "10.10.10.100-10.10.10.110"
+  gateway: 10.10.10.1
+
+# Use VM ID range for this cluster
+proxmox:
+  vmIdRange: "110-120"
+
+# Extra tags for VMs (create these in Proxmox with custom colors first)
+extraTags:
+  - "single-node" # Create this tag in Proxmox with green color
+  - "talos" # Create this tag in Proxmox with blue color
+  - "production" # Create this tag in Proxmox with red color
+
+# Node Definitions (inherits specs from nodeDefaults.single-node)
+nodes:
+  - type: control-plane # Single node that acts as both control plane and allows workloads
+    ip: 10.10.10.101 # Different IP from the range
+  - type: control-plane
+    ip: 10.10.10.102
+  - type: worker
+    ip: 10.10.10.105
+  - type: worker
+    ip: 10.10.10.106

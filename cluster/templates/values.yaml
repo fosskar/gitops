@@ -29,18 +29,15 @@ nodeDefaults:
   control-plane:
     memory: 4096
     cores: 2
-    disk: 40
-    # vmID: 1001  # Optional: specific VM ID
+    disk: 50
   worker:
     memory: 8192
-    cores: 4
+    cores: 2
     disk: 100
-    # vmID: 1002  # Optional: specific VM ID
   single-node:
     memory: 4096
     cores: 2
-    disk: 40
-    # vmID: 1000  # Optional: specific VM ID
+    disk: 100
 
 # Nodes must be defined per cluster
 nodes: []

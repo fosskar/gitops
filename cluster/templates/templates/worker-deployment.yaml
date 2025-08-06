@@ -6,7 +6,7 @@
     {{- $controlPlaneCount = add $controlPlaneCount 1 }}
   {{- else if eq .type "single-node" }}
     {{- $singleNodeCount = add $singleNodeCount 1 }}
-  {{- else if eq .type "worker-node" }}
+  {{- else if eq .type "worker" }}
     {{- $workerCount = add $workerCount 1 }}
   {{- end }}
 {{- end }}
