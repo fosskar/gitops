@@ -58,7 +58,7 @@ spec:
         default:
           bridge: vmbr1
           model: virtio
-          tag: 10
+          vlan: 10
       numCores: 2
       numSockets: 1
       sourceNode: prx-prd-1
