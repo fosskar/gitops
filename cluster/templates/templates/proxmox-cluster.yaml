@@ -21,10 +21,12 @@ spec:
     {{- range .Values.network.dnsServers }}
     - {{ . }}
     {{- end }}
+{{- if ne $firstNode.type "single-node" }}
   ipv4Config:
     addresses:
       - {{ .Values.network.ipRange }}
     gateway: {{ .Values.network.gateway }}
     prefix: 24
+{{- end }}
   schedulerHints:
     memoryAdjustment: 0

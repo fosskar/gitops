@@ -1,7 +1,7 @@
 # Override global defaults for single-node cluster
 network:
-  # For single-node: use same IP for both endpoint and range
-  ipRange: "10.10.10.101-10.10.10.101"
+  # Forced to use different IP due to broken validation
+  ipRange: "10.10.10.102"
   gateway: 10.10.10.1
 
 # Use VM ID range for this cluster
