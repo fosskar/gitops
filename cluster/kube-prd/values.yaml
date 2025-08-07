@@ -7,7 +7,7 @@ network:
 
 # Use smaller VM ID range for predictable ordering (4 VMs = 111-114)
 proxmox:
-  vmIdRange: "111-114"
+  vmIdRange: "111-115"
 
 # Extra tags for VMs (create these in Proxmox with custom colors first)
 extraTags: []
@@ -16,5 +16,6 @@ extraTags: []
 nodes:
   - type: control-plane
   - type: control-plane
+  - type: worker
   - type: worker
   - type: worker
