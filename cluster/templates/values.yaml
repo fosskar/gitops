@@ -54,3 +54,11 @@ addons:
     server:
       service:
         type: LoadBalancer  # or NodePort, ClusterIP
+
+# CNI Configuration
+cni:
+  cilium:
+    enabled: false
+    version: "1.18.0"  # cilium helm chart version
+    kubeProxyReplacement: true  # disable kube-proxy for better performance
+    gatewayAPI: false  # enable for gateway api support

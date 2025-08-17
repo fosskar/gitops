@@ -111,6 +111,5 @@ spec:
     kind: ProxmoxMachine
     name: {{ $.Values.clusterName }}-worker-{{ $workerIndex }}
     namespace: {{ $.Values.targetNamespace | default "default" }}
-
 {{- end }}
 {{- end }}
