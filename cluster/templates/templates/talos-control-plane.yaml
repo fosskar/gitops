@@ -42,9 +42,9 @@ spec:
           - op: add
             path: /machine/network/nameservers
             value:
-{{- range .Values.network.dnsServers }}
+            {{- range .Values.network.dnsServers }}
               - {{ . }}
-{{- end }}
+            {{- end }}
           - op: add
             path: /machine/network/disableSearchDomain
             value: true
@@ -75,17 +75,17 @@ spec:
                 - os:reader
               allowedKubernetesNamespaces:
                 - kube-system
-{{- if .Values.cni.cilium.enabled }}
+          {{- if .Values.cni.cilium.enabled }}
           - op: add
             path: /cluster/network/cni
             value:
               name: none
-{{- if .Values.cni.cilium.kubeProxyReplacement }}
+          {{- if .Values.cni.cilium.kubeProxyReplacement }}
           - op: add
             path: /cluster/proxy
             value:
               disabled: true
-{{- end }}
+          {{- end }}
           - op: add
             path: /cluster/inlineManifests
             value:
@@ -169,14 +169,14 @@ spec:
                             - {{ .Values.cni.cilium.version }}
                             - --set
                             - ipam.mode=kubernetes
-{{- if .Values.cni.cilium.kubeProxyReplacement }}
+                            {{- if .Values.cni.cilium.kubeProxyReplacement }}
                             - --set
                             - kubeProxyReplacement=true
-{{- end }}
+                            {{- end }}
                             - --set
-                            - securityContext.capabilities.ciliumAgent={CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}
+                            - "securityContext.capabilities.ciliumAgent={CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}"
                             - --set
-                            - securityContext.capabilities.cleanCiliumState={NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}
+                            - "securityContext.capabilities.cleanCiliumState={NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}"
                             - --set
                             - cgroup.autoMount.enabled=false
                             - --set
