@@ -15,7 +15,15 @@ extraTags: []
 # Node Definitions (IPs assigned automatically by CAPMOX from ipRange)
 nodes:
   - type: control-plane
-  - type: control-plane
   - type: worker
+    memory: 16384 # 16GB
+    cores: 4
+    disk: 100
   - type: worker
+    memory: 16384 # 16GB
+    cores: 4
+    disk: 100
   - type: worker
+    memory: 16384 # 16GB
+    cores: 4
+    disk: 100

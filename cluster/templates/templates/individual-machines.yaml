@@ -20,16 +20,16 @@ spec:
   disks:
     bootVolume:
       disk: scsi0
-      sizeGb: {{ $.Values.nodeDefaults.worker.disk }}
+      sizeGb: {{ .disk | default $.Values.nodeDefaults.worker.disk }}
   format: qcow2
   full: true
-  memoryMiB: {{ $.Values.nodeDefaults.worker.memory }}
+  memoryMiB: {{ .memory | default $.Values.nodeDefaults.worker.memory }}
   network:
     default:
       bridge: {{ $.Values.network.bridge }}
       model: virtio
       vlan: {{ $.Values.network.vlan }}
-  numCores: {{ $.Values.nodeDefaults.worker.cores }}
+  numCores: {{ .cores | default $.Values.nodeDefaults.worker.cores }}
   numSockets: 1
   sourceNode: {{ $.Values.proxmox.node }}
   templateID: {{ $.Values.proxmox.templateId }}
