@@ -36,3 +36,10 @@ addons:
     server:
       service:
         type: NodePort
+
+# Enable Cilium CNI
+cni:
+  cilium:
+    enabled: true
+    version: "1.16.1"
+    kubeProxyReplacement: true

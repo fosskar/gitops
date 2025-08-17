@@ -75,4 +75,129 @@ spec:
                 - os:reader
               allowedKubernetesNamespaces:
                 - kube-system
+{{- if .Values.cni.cilium.enabled }}
+          - op: add
+            path: /cluster/network/cni
+            value:
+              name: none
+{{- if .Values.cni.cilium.kubeProxyReplacement }}
+          - op: add
+            path: /cluster/proxy
+            value:
+              disabled: true
+{{- end }}
+          - op: add
+            path: /cluster/inlineManifests
+            value:
+              - name: cilium
+                contents: |
+                  # cilium helm-generated manifest for bootstrap
+                  # generated with: helm template cilium cilium/cilium --version 1.16.1 --namespace kube-system --set cgroup.autoMount.enabled=false --set cgroup.hostRoot=/sys/fs/cgroup --set k8sServiceHost=localhost --set k8sServicePort=7445 --set kubeProxyReplacement=true
+                  ---
+                  # Source: cilium/templates/cilium-agent/serviceaccount.yaml
+                  apiVersion: v1
+                  kind: ServiceAccount
+                  metadata:
+                    name: "cilium"
+                    namespace: kube-system
+                  ---
+                  # Source: cilium/templates/cilium-operator/serviceaccount.yaml
+                  apiVersion: v1
+                  kind: ServiceAccount
+                  metadata:
+                    name: "cilium-operator"
+                    namespace: kube-system
+                  ---
+                  # Source: cilium/templates/cilium-configmap.yaml
+                  apiVersion: v1
+                  kind: ConfigMap
+                  metadata:
+                    name: cilium-config
+                    namespace: kube-system
+                  data:
+                    identity-allocation-mode: crd
+                    identity-heartbeat-timeout: "30m0s"
+                    identity-gc-interval: "15m0s"
+                    cilium-endpoint-gc-interval: "5m0s"
+                    nodes-gc-interval: "5m0s"
+                    debug: "false"
+                    debug-verbose: ""
+                    enable-policy: "default"
+                    policy-cidr-match-mode: ""
+                    operator-prometheus-serve-addr: ":9963"
+                    enable-metrics: "true"
+                    enable-ipv4: "true"
+                    enable-ipv6: "false"
+                    custom-cni-conf: "false"
+                    enable-bpf-clock-probe: "false"
+                    monitor-aggregation: medium
+                    monitor-aggregation-interval: "5s"
+                    monitor-aggregation-flags: all
+                    bpf-map-dynamic-size-ratio: "0.0025"
+                    bpf-policy-map-max: "16384"
+                    bpf-lb-map-max: "65536"
+                    bpf-lb-external-clusterip: "false"
+                    preallocate-bpf-maps: "false"
+                    cluster-name: default
+                    cluster-id: "0"
+                    routing-mode: "tunnel"
+                    tunnel-protocol: "vxlan"
+                    service-no-backend-response: "reject"
+                    enable-l7-proxy: "true"
+                    enable-ipv4-masquerade: "true"
+                    enable-ipv6-masquerade: "true"
+                    enable-tcx: "true"
+                    datapath-mode: "veth"
+                    enable-xt-socket-fallback: "true"
+                    install-no-conntrack-iptables-rules: "false"
+                    auto-direct-node-routes: "false"
+                    enable-local-redirect-policy: "false"
+                    enable-runtime-device-detection: "true"
+                    kube-proxy-replacement: "true"
+                    kube-proxy-replacement-healthz-bind-address: ""
+                    enable-health-check-nodeport: "true"
+                    node-port-bind-protection: "true"
+                    enable-auto-protect-node-port-range: "true"
+                    enable-svc-source-range-check: "true"
+                    enable-l2-neigh-discovery: "true"
+                    arping-refresh-period: "30s"
+                    k8s-require-ipv4-pod-cidr: "false"
+                    k8s-require-ipv6-pod-cidr: "false"
+                    enable-k8s-networkpolicy: "true"
+                    write-cni-conf-when-ready: /host/etc/cni/net.d/05-cilium.conflist
+                    cni-exclusive: "true"
+                    cni-log-file: "/var/run/cilium/cilium-cni.log"
+                    enable-endpoint-health-checking: "true"
+                    enable-health-checking: "true"
+                    enable-well-known-identities: "false"
+                    enable-node-selector-labels: "false"
+                    synchronize-k8s-nodes: "true"
+                    operator-api-serve-addr: "127.0.0.1:9234"
+                    enable-hubble: "true"
+                    hubble-socket-path: "/var/run/cilium/hubble.sock"
+                    hubble-listen-address: ":4244"
+                    hubble-disable-tls: "false"
+                    hubble-tls-cert-file: /var/lib/cilium/tls/hubble/server.crt
+                    hubble-tls-key-file: /var/lib/cilium/tls/hubble/server.key
+                    hubble-tls-client-ca-files: /var/lib/cilium/tls/hubble/client-ca.crt
+                    ipam: "cluster-pool"
+                    ipam-cilium-node-update-rate: "15s"
+                    cluster-pool-ipv4-cidr: "10.0.0.0/8"
+                    cluster-pool-ipv4-mask-size: "24"
+                    procfs: "/host/proc"
+                    bpf-root: "/sys/fs/bpf"
+                    cgroup-root: "/sys/fs/cgroup"
+                    enable-k8s-terminating-endpoint: "true"
+                    enable-sctp: "false"
+                    k8s-client-qps: "10"
+                    k8s-client-burst: "20"
+                    remove-cilium-node-taints: "true"
+                    set-cilium-node-taints: "true"
+                    set-cilium-is-up-condition: "true"
+                    unmanaged-pod-watcher-interval: "15"
+                    dnsproxy-enable-transparent-mode: "true"
+                    tofqdns-dns-reject-response-code: "refused"
+                    tofqdns-enable-dns-compression: "true"
+                    agent-not-ready-taint-key: "node.cilium.io/agent-not-ready"
+{{- end }}
 {{- end }}
