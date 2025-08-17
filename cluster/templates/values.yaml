@@ -42,3 +42,15 @@ nodeDefaults:
 
 # Nodes must be defined per cluster
 nodes: []
+
+# Cluster Addons (via CAAPH - Cluster API Addon Provider Helm)
+addons:
+  argocd:
+    enabled: false
+    namespace: argocd
+    version: "8.3.0"  # argo-cd helm chart version
+    # Generate password hash with: echo -n 'your-password' | htpasswd -bnBC 12 "" | tr -d ':\n'
+    adminPassword: "$2a$12$EXAMPLE_BCRYPT_HASH"  # override per cluster
+    server:
+      service:
+        type: LoadBalancer  # or NodePort, ClusterIP

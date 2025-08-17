@@ -27,3 +27,12 @@ nodes:
     memory: 16384 # 16GB
     cores: 4
     disk: 100
+
+# Enable ArgoCD addon via CAAPH
+addons:
+  argocd:
+    enabled: true
+    adminPassword: "$2a$12$rRBBrhEtE89.P9yiM7mE8uWjpOikbZ7nh6f67baTGaFtlSUrE1DCm"
+    server:
+      service:
+        type: LoadBalancer
