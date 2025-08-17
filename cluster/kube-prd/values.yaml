@@ -35,4 +35,4 @@ addons:
     adminPassword: "$2a$12$rRBBrhEtE89.P9yiM7mE8uWjpOikbZ7nh6f67baTGaFtlSUrE1DCm"
     server:
       service:
-        type: LoadBalancer
+        type: NodePort

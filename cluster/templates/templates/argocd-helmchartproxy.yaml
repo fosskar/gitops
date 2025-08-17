@@ -7,27 +7,28 @@ metadata:
 spec:
   clusterSelector:
     matchLabels:
-      cluster.x-k8s.io/cluster-name: {{ .Values.clusterName }}
-      deploy-argocd: "true"
+      argoCDChart: enabled
   repoURL: https://argoproj.github.io/argo-helm
   chartName: argo-cd
   version: {{ .Values.addons.argocd.version }}
-  targetNamespace: {{ .Values.addons.argocd.namespace }}
-  createNamespace: true
+  namespace: {{ .Values.addons.argocd.namespace }}
+  options:
+    waitForJobs: true
+    wait: true
+    timeout: 10m
+    install:
+      createNamespace: true
+    upgrade:
+      maxHistory: 10
   valuesTemplate: |
     global:
       domain: argocd.{{ "{{" }} .Cluster.metadata.name {{ "}}" }}.local
-
     configs:
       secret:
         argocdServerAdminPassword: {{ .Values.addons.argocd.adminPassword | quote }}
     server:
       service:
         type: {{ .Values.addons.argocd.server.service.type }}
-        {{- if eq .Values.addons.argocd.server.service.type "LoadBalancer" }}
-        annotations:
-          metallb.universe.tf/address-pool: default
-        {{- end }}
       ingress:
         enabled: false
     dex:
@@ -44,7 +45,12 @@ spec:
         enabled: true
         serviceMonitor:
           enabled: false
-    server:
+    applicationSet:
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: false
+    notifications:
       metrics:
         enabled: true
         serviceMonitor:

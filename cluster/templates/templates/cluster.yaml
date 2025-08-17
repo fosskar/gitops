@@ -3,7 +3,10 @@ kind: Cluster
 metadata:
   name: {{ .Values.clusterName }}
   namespace: {{ .Values.targetNamespace | default "default" }}
-  annotations:
+  {{- if .Values.addons.argocd.enabled }}
+  labels:
+    argoCDChart: enabled
+  {{- end }}
 spec:
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
