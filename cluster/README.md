@@ -9,7 +9,7 @@ this folder contains helm templates for deploying kubernetes clusters via cluste
    ```bash
    mkdir cluster/my-new-cluster
    ```
-   
+
    **important**: the directory name becomes the cluster name (e.g., `my-new-cluster` directory creates a cluster named `my-new-cluster`)
 
 2. **create values.yaml**:
@@ -69,15 +69,16 @@ gitops:
 ```yaml
 cni:
   cilium:
-    enabled: true                    # enables cilium cni installation via bootstrap job
-    version: "1.18.1"               # cilium version to install
-    kubeProxyReplacement: true      # disables kube-proxy and uses cilium's ebpf implementation
+    enabled: true # enables cilium cni installation via bootstrap job
+    version: "1.18.1" # cilium version to install
+    kubeProxyReplacement: true # disables kube-proxy and uses cilium's ebpf implementation
 ```
 
 when `cni.cilium.enabled: true`:
-- talos cluster is configured with `cni: none` (disables default flannel/calico)
-- kube-proxy is disabled when `kubeProxyReplacement: true` 
-- cilium-install job runs during cluster bootstrap to install cilium
+
+- talos cluster is configured with `cni: none` (disables default cni flannel)
+- kube-proxy is disabled when `kubeProxyReplacement: true`
+- cilium-install job runs during cluster bootstrap to install cilium - gitops takes over cilium after initial bootstrap
 - cilium provides cni networking and optionally replaces kube-proxy with ebpf
 
 ## automatic deployments
