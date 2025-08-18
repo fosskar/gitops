@@ -69,10 +69,16 @@ gitops:
 ```yaml
 cni:
   cilium:
-    enabled: true
-    version: "1.18.1"
-    kubeProxyReplacement: true
+    enabled: true                    # enables cilium cni installation via bootstrap job
+    version: "1.18.1"               # cilium version to install
+    kubeProxyReplacement: true      # disables kube-proxy and uses cilium's ebpf implementation
 ```
+
+when `cni.cilium.enabled: true`:
+- talos cluster is configured with `cni: none` (disables default flannel/calico)
+- kube-proxy is disabled when `kubeProxyReplacement: true` 
+- cilium-install job runs during cluster bootstrap to install cilium
+- cilium provides cni networking and optionally replaces kube-proxy with ebpf
 
 ## automatic deployments
 
