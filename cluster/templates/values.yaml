@@ -43,8 +43,17 @@ nodeDefaults:
 # Nodes must be defined per cluster
 nodes: []
 
+# CNI Configuration
+cni:
+  cilium:
+    enabled: false
+    version: "1.18.1"  # cilium helm chart version
+    kubeProxyReplacement: true  # disable kube-proxy for better performance
+    gatewayAPI: false  # enable for gateway api support
+
 # Cluster Addons (via CAAPH - Cluster API Addon Provider Helm)
-addons:
+# GitOps Configuration
+gitops:
   argocd:
     enabled: false
     namespace: argocd
@@ -54,11 +63,5 @@ addons:
     server:
       service:
         type: LoadBalancer  # or NodePort, ClusterIP
-
-# CNI Configuration
-cni:
-  cilium:
-    enabled: false
-    version: "1.18.0"  # cilium helm chart version
-    kubeProxyReplacement: true  # disable kube-proxy for better performance
-    gatewayAPI: false  # enable for gateway api support
+    bootstrap:
+      enabled: false

@@ -1,4 +1,4 @@
-{{- if .Values.addons.argocd.enabled }}
+{{- if .Values.gitops.argocd.enabled }}
 apiVersion: addons.cluster.x-k8s.io/v1alpha1
 kind: HelmChartProxy
 metadata:
@@ -10,8 +10,8 @@ spec:
       argoCDChart: enabled
   repoURL: https://argoproj.github.io/argo-helm
   chartName: argo-cd
-  version: {{ .Values.addons.argocd.version }}
-  namespace: {{ .Values.addons.argocd.namespace }}
+  version: {{ .Values.gitops.argocd.version | default "7.7.8" }}
+  namespace: {{ .Values.gitops.argocd.namespace | default "argocd" }}
   options:
     waitForJobs: true
     wait: true
@@ -25,10 +25,10 @@ spec:
       domain: argocd.{{ "{{" }} .Cluster.metadata.name {{ "}}" }}.local
     configs:
       secret:
-        argocdServerAdminPassword: {{ .Values.addons.argocd.adminPassword | quote }}
+        argocdServerAdminPassword: {{ .Values.gitops.argocd.adminPassword | quote }}
     server:
       service:
-        type: {{ .Values.addons.argocd.server.service.type }}
+        type: {{ .Values.gitops.argocd.server.service.type | default "ClusterIP" }}
       ingress:
         enabled: false
     dex:

@@ -1,6 +1,6 @@
 apiVersion: v2
 name: cluster
-description: Dynamic Kubernetes cluster with configurable nodes
+description: Dynamic Kubernetes cluster with configurable nodes with proxmox, talos and argocd
 type: application
 version: 0.1.0
 appVersion: "1.0"

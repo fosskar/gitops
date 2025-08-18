@@ -1,0 +1,38 @@
+{{- if .Values.gitops.argocd.bootstrap.enabled }}
+---
+apiVersion: addons.cluster.x-k8s.io/v1alpha1
+kind: HelmChartProxy
+metadata:
+  name: {{ .Values.clusterName }}-bootstrap
+  namespace: {{ .Values.targetNamespace | default "default" }}
+spec:
+  clusterSelector:
+    matchLabels:
+      argoCDChart: enabled
+  repoURL: https://argoproj.github.io/argo-helm
+  chartName: argocd-apps
+  version: "2.0.2"
+  namespace: argocd
+  releaseName: bootstrap
+  valuesTemplate: |
+    applications:
+      - name: bootstrap
+        namespace: argocd
+        project: default
+        finalizers:
+          - resources-finalizer.argocd.argoproj.io
+        source:
+          repoURL: https://codeberg.org/smonoscr/gitops.git
+          targetRevision: main
+          path: bootstrap/{{ .Values.clusterName }}
+        destination:
+          server: https://kubernetes.default.svc
+          namespace: argocd
+        syncPolicy:
+          automated:
+            prune: true
+            selfHeal: true
+          syncOptions:
+            - CreateNamespace=true
+            - ApplyOutOfSyncOnly=true
+{{- end }}

@@ -3,7 +3,7 @@ kind: Cluster
 metadata:
   name: {{ .Values.clusterName }}
   namespace: {{ .Values.targetNamespace | default "default" }}
-  {{- if .Values.addons.argocd.enabled }}
+  {{- if .Values.gitops.argocd.enabled }}
   labels:
     argoCDChart: enabled
   {{- end }}

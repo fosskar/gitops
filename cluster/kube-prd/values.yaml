@@ -28,18 +28,20 @@ nodes:
     cores: 4
     disk: 100
 
-# Enable ArgoCD addon via CAAPH
-addons:
-  argocd:
-    enabled: true
-    adminPassword: "$2a$12$rRBBrhEtE89.P9yiM7mE8uWjpOikbZ7nh6f67baTGaFtlSUrE1DCm"
-    server:
-      service:
-        type: NodePort
-
 # Enable Cilium CNI
 cni:
   cilium:
     enabled: true
     version: "1.18.1"
     kubeProxyReplacement: true
+
+# GitOps Configuration
+gitops:
+  argocd:
+    enabled: true
+    adminPassword: "$2a$12$rRBBrhEtE89.P9yiM7mE8uWjpOikbZ7nh6f67baTGaFtlSUrE1DCm"
+    server:
+      service:
+        type: NodePort
+    bootstrap:
+      enabled: true
