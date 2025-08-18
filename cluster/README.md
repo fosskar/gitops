@@ -22,13 +22,12 @@ this folder contains helm templates for deploying kubernetes clusters via cluste
 
 4. **deploy cluster**:
    ```bash
-   helm install my-new-cluster ./templates \
-     --values my-new-cluster/values.yaml \
-     --set clusterName=my-new-cluster \
-     --set targetNamespace=cluster-my-new-cluster \
-     --namespace cluster-my-new-cluster \
-     --create-namespace
+   git add cluster/my-new-cluster/values.yaml
+   git commit -m "add my-new-cluster configuration"  
+   git push
    ```
+   
+   the cluster applicationset will automatically detect the new directory and deploy the cluster via argocd.
 
 ## cluster configuration
 
