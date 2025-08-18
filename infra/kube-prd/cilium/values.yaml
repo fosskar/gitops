@@ -1,6 +1,9 @@
 # cilium configuration for kube-prd cluster on talos
 # matches bootstrap job configuration for seamless takeover
 
+# override namespace - cilium should be in kube-system, not cilium
+namespaceOverride: kube-system
+
 # kube-proxy replacement (matches bootstrap job)
 kubeProxyReplacement: true
 k8sServiceHost: auto
