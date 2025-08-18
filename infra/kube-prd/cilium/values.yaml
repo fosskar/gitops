@@ -30,6 +30,8 @@ cilium:
   ingressController:
     enabled: true
     default: true
+    service:
+      allocateLoadBalancerNodePorts: false
 
   # gateway api support (requires envoy)
   gatewayAPI:
