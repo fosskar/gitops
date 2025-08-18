@@ -57,7 +57,8 @@ cgroup:
 envoy:
   enabled: true
 
-# disable clean-cilium-state to avoid capability issues on talos
+# disable bpf state cleaning to avoid capability issues on talos
+cleanBpfState: false
 cleanState: false
 
 # hubble observability
