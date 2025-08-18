@@ -26,7 +26,7 @@ spec:
           releaseName: "{{.path.basename}}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{.path.basename}}"
+        namespace: "{{if eq .path.basename \"cilium\"}}kube-system{{else}}{{.path.basename}}{{end}}"
       syncPolicy:
         automated:
           prune: true
