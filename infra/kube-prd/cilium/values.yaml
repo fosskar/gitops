@@ -19,6 +19,7 @@ cilium:
   routingMode: native
   autoDirectNodeRoutes: true
   directRoutingSkipUnreachable: true
+  ipv4NativeRoutingCIDR: "10.10.10.0/24"
 
   l2announcements:
     enabled: true
