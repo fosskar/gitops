@@ -16,7 +16,7 @@ spec:
   releaseName: bootstrap
   valuesTemplate: |
     applications:
-      - name: bootstrap
+      bootstrap:
         namespace: argocd
         project: default
         finalizers:
@@ -24,7 +24,7 @@ spec:
         source:
           repoURL: https://codeberg.org/smonoscr/gitops.git
           targetRevision: main
-          path: bootstrap/{{ .Values.clusterName }}
+          path: bootstrap/{{ "{{" }} .Values.clusterName {{ "}}" }}
         destination:
           server: https://kubernetes.default.svc
           namespace: argocd
