@@ -15,7 +15,7 @@ cilium:
 
   rollOutCiliumPods: false
 
-  # enable direct routing for better performance on same L2 network  
+  # enable direct routing for better performance on same L2 network
   routingMode: native
   autoDirectNodeRoutes: true
   directRoutingSkipUnreachable: true
@@ -40,12 +40,10 @@ cilium:
 
   ipam:
     mode: kubernetes
-    operator:
-      autoCreateCiliumPodIPPools:
-        loadbalancer:
-          ipv4:
-            cidrs:
-              - "10.10.10.120/26"
+
+  bpf:
+    masquerade: true
+    hostLegacyRouting: false
 
   socketLB:
     enabled: true
