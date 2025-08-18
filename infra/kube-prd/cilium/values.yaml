@@ -1,0 +1,76 @@
+# cilium configuration for kube-prd cluster on talos
+# matches bootstrap job configuration for seamless takeover
+
+# kube-proxy replacement (matches bootstrap job)
+kubeProxyReplacement: true
+k8sServiceHost: auto
+k8sServicePort: 6443
+
+# cluster identification (default is "default", not "kube-prd")
+cluster:
+  name: kube-prd
+
+rollOutCiliumPods: false
+
+# enable direct routing for better performance on same L2 network
+autoDirectNodeRoutes: true
+directRoutingSkipUnreachable: true
+
+l2announcements:
+  enabled: true
+
+ingressController:
+  enabled: true
+  default: true
+
+# gateway api support (requires envoy)
+gatewayAPI:
+  enabled: true
+
+# wireguard encryption for pod-to-pod traffic
+encryption:
+  enabled: true
+  type: wireguard
+  nodeEncryption: true
+
+ipam:
+  operator:
+    autoCreateCiliumPodIPPools:
+      loadbalancer:
+        ipv4:
+          cidrs:
+            - "10.10.10.120/26"
+
+socketLB:
+  enabled: true
+  hostNamespaceOnly: true
+  terminatePodConnections: true
+
+# talos-specific cgroup configuration
+# talos mounts cgroup2 at /sys/fs/cgroup, not /run/cilium/cgroupv2
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+
+# envoy proxy for gateway api (default is null, not true)
+envoy:
+  enabled: true
+
+# hubble observability
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+    rollOutPods: true
+  ui:
+    enabled: true
+    rollOutPods: true
+    ingress:
+      enabled: true
+      hosts:
+        - hubble-kube-prd.simonoscar.me
+      tls:
+        - secretName: hubble-ingress-tls
+          hosts:
+            - hubble-kube-prd.simonoscar.me
