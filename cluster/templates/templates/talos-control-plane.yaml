@@ -185,5 +185,10 @@ spec:
                             - k8sServiceHost=localhost
                             - --set
                             - k8sServicePort=7445
+          - op: add
+            path: /machine/features/hostDNS
+            value:
+              enabled: true
+              forwardKubeDNSToHost: false
 {{- end }}
 {{- end }}

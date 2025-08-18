@@ -87,6 +87,11 @@ spec:
         value:
           cloud-provider: external
           rotate-server-certificates: "true"
+      - op: add
+        path: /machine/features/hostDNS
+        value:
+          enabled: true
+          forwardKubeDNSToHost: false
 
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
