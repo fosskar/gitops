@@ -3,5 +3,5 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: kube-prd-lb-pool
 spec:
-  cidrs:
+  blocks:
   - cidr: "10.10.10.120/29"
