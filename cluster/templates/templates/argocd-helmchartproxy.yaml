@@ -10,12 +10,11 @@ spec:
       argoCDChart: enabled
   repoURL: https://argoproj.github.io/argo-helm
   chartName: argo-cd
-  version: {{ .Values.gitops.argocd.version | default "7.7.8" }}
+  version: {{ .Values.gitops.argocd.version }}
   namespace: {{ .Values.gitops.argocd.namespace | default "argocd" }}
   options:
     waitForJobs: true
     wait: true
-    timeout: 10m
     install:
       createNamespace: true
     upgrade:
