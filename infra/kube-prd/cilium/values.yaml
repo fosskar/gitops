@@ -6,8 +6,8 @@ upgradeCompatibility: "1.18"
 
 # kube-proxy replacement (matches bootstrap job)
 kubeProxyReplacement: true
-k8sServiceHost: auto
-k8sServicePort: 6443
+k8sServiceHost: localhost
+k8sServicePort: 7445
 
 # cluster identification (default is "default", not "kube-prd")
 cluster:
@@ -37,6 +37,7 @@ encryption:
   nodeEncryption: true
 
 ipam:
+  mode: kubernetes
   operator:
     autoCreateCiliumPodIPPools:
       loadbalancer:
