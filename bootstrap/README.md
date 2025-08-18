@@ -20,6 +20,8 @@ bootstrap/
    ```bash
    mkdir bootstrap/my-new-cluster
    ```
+   
+   **important**: the directory name must match the cluster name from `cluster/` folder
 
 2. **copy base files**:
    ```bash

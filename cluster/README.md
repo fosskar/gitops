@@ -5,11 +5,15 @@ this folder contains helm templates for deploying kubernetes clusters via cluste
 ## creating a new cluster
 
 1. **create cluster directory**:
+
    ```bash
    mkdir cluster/my-new-cluster
    ```
+   
+   **important**: the directory name becomes the cluster name (e.g., `my-new-cluster` directory creates a cluster named `my-new-cluster`)
 
 2. **create values.yaml**:
+
    ```bash
    cp cluster/kube-prd/values.yaml cluster/my-new-cluster/values.yaml
    ```
@@ -21,42 +25,47 @@ this folder contains helm templates for deploying kubernetes clusters via cluste
    - configure gitops.argocd settings
 
 4. **deploy cluster**:
+
    ```bash
    git add cluster/my-new-cluster/values.yaml
-   git commit -m "add my-new-cluster configuration"  
+   git commit -m "add my-new-cluster configuration"
    git push
    ```
-   
+
    the cluster applicationset will automatically detect the new directory and deploy the cluster via argocd.
 
 ## cluster configuration
 
 ### network
+
 - `network.vip`: virtual ip for control plane
 - `network.ipRange`: ip range for capmox to assign to nodes
 - `network.gateway`: network gateway
 
 ### nodes
+
 ```yaml
 nodes:
   - type: control-plane
   - type: worker
-    memory: 16384  # 16GB
+    memory: 16384 # 16GB
     cores: 4
     disk: 100
 ```
 
 ### gitops
+
 ```yaml
 gitops:
   argocd:
     enabled: true
     adminPassword: "bcrypt-hashed-password"
     bootstrap:
-      enabled: true  # deploys bootstrap application for apps-of-apps
+      enabled: true # deploys bootstrap application for apps-of-apps
 ```
 
 ### cni
+
 ```yaml
 cni:
   cilium:
@@ -68,6 +77,7 @@ cni:
 ## automatic deployments
 
 when `gitops.argocd.enabled: true`:
+
 - cluster gets labeled with `argoCDChart: enabled`
 - argocd helmchartproxy deploys argocd to the cluster
 - if `bootstrap.enabled: true`, bootstrap helmchartproxy deploys bootstrap application
