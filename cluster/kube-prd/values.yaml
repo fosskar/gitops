@@ -39,7 +39,7 @@ cni:
 gitops:
   argocd:
     enabled: true
-    adminPassword: "$2a$12$rRBBrhEtE89.P9yiM7mE8uWjpOikbZ7nh6f67baTGaFtlSUrE1DCm"
+    adminPassword: "$2y$12$a40VqMRg5OvfaXz66VAHGuVNqdUIOvGBAOWzVy6T59Kfb8Sv1bZRy"
     server:
       service:
         type: NodePort
