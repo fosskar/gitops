@@ -1,65 +1,65 @@
 # cilium configuration for kube-prd cluster on talos
 # matches bootstrap job configuration for seamless takeover
+cilium:
+  # set upgrade compatibility to current version
+  upgradeCompatibility: "1.18"
 
-# set upgrade compatibility to current version
-upgradeCompatibility: "1.18"
+  # kube-proxy replacement (matches bootstrap job)
+  kubeProxyReplacement: "true"
+  k8sServiceHost: localhost
+  k8sServicePort: 7445
 
-# kube-proxy replacement (matches bootstrap job)
-kubeProxyReplacement: "true"
-k8sServiceHost: localhost
-k8sServicePort: 7445
+  # cluster identification (default is "default", not "kube-prd")
+  cluster:
+    name: kube-prd
 
-# cluster identification (default is "default", not "kube-prd")
-cluster:
-  name: kube-prd
+  rollOutCiliumPods: false
 
-rollOutCiliumPods: false
+  # enable direct routing for better performance on same L2 network
+  autoDirectNodeRoutes: true
+  directRoutingSkipUnreachable: true
 
-# enable direct routing for better performance on same L2 network
-autoDirectNodeRoutes: true
-directRoutingSkipUnreachable: true
+  l2announcements:
+    enabled: true
 
-l2announcements:
-  enabled: true
+  ingressController:
+    enabled: true
+    default: true
 
-ingressController:
-  enabled: true
-  default: true
+  # gateway api support (requires envoy)
+  gatewayAPI:
+    enabled: true
 
-# gateway api support (requires envoy)
-gatewayAPI:
-  enabled: true
+  # wireguard encryption for pod-to-pod traffic
+  encryption:
+    enabled: true
+    type: wireguard
+    nodeEncryption: true
 
-# wireguard encryption for pod-to-pod traffic
-encryption:
-  enabled: true
-  type: wireguard
-  nodeEncryption: true
+  ipam:
+    mode: kubernetes
+    operator:
+      autoCreateCiliumPodIPPools:
+        loadbalancer:
+          ipv4:
+            cidrs:
+              - "10.10.10.120/26"
 
-ipam:
-  mode: kubernetes
-  operator:
-    autoCreateCiliumPodIPPools:
-      loadbalancer:
-        ipv4:
-          cidrs:
-            - "10.10.10.120/26"
+  socketLB:
+    enabled: true
+    hostNamespaceOnly: true
+    terminatePodConnections: true
 
-socketLB:
-  enabled: true
-  hostNamespaceOnly: true
-  terminatePodConnections: true
+  # talos-specific cgroup configuration
+  # talos mounts cgroup2 at /sys/fs/cgroup, not /run/cilium/cgroupv2
+  cgroup:
+    autoMount:
+      enabled: false
+    hostRoot: /sys/fs/cgroup
 
-# talos-specific cgroup configuration
-# talos mounts cgroup2 at /sys/fs/cgroup, not /run/cilium/cgroupv2
-cgroup:
-  autoMount:
-    enabled: false
-  hostRoot: /sys/fs/cgroup
-
-# envoy proxy for gateway api (default is null, not true)
-envoy:
-  enabled: true
+  # envoy proxy for gateway api (default is null, not true)
+  envoy:
+    enabled: true
 
 # talos-specific security context capabilities (remove SYS_MODULE)
 securityContext:
@@ -98,3 +98,4 @@ hubble:
         - secretName: hubble-ingress-tls
           hosts:
             - hubble-kube-prd.simonoscar.me
+ 
