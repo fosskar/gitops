@@ -1,6 +1,9 @@
 # cilium configuration for kube-prd cluster on talos
 # matches bootstrap job configuration for seamless takeover
 
+# disable upgrade compatibility to prevent forced clean-cilium-state container
+upgradeCompatibility: null
+
 # kube-proxy replacement (matches bootstrap job)
 kubeProxyReplacement: true
 k8sServiceHost: auto
