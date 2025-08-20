@@ -185,6 +185,9 @@ spec:
                             - k8sServiceHost=localhost
                             - --set
                             - k8sServicePort=7445
+          # fix for coredns connectivity issues with cilium kube-proxy replacement on talos
+          # see: https://www.talos.dev/v1.10/kubernetes-guides/network/deploying-cilium/
+          # related: https://github.com/cilium/cilium/issues/12847
           - op: add
             path: /machine/features/hostDNS
             value:
