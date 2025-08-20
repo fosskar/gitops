@@ -18,10 +18,12 @@ spec:
     host: {{ .Values.network.vip }}
 {{- end }}
     port: 6443
+  {{- if .Values.network.dnsServers }}
   dnsServers:
     {{- range .Values.network.dnsServers }}
     - {{ . }}
     {{- end }}
+  {{- end }}
   ipv4Config:
     addresses:
       - {{ .Values.network.ipRange }}

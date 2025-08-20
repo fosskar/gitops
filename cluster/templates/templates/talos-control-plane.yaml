@@ -47,12 +47,14 @@ spec:
             path: /machine/install/extraKernelArgs
             value:
               - net.ifnames=0
+          {{- if .Values.network.dnsServers }}
           - op: add
             path: /machine/network/nameservers
             value:
             {{- range .Values.network.dnsServers }}
               - {{ . }}
             {{- end }}
+          {{- end }}
           - op: add
             path: /machine/network/disableSearchDomain
             value: true

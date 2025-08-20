@@ -9,9 +9,6 @@ network:
   gateway: 10.10.10.1  # Common gateway
   bridge: vmbr1  # Standard bridge
   vlan: 10  # Standard VLAN
-  dnsServers:
-    - 1.1.1.1
-    - 8.8.8.8
 
 # Proxmox Configuration (global defaults)
 proxmox:
