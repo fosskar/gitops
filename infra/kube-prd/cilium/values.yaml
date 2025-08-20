@@ -115,6 +115,8 @@ cilium:
     ui:
       enabled: true
       rollOutPods: true
+      annotations:
+        argocd.argoproj.io/sync-wave: "3"
       ingress:
         enabled: true
         hosts:
