@@ -107,6 +107,8 @@ cilium:
   # hubble observability
   hubble:
     enabled: true
+    annotations:
+      argocd.argoproj.io/sync-wave: "3"
     relay:
       enabled: true
       rollOutPods: true
