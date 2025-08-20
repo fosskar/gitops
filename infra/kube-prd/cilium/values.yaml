@@ -48,6 +48,8 @@ cilium:
     loadbalancerMode: shared
     service:
       allocateLoadBalancerNodePorts: false
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
 
   # gateway api support (requires envoy)
   gatewayAPI:
