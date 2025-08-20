@@ -3,6 +3,8 @@ apiVersion: cilium.io/v2
 kind: CiliumLoadBalancerIPPool
 metadata:
   name: {{ .Values.loadBalancerIPPool.name }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
 spec:
   blocks:
   - cidr: {{ .Values.loadBalancerIPPool.cidr | quote }}

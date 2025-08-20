@@ -3,6 +3,8 @@ apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
 metadata:
   name: {{ .Values.l2AnnouncementPolicy.name }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
 spec:
   loadBalancerIPs: {{ .Values.l2AnnouncementPolicy.loadBalancerIPs }}
   externalIPs: {{ .Values.l2AnnouncementPolicy.externalIPs }}
