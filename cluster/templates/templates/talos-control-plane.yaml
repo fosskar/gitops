@@ -19,6 +19,14 @@ metadata:
 spec:
   version: {{ .Values.kubernetes.version }}
   replicas: {{ $totalControlPlanes }}
+  rolloutStrategy:
+{{- if eq $totalControlPlanes 1 }}
+    type: Recreate
+{{- else }}
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+{{- end }}
   infrastructureTemplate:
     kind: ProxmoxMachineTemplate
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
