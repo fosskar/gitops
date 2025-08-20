@@ -4,7 +4,7 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: {{ .Values.loadBalancerIPPool.name }}
   annotations:
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   blocks:
   - cidr: {{ .Values.loadBalancerIPPool.cidr | quote }}

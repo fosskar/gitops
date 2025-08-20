@@ -4,7 +4,7 @@ kind: CiliumL2AnnouncementPolicy
 metadata:
   name: {{ .Values.l2AnnouncementPolicy.name }}
   annotations:
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   loadBalancerIPs: {{ .Values.l2AnnouncementPolicy.loadBalancerIPs }}
   externalIPs: {{ .Values.l2AnnouncementPolicy.externalIPs }}
