@@ -14,6 +14,8 @@ spec:
           - path: cluster/*
           - path: cluster/templates
             exclude: true
+          - path: cluster/kube-prd
+            exclude: true
   template:
     metadata:
       name: "{{.path.basename}}"

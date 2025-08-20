@@ -28,7 +28,7 @@ nodes:
 cni:
   cilium:
     enabled: true
-    version: "1.18.1"
+    version: "1.17.7"
     kubeProxyReplacement: true
 
 # GitOps Configuration
