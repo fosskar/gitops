@@ -4,6 +4,8 @@ kind: HelmChartProxy
 metadata:
   name: {{ .Values.clusterName }}-argocd
   namespace: {{ .Values.targetNamespace | default "default" }}
+  annotations:
+    addons.cluster.x-k8s.io/deletion-policy: "skip-delete"
 spec:
   clusterSelector:
     matchLabels:
