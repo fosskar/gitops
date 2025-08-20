@@ -1,10 +1,13 @@
+{{- if .Values.l2AnnouncementPolicy.enabled }}
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
 metadata:
-  name: kube-prd-l2-policy
-  namespace: kube-system
+  name: {{ .Values.l2AnnouncementPolicy.name }}
 spec:
-  loadBalancerIPs: true
-  externalIPs: true
+  loadBalancerIPs: {{ .Values.l2AnnouncementPolicy.loadBalancerIPs }}
+  externalIPs: {{ .Values.l2AnnouncementPolicy.externalIPs }}
   interfaces:
-    - "^eth[0-9]+$"
+  {{- range .Values.l2AnnouncementPolicy.interfaces }}
+    - {{ . | quote }}
+  {{- end }}
+{{- end }}

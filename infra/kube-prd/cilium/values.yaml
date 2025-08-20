@@ -1,5 +1,20 @@
 # cilium configuration for kube-prd cluster on talos
 # matches bootstrap job configuration for seamless takeover
+
+# load balancer ip pool configuration
+loadBalancerIPPool:
+  enabled: true
+  name: kube-prd-lb-pool
+  cidr: "10.10.10.120/32"
+
+# l2 announcement policy configuration
+l2AnnouncementPolicy:
+  enabled: true
+  name: kube-prd-l2-policy
+  loadBalancerIPs: true
+  externalIPs: true
+  interfaces:
+    - "^eth[0-9]+$"
 cilium:
   # set upgrade compatibility to current version
   upgradeCompatibility: "1.18"
