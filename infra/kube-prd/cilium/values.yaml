@@ -121,7 +121,3 @@ cilium:
         enabled: true
         hosts:
           - hubble.kube-prd.lan
-        tls:
-          - secretName: hubble-ingress-tls
-            hosts:
-              - hubble.kube-prd.lan
