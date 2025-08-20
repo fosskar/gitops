@@ -14,7 +14,7 @@ l2AnnouncementPolicy:
   loadBalancerIPs: true
   externalIPs: true
   interfaces:
-    - "^eth[0-9]+$"
+    - "^(eth|enp|ens)[0-9s]+$"
 cilium:
   # set upgrade compatibility to current version
   upgradeCompatibility: "1.18"
