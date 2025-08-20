@@ -23,10 +23,6 @@ nodes:
     memory: 16384 # 16GB
     cores: 4
     disk: 100
-  - type: worker
-    memory: 16384 # 16GB
-    cores: 4
-    disk: 100
 
 # Enable Cilium CNI
 cni:
