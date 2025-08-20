@@ -21,7 +21,7 @@ spec:
   replicas: {{ $totalControlPlanes }}
   rolloutStrategy:
 {{- if eq $totalControlPlanes 1 }}
-    type: Recreate
+    type: OnDelete
 {{- else }}
     type: RollingUpdate
     rollingUpdate:
