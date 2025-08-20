@@ -13,7 +13,7 @@ cilium:
   cluster:
     name: kube-prd
 
-  rollOutCiliumPods: false
+  rollOutCiliumPods: true
 
   # enable direct routing for better performance on same L2 network
   routingMode: native
@@ -23,13 +23,14 @@ cilium:
 
   l2announcements:
     enabled: true
-  
+
   externalIPs:
     enabled: true
 
   ingressController:
     enabled: true
     default: true
+    loadbalancerMode: shared
     service:
       allocateLoadBalancerNodePorts: false
 
@@ -98,8 +99,8 @@ cilium:
       ingress:
         enabled: true
         hosts:
-          - hubble-kube-prd.simonoscar.me
+          - hubble.kube-prd.lan
         tls:
           - secretName: hubble-ingress-tls
             hosts:
-              - hubble-kube-prd.simonoscar.me
+              - hubble.kube-prd.lan
