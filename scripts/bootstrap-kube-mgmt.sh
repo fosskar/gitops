@@ -58,7 +58,7 @@ validate_existing_configs() {
       log_info "found working talosconfig"
       return 0  # valid config exists
     else
-      log_warn "talosconfig exists but certificates don't match node"
+      log_info "talosconfig exists but certificates don't match node"
       return 1  # invalid config
     fi
   fi
@@ -195,7 +195,7 @@ metadata:
   name: bootstrap
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io/background
 spec:
   project: default
   source:
@@ -247,16 +247,29 @@ save_configs() {
   
   # merge talosconfig
   if [ -f "$TALOSCONFIG_PATH" ]; then
-    log_info "merging talosconfig with existing configuration"
-    talosctl config merge "$WORK_DIR/talosconfig"
+    # check if only one context exists and it's our cluster
+    context_count=$(talosctl config contexts --talosconfig "$TALOSCONFIG_PATH" 2>/dev/null | wc -l || echo "0")
+    if [ "$context_count" -eq 1 ] && talosctl config contexts --talosconfig "$TALOSCONFIG_PATH" 2>/dev/null | grep -q "^$CLUSTER_NAME"; then
+      log_info "replacing single context talosconfig"
+      cp "$WORK_DIR/talosconfig" "$TALOSCONFIG_PATH"
+    else
+      log_info "merging talosconfig with existing configuration"
+      talosctl config remove "$CLUSTER_NAME" --talosconfig "$TALOSCONFIG_PATH" 2>/dev/null || true
+      talosctl config merge "$WORK_DIR/talosconfig"
+    fi
   else
     log_info "creating new talosconfig"
     cp "$WORK_DIR/talosconfig" "$TALOSCONFIG_PATH"
   fi
 
+  # set endpoint for the merged context
+  log_info "configuring talos endpoint..."
+  talosctl config endpoint "$CLUSTER_IP" --talosconfig "$TALOSCONFIG_PATH"
+  
   log_info "configuration files saved:"
-  log_info "  kubeconfig: $KUBECONFIG_PATH"
+  log_info "  kubeconfig: $KUBECONFIG_PATH" 
   log_info "  talosconfig: $TALOSCONFIG_PATH"
+  log_info "  endpoint configured: $CLUSTER_IP"
 }
 
 main() {
