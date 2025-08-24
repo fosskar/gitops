@@ -17,6 +17,7 @@ spec:
         core:
           cluster-api:
             namespace: capi-system
+            createNamespace: true
         bootstrap:
           talos:
             namespace: talos-bootstrap-system
