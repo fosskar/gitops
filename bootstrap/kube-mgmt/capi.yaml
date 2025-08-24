@@ -1,0 +1,46 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-api
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: infra
+  source:
+    repoURL: https://kubernetes-sigs.github.io/cluster-api-operator
+    chart: cluster-api-operator
+    targetRevision: v0.22.0
+    helm:
+      values: |
+        core:
+          cluster-api: {}
+        bootstrap:
+          talos: {}
+        controlPlane:
+          talos: {}
+        infrastructure:
+          proxmox: {}
+        ipam:
+          in-cluster: {}
+        addon:
+          helm: {}
+        manager:
+          featureGates:
+            core:
+              ClusterTopology: true
+            talos:
+              ClusterTopology: true
+            proxmox:
+              ClusterTopology: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: capi-operator-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
