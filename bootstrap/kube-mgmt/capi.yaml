@@ -30,8 +30,6 @@ spec:
           featureGates:
             core:
               ClusterTopology: true
-            talos:
-              ClusterTopology: true
             proxmox:
               ClusterTopology: true
   destination:
