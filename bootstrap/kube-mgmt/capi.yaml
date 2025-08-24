@@ -37,7 +37,7 @@ spec:
     namespace: capi-operator-system
   syncPolicy:
     automated:
-      prune: true
+      prune: false
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
