@@ -49,9 +49,13 @@ in
       outputs.effects.update-flake-inputs = mkEffect {
         name = "effect-update-flake-inputs";
         checkout = true;
+        # nixVersions.latest, not pkgs.nix: nixfiles' flake.nix overrides
+        # inputs of transitive inputs (llm-agents/bun2nix, tangled/gomod2nix/
+        # flake-utils), which nix < 2.30 cannot apply. It then re-resolves
+        # those as indirect flakerefs and fails on the empty registry.
         inputs = [
           pkgs.git
-          pkgs.nix
+          pkgs.nixVersions.latest
         ];
         secretsMap.git.type = "GitToken";
         effectScript = ''
