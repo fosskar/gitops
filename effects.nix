@@ -5,6 +5,39 @@ let
 in
 {
   flake.herculesCI = _args: {
+    # Renovate clones the repo itself, so this needs no checkout. It only
+    # sees fosskar/gitops: nixbot's GitToken is a github app installation
+    # token scoped to the repo the schedule belongs to, so a central
+    # renovate run in another repo could not reach this one.
+    onSchedule.renovate = {
+      when = {
+        hour = 19;
+        minute = 0;
+      };
+      outputs.effects.renovate = mkEffect {
+        name = "effect-renovate";
+        inputs = [
+          pkgs.renovate
+          pkgs.git
+        ];
+        secretsMap.git.type = "GitToken";
+        effectScript = ''
+          set -euo pipefail
+          token=$(jq -re '.git.data.token' "$HERCULES_CI_SECRETS_JSON")
+          export RENOVATE_TOKEN="$token"
+          export RENOVATE_GITHUB_COM_TOKEN="$token"
+
+          export RENOVATE_PLATFORM=github
+          export RENOVATE_REPOSITORIES=fosskar/gitops
+          export RENOVATE_GIT_AUTHOR='fosskar[bot] <300917551+fosskar[bot]@users.noreply.github.com>'
+          export RENOVATE_BINARY_SOURCE=global
+          export LOG_LEVEL=info
+
+          renovate
+        '';
+      };
+    };
+
     onSchedule.update-flake-inputs = {
       when = {
         hour = 3;

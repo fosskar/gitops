@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":configMigration",
+    ":rebaseStalePrs"
+  ],
+  "dependencyDashboard": true,
+  "automerge": false,
+  "lockFileMaintenance": {
+    "enabled": false
+  },
+  "argocd": {
+    "managerFilePatterns": ["/^bootstrap/.+\\.yaml$/"]
+  },
+  "nix": {
+    "enabled": false
+  }
+}
