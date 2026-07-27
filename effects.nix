@@ -19,10 +19,19 @@ in
         inputs = [
           pkgs.renovate
           pkgs.git
+          pkgs.fluxcd
         ];
         secretsMap.git.type = "GitToken";
         effectScript = ''
           set -euo pipefail
+
+          # the flux manager regenerates gotk-components.yaml by shelling out
+          # to `flux install`; node spawns it via the absolute path /bin/sh,
+          # which the bubblewrap sandbox does not provide ("spawn /bin/sh
+          # ENOENT" artifact errors on flux PRs). the sandbox root is
+          # writable, so shim it.
+          mkdir -p /bin
+          ln -sf "$(command -v sh)" /bin/sh
           token=$(jq -re '.git.data.token' "$HERCULES_CI_SECRETS_JSON")
           export RENOVATE_TOKEN="$token"
           export RENOVATE_GITHUB_COM_TOKEN="$token"
