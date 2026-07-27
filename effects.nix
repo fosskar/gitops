@@ -19,6 +19,7 @@ in
         inputs = [
           pkgs.renovate
           pkgs.git
+          pkgs.fluxcd
         ];
         secretsMap.git.type = "GitToken";
         effectScript = ''
