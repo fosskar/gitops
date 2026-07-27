@@ -1,1 +1,1 @@
-# gitops-bootstrap
+# gitops

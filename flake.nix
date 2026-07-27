@@ -29,8 +29,7 @@
           devShells.default = pkgs.mkShell {
             nativeBuildInputs = with pkgs; [
               kubernetes-helm
-              argocd
-              kubeseal
+              fluxcd
             ];
             name = "gitops";
           };
