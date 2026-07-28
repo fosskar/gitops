@@ -26,6 +26,8 @@ apps/
 1. Create `apps/<app>/` with `repo.yaml` (HelmRepository) and `release.yaml`
    (HelmRelease). Set `spec.targetNamespace` and `spec.install.createNamespace: true`
    in the HelmRelease — no separate Namespace manifests needed.
+   `apps/example/` is a ready-made reference (podinfo) — not deployed until
+   listed in `resources`.
 2. Add `- <app>` to `resources` in `apps/kustomization.yaml`.
 3. Commit and push. Flux reconciles within the Kustomization interval, or force it:
 
