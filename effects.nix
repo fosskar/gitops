@@ -25,12 +25,6 @@ in
         effectScript = ''
           set -euo pipefail
 
-          # node's child_process.exec spawns /bin/sh by absolute path; the
-          # bubblewrap sandbox has no /bin, so renovate's flux artifact step
-          # fails with "spawn /bin/sh ENOENT" even with flux in PATH. the
-          # sandbox root is writable: shim it.
-          mkdir -p /bin
-          ln -sf "$(command -v sh)" /bin/sh
           token=$(jq -re '.git.data.token' "$HERCULES_CI_SECRETS_JSON")
           export RENOVATE_TOKEN="$token"
           export RENOVATE_GITHUB_COM_TOKEN="$token"
