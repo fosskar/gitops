@@ -55,26 +55,11 @@ in
         # inputs of transitive inputs (llm-agents/bun2nix, tangled/gomod2nix/
         # flake-utils), which nix < 2.30 cannot apply. It then re-resolves
         # those as indirect flakerefs and fails on the empty registry.
-        inputs = [
-          pkgs.git
-          pkgs.nixVersions.latest
-        ];
+        inputs = [ pkgs.nixVersions.latest ];
         secretsMap.git.type = "GitToken";
         effectScript = ''
-          set -euo pipefail
-          token=$(jq -re '.git.data.token' "$HERCULES_CI_SECRETS_JSON")
-          export FORGE_TOKEN="$token"
-          export GITHUB_TOKEN="$token"
-          export NIX_CONFIG="experimental-features = nix-command flakes
-          access-tokens = github.com=$token"
-
-          git config --global user.name 'fosskar[bot]'
-          git config --global user.email '300917551+fosskar[bot]@users.noreply.github.com'
-
-          git config remote.origin.promisor true
-          git config remote.origin.partialclonefilter blob:none
-
-          nix run "github:fosskar/nixfiles#updater-flake-inputs"
+          nix --extra-experimental-features 'nix-command flakes' \
+            run github:fosskar/nixfiles#updater-effect -- flake-inputs
         '';
       };
     };
