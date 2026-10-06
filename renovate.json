@@ -5,6 +5,7 @@
     ":configMigration",
     ":rebaseStalePrs"
   ],
+  "automerge": true,
   "nix": {
     "enabled": false
   }
